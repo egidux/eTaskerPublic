@@ -1,4 +1,4 @@
-package eTasker;
+package eTasker.main;
 
 import org.testng.annotations.Test;
 
