@@ -1,13 +1,10 @@
-package eTasker.main;
+package org.eTasker;
 
+import org.eTasker.web.api.Register;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import eTasker.api.LogOut;
-import eTasker.api.Login;
-import eTasker.api.Register;
-
-@SpringBootApplication(scanBasePackageClasses = {Register.class, LogOut.class, Login.class})
+@SpringBootApplication(scanBasePackageClasses = {Register.class})
 public class App {
 	//final static Logger lOGGER = Logger.getLogger(Main.class);
 	
