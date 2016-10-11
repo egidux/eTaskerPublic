@@ -8,39 +8,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegisterServiceBean implements RegisterService {
+public class UserManagementBean implements UserManagementService {
 	
 	@Autowired
 	private UserRepository userRepository;
 
+	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
 	
-	public User findOne(String email) {
-		return userRepository.findOne(email);
+	@Override
+	public User findOne(Long id) {
+		return userRepository.findOne(id);
 	}
 
+	@Override
 	public User create(User user) {
-		if (findOne(user.getEmail()) == null) {
+		if (findOne(user.getId()) != null) {
 			return null;
 		}
 		return userRepository.save(user);
 	}
 
+	@Override
 	public User update(User user) {
-		User userToUpdate = findOne(user.getEmail());
+		User userToUpdate = findOne(user.getId());
 		if (userToUpdate == null) {
 			return null;
 		}
-		userToUpdate.setCompanyName(user.getCompanyName());
+		userToUpdate.setCompanyname(user.getCompanyname());
 		//userToUpdate.setEmail(user.getEmail());
 		userToUpdate.setName(user.getName());
 		userToUpdate.setPassword(user.getPassword());
 		return userRepository.save(userToUpdate);
 	}
 
-	public void delete(String user) {
+	@Override
+	public void delete(User user) {
 		userRepository.delete(user);
+	}
+
+	@Override
+	public void validate(Long id) {
+		User user = findOne(id);
+		user.setIsver(true);
+		userRepository.save(user);
 	}
 }

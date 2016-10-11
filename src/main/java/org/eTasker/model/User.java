@@ -1,16 +1,20 @@
 package org.eTasker.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class User {
 	
 	@Id
+    @GeneratedValue
+    private Long id;
 	private String email;
 	private String name;
 	private String password;
-	private String companyName;
+	private String companyname;
+	private boolean isver;
 	
 	public String getName() {
 		return name;
@@ -30,10 +34,22 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getCompanyName() {
-		return companyName;
+	public String getCompanyname() {
+		return companyname;
 	}
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setCompanyname(String companyName) {
+		this.companyname = companyName;
+	}
+	public boolean getIsver() {
+		return isver;
+	}
+	public void setIsver(boolean isver) {
+		this.isver = isver;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
