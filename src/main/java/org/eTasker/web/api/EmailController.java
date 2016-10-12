@@ -1,4 +1,4 @@
-package org.eTasker.controller;
+package org.eTasker.web.api;
 
 import org.eTasker.model.User;
 import org.springframework.beans.factory.annotation.Autowired;

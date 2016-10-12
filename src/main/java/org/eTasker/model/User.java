@@ -4,12 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {
 	
 	@Id
     @GeneratedValue
-    private Long id;
+    private long id;
 	private String email;
 	private String name;
 	private String password;

@@ -25,7 +25,7 @@ public class UserManagementBean implements UserManagementService {
 
 	@Override
 	public User create(User user) {
-		if (findOne(user.getId()) != null) {
+		if (userRepository.findByEmail(user.getEmail()) != null) {
 			return null;
 		}
 		return userRepository.save(user);
@@ -54,5 +54,10 @@ public class UserManagementBean implements UserManagementService {
 		User user = findOne(id);
 		user.setIsver(true);
 		userRepository.save(user);
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 }
