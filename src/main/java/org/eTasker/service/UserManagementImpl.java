@@ -25,9 +25,6 @@ public class UserManagementImpl implements UserManagementService {
 
 	@Override
 	public User create(User user) {
-		if (userRepository.findByEmail(user.getEmail()) != null) {
-			return null;
-		}
 		return userRepository.save(user);
 	}
 
@@ -50,10 +47,14 @@ public class UserManagementImpl implements UserManagementService {
 	}
 
 	@Override
-	public void validate(Long id) {
+	public User validate(Long id) {
 		User user = findOne(id);
+		if (user == null) {
+			return null;
+		}
 		user.setIsver(true);
 		userRepository.save(user);
+		return user;
 	}
 
 	@Override

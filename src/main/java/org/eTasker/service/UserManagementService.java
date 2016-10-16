@@ -16,7 +16,7 @@ public interface UserManagementService {
 
     void delete(User user);
     
-    void validate(Long id);
+    User validate(Long id);
     
     User findByEmail(String email);
 }
