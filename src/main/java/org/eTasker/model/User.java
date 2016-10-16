@@ -14,8 +14,10 @@ public class User {
     private long id;
 	private String email;
 	private String name;
+	@JsonIgnore
 	private String password;
 	private String companyname;
+	@JsonIgnore
 	private boolean isver;
 	
 	public String getName() {
