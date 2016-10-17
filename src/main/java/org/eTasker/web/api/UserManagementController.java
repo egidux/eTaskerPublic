@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.eTasker.WebApplication;
 import org.eTasker.model.User;
 import org.eTasker.service.UserManagementService;
 import org.eTasker.tools.MapBuilder;
@@ -43,9 +42,9 @@ public class UserManagementController {
     public ResponseEntity<?> getUsers() {
     	List<User> users = userManagementService.findAll();
     	try {
-			LOGGER.info("Request /user/api/users -> " + new ObjectMapper().writeValueAsString(users));
+			LOGGER.info("Http request /user/api/users -> " + new ObjectMapper().writeValueAsString(users));
 		} catch (JsonProcessingException e) {
-			LOGGER.debug("Failed create JSON string from object", e);
+			LOGGER.debug("Http request /user/api/users failed create JSON string", e);
 		}
         return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
@@ -55,28 +54,33 @@ public class UserManagementController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> registerUser(User user) {
-    	LOGGER.info("Request /user/api/register with params: name=" + user.getName() + ", email=" + user.getEmail() + ", companyname=" +
+    	LOGGER.info("Http request /user/api/register with params: name=" + user.getName() + 
+    			", email=" + user.getEmail() + ", companyname=" +
     			user.getCompanyname() + ", password=" + user.getPassword());
     	if (user.getEmail() == null || user.getEmail().isEmpty()) {
-    		LOGGER.debug("Request /user/api/register missing parameter email=" + user.getEmail());
+    		LOGGER.debug("Http request /user/api/register missing parameter email=" + user.getEmail());
     		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     	}
     	if (userManagementService.findByEmail(user.getEmail()) != null) {
-    		LOGGER.debug("Request /user/api/register failed, user exists with email=" + user.getEmail());
+    		LOGGER.debug("Http request /user/api/register failed, user exists with email=" + user.getEmail());
     		return new ResponseEntity<>(MapBuilder.build("error", "user exists"), HttpStatus.CONFLICT);
     	}
     	User newUser = userManagementService.create(user);
     	if (newUser == null) {
-    		LOGGER.debug("Request /user/api/register failed userManagementService.create(user) for user with email=" + user.getEmail());
+    		LOGGER.debug("Http request /user/api/register failed userManagementService.create(user) for user with email=" + 
+    				user.getEmail());
     		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	try {
     		email.sendEmail(newUser);
+    		LOGGER.info("Http request /user/api/register email sent to: " + user.getEmail());
     	} catch (Exception e) {
+    		LOGGER.debug("Http request /user/api/register failed to sent email to: " + user.getEmail());
     		userManagementService.delete(newUser);
     		return new ResponseEntity<>(MapBuilder.build("error", "failed to send email"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
+    	LOGGER.debug("Http request /user/api/register created new user with email: " + newUser.getEmail());
     	return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
     
@@ -86,8 +90,10 @@ public class UserManagementController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> confirm(@PathVariable("id") Long id) {
     	if (userManagementService.validate(id) != null) {
+    		LOGGER.info("Http request /user/api/ver{id} user with id: " + id + " verified");
     		return new ResponseEntity<>("Thank You", HttpStatus.OK);
     	}
+    	LOGGER.debug("Http request /user/api/ver{id} failed verify user with id: " + id);
     	return new ResponseEntity<>(MapBuilder.build("error", "user with id=" + id + " dont exist"), HttpStatus.BAD_REQUEST);
     }
     
@@ -99,30 +105,37 @@ public class UserManagementController {
     		@RequestParam(value="password") String password, HttpSession session) {
     	User user = userManagementService.findByEmail(email);
     	if (user == null || !user.getPassword().equals(password)) {
+    		LOGGER.debug("Http request /user/api/login wrong email: " + email + " or password: " + password);
     		return new ResponseEntity<>(MapBuilder.build("error", "wrong email or password"), 
     				HttpStatus.BAD_REQUEST);
     	}
     	if (!user.getIsver()) {
+    		LOGGER.debug("Http request /user/api/register user email not verified: " + email);
     		return new ResponseEntity<>(MapBuilder.build("error", "please validate registration"), HttpStatus.BAD_REQUEST);
     	}
     	session.setAttribute("Authorization", email);
+    	LOGGER.info("Http request /user/api/register created session: Authorization, " + email);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
 	@RequestMapping("/logout")
 	void logout(HttpSession session) {
+		LOGGER.info("Http request /user/api/logout sesission invalidated for user: " + 
+				session.getAttribute("Authorization"));
 		session.invalidate();
 	}
     
     @RequestMapping(
-    		value = "test",
+    		value = "testsession",
     		method = RequestMethod.GET,
     		produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> test(HttpSession session) {
     	Object email = session.getAttribute("Authorization");
     	if (email == null) {
+    		LOGGER.debug("Http request /user/api/testsession no session created");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
     	}
+    	LOGGER.info("Http request /user/api/testsession session created for:" + email);
     	return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }
