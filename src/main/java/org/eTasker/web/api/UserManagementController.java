@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.eTasker.model.User;
 import org.eTasker.service.UserManagementService;
+import org.eTasker.tools.JsonBuilder;
 import org.eTasker.tools.MapBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,12 +42,8 @@ public class UserManagementController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUsers() {
     	List<User> users = userManagementService.findAll();
-    	try {
-			LOGGER.info("Http request /user/api/users -> " + new ObjectMapper().writeValueAsString(users));
-		} catch (JsonProcessingException e) {
-			LOGGER.debug("Http request /user/api/users failed create JSON string", e);
-		}
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+    	LOGGER.info("Http request /user/api/users -> " + JsonBuilder.build(users));
+		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
     
     @RequestMapping(
@@ -57,8 +54,9 @@ public class UserManagementController {
     	LOGGER.info("Http request /user/api/register with params: name=" + user.getName() + 
     			", email=" + user.getEmail() + ", companyname=" +
     			user.getCompanyname() + ", password=" + user.getPassword());
-    	if (user.getEmail() == null || user.getEmail().isEmpty()) {
-    		LOGGER.debug("Http request /user/api/register missing parameter email=" + user.getEmail());
+    	if (user.getEmail() == null || user.getCompanyname() == null || user.getName() == null ||
+    			user.getPassword() == null) {
+    		LOGGER.debug("Http request /user/api/register missing parameters: " + JsonBuilder.build(user));
     		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     	}
     	if (userManagementService.findByEmail(user.getEmail()) != null) {
@@ -69,7 +67,8 @@ public class UserManagementController {
     	if (newUser == null) {
     		LOGGER.debug("Http request /user/api/register failed userManagementService.create(user) for user with email=" + 
     				user.getEmail());
-    		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
+    				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	try {
     		email.sendEmail(newUser);
@@ -119,10 +118,11 @@ public class UserManagementController {
     }
     
 	@RequestMapping("/logout")
-	void logout(HttpSession session) {
+	public ResponseEntity<?> logout(HttpSession session) {
 		LOGGER.info("Http request /user/api/logout sesission invalidated for user: " + 
 				session.getAttribute("Authorization"));
 		session.invalidate();
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
     
     @RequestMapping(
