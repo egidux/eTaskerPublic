@@ -33,6 +33,7 @@ public class UserManagementController {
 	@Autowired
 	EmailController email;
 	
+	//for testing
     @RequestMapping(
             value = "users",
             method = RequestMethod.GET,
@@ -125,6 +126,7 @@ public class UserManagementController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
     
+	//for testing
     @RequestMapping(
     		value = "testsession",
     		method = RequestMethod.GET,
