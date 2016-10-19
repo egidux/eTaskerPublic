@@ -1,4 +1,4 @@
-package org.eTasker.tools;
+package org.eTasker.tool;
 
 import java.util.HashMap;
 import java.util.Map;

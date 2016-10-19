@@ -6,8 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import org.eTasker.model.User;
 import org.eTasker.service.UserManagementService;
-import org.eTasker.tools.JsonBuilder;
-import org.eTasker.tools.MapBuilder;
+import org.eTasker.tool.JsonBuilder;
+import org.eTasker.tool.MapBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @EnableRedisHttpSession 
 @RestController
@@ -54,14 +51,17 @@ public class UserManagementController {
     	LOGGER.info("Http request /user/api/register with params: name=" + user.getName() + 
     			", email=" + user.getEmail() + ", companyname=" +
     			user.getCompanyname() + ", password=" + user.getPassword());
-    	if (user.getEmail() == null || user.getCompanyname() == null || user.getName() == null ||
-    			user.getPassword() == null) {
+    	if (user.getEmail() == null || user.getEmail().isEmpty() || user.getCompanyname() == null || 
+    			user.getCompanyname().isEmpty() || user.getName() == null || user.getName().isEmpty() ||
+    			user.getPassword() == null || user.getPassword().isEmpty()) {
     		LOGGER.debug("Http request /user/api/register missing parameters: " + JsonBuilder.build(user));
-    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
+    				HttpStatus.BAD_REQUEST);
     	}
     	if (userManagementService.findByEmail(user.getEmail()) != null) {
     		LOGGER.debug("Http request /user/api/register failed, user exists with email=" + user.getEmail());
-    		return new ResponseEntity<>(MapBuilder.build("error", "user exists"), HttpStatus.CONFLICT);
+    		return new ResponseEntity<>(MapBuilder.build("error", "user with this email exists"), 
+    				HttpStatus.CONFLICT);
     	}
     	User newUser = userManagementService.create(user);
     	if (newUser == null) {
