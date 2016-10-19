@@ -19,7 +19,7 @@ First run might be longer
 
 mvn test
 
-###Start server (default port 8085, to change port src/main/resources/config/application.properties):
+###Start server (to change default port src/main/resources/config/application.properties):
 
 mvn spring-boot:run
 
