@@ -5,6 +5,8 @@ in API doc only what is implemented
 
 eTasker server and Jenkins(continuous integration) will run on VM, around second semester
 
+will give warning: ca root certificate not trusted.. ignore and proceed to website
+
 ###Requirements:
 
 Java 8
