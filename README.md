@@ -2,6 +2,7 @@
 eTasker is a flexible and effective tool for managing tasks, processes and employees.
 
 Requirements:
+
 Java 8
 Maven -> https://maven.apache.org/download.cgi
 Redis, install on localhost and run it with the default port (6379) -> http://redis.io/download
