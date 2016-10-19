@@ -71,15 +71,17 @@ public class UserManagementController {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-    	try {
-    		email.sendEmail(newUser);
-    		LOGGER.info("Http request /user/api/register email sent to: " + user.getEmail());
-    	} catch (Exception e) {
-    		LOGGER.debug("Http request /user/api/register failed to sent email to: " + user.getEmail());
-    		userManagementService.delete(newUser);
-    		return new ResponseEntity<>(MapBuilder.build("error", "failed to send email"), 
-    				HttpStatus.INTERNAL_SERVER_ERROR);
-    	}
+    	 
+    	new Thread(() -> {
+    		try {
+        		email.sendEmail(newUser);
+        		LOGGER.info("Http request /user/api/register email sent to: " + user.getEmail());
+        	} catch (Exception e) {
+        		LOGGER.debug("Http request /user/api/register failed to sent email to: " + user.getEmail());
+        		userManagementService.delete(newUser);
+        	}
+    	}).start();
+    	
     	LOGGER.debug("Http request /user/api/register created new user with email: " + newUser.getEmail());
     	return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
