@@ -52,7 +52,7 @@ public class UserManagementControllerTest extends AbstractControllerTest {
         status = result.getResponse().getStatus();
         content = result.getResponse().getContentAsString();
         Assert.assertEquals("/user/api/register failure - HTTP status", 409, status);
-        Assert.assertEquals("/user/api/register failure", "{\"error\":\"user exists\"}", content);
+        Assert.assertEquals("/user/api/register failure", "{\"error\":\"user with this email exists\"}", content);
         
         // test user/api/register with error email
         uri = "/user/api/register?name=John&email=regisetasker&companyname=any&password=123";
