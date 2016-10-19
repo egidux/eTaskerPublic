@@ -1,6 +1,10 @@
 # eTasker
 eTasker is a flexible and effective tool for managing tasks, processes and employees.
 
+in API doc only what is implemented
+
+eTasker server and Jenkins(continuous integration) will run on VM in second semester
+
 ###Requirements:
 
 Java 8
