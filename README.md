@@ -3,7 +3,7 @@ eTasker is a flexible and effective tool for managing tasks, processes and emplo
 
 in API doc only what is implemented
 
-when API implemented, eTasker server and Jenkins(continuous integration) will run on VM, around second semester
+eTasker server and Jenkins(continuous integration) will run on VM, around second semester
 
 ###Requirements:
 
