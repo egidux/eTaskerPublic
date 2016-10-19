@@ -11,7 +11,7 @@ Java 8
 
 Maven -> https://maven.apache.org/download.cgi
 
-Redis, install on localhost and run it with the default port (6379) -> http://redis.io/download
+Redis (for http session management), install on localhost and run it with the default port (6379) -> http://redis.io/download
 
 First run might be longer
 
