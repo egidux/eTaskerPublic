@@ -9,7 +9,7 @@ Maven -> https://maven.apache.org/download.cgi
 
 Redis, install on localhost and run it with the default port (6379) -> http://redis.io/download
 
-First run might run longer
+First run might be longer
 
 ###Run tests:
 
