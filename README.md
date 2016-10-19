@@ -1,7 +1,7 @@
 # eTasker
 eTasker is a flexible and effective tool for managing tasks, processes and employees.
 
-Requirements:
+###Requirements:
 
 Java 8
 
@@ -11,11 +11,11 @@ Redis, install on localhost and run it with the default port (6379) -> http://re
 
 First run might run longer
 
-Run tests:
+###Run tests:
 
 mvn test
 
-Start server (default port 8085, to change port src/main/resources/config/application.properties):
+###Start server (default port 8085, to change port src/main/resources/config/application.properties):
 
 mvn spring-boot:run
 
