@@ -7,5 +7,5 @@ CREATE TABLE User (
   password VARCHAR(50) NOT NULL,
   companyName VARCHAR(50) NOT NULL,
   isver BOOLEAN,
-  PRIMARY KEY(id, email)
+  PRIMARY KEY(id)
 );
