@@ -83,7 +83,7 @@ public class UserManagementController {
     	}).start();
     	
     	LOGGER.debug("Http request /user/api/register created new user with email: " + newUser.getEmail());
-    	return new ResponseEntity<>(user, HttpStatus.CREATED);
+    	return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
     @RequestMapping(
