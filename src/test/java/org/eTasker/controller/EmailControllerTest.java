@@ -1,6 +1,7 @@
-package org.eTasker.web.api;
+package org.eTasker.controller;
 
 import org.eTasker.AbstractControllerTest;
+import org.eTasker.controller.EmailController;
 import org.eTasker.model.User;
 import org.junit.Assert;
 import org.junit.Test;

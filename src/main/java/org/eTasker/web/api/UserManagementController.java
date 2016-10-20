@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.eTasker.controller.EmailController;
 import org.eTasker.model.User;
 import org.eTasker.service.UserManagementService;
 import org.eTasker.tool.JsonBuilder;
