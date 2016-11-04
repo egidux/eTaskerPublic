@@ -1,26 +1,15 @@
 package org.eTasker.web.api;
 
 import org.eTasker.AbstractControllerTest;
-import org.eTasker.service.UserManagementService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class UserManagementControllerTest extends AbstractControllerTest {
-    
-	@Autowired
-	UserManagementService userManagementService;
-
-	@Before
-	public void setup() {
-		super.setUp();
-	}
+public class UserControllerTest extends AbstractControllerTest {
 	
     @Test
     public void testUserManagementController() throws Exception {

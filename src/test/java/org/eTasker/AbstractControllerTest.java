@@ -2,6 +2,7 @@ package org.eTasker;
 
 import java.io.IOException;
 
+import org.eTasker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -18,8 +19,10 @@ public class AbstractControllerTest extends AbstractTest {
 	
 	@Autowired
     protected WebApplicationContext webApplicationContext;
+	@Autowired
+	protected UserService userManagementService;
 	
-	protected void setUp() {
+	public AbstractControllerTest() {
 		mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 	

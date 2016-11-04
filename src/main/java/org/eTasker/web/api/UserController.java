@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserManagementController extends AbstractController {
+public class UserController extends AbstractController {
     
 	@RequestMapping(
     		value = "login",
@@ -39,7 +39,7 @@ public class UserManagementController extends AbstractController {
 	@RequestMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
 		logger.info("Http request /user/api/logout sesission invalidated for user: " + 
-				session.getAttribute("Authorization"));
+				getSessionAuthorization(session));
 		session.invalidate();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -50,12 +50,29 @@ public class UserManagementController extends AbstractController {
     		method = RequestMethod.GET,
     		produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> test(HttpSession session) {
-    	Object email = session.getAttribute("Authorization");
+    	String email = getSessionAuthorization(session);
     	if (email == null) {
     		logger.debug("Http request /user/api/testsession no session created");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
     	}
     	logger.info("Http request /user/api/testsession OK, session created for:" + email);
     	return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+    
+    @RequestMapping(
+            value = "updateprofile",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateProfile(User user, HttpSession session) {
+    	logger.info("Http request /user/api/updateprofile with params: name=" + user.getName() + 
+    			", email=" + user.getEmail());
+    	String email = getSessionAuthorization(session);
+    	User updatedUser = userManagementService.update(user, email); 
+    	if (updatedUser == null) {
+    		logger.debug("Http request /user/api/updateprofile failed update user");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
+    	logger.info("Update for user=" + email + " success");
+    	return new ResponseEntity<>(HttpStatus.OK);
     }
 }

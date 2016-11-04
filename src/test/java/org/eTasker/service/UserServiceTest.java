@@ -8,10 +8,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class UserManagementServiceTest extends AbstractTest {
+public class UserServiceTest extends AbstractTest {
 
 	@Autowired
-	UserManagementService userManagementService;
+	UserService userManagementService;
 	
 	@Test
 	public void testUserManagementService() {

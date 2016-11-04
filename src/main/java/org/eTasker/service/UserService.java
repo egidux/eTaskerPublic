@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eTasker.model.User;
 
-public interface UserManagementService {
+public interface UserService {
 	
 	List<User> findAll();
 
@@ -12,7 +12,7 @@ public interface UserManagementService {
 
     User create(User user);
 
-    User update(User user);
+    User update(User user, String email);
 
     void delete(User user);
     
