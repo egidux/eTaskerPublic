@@ -4,6 +4,7 @@ import org.eTasker.AbstractControllerTest;
 import org.eTasker.controller.EmailController;
 import org.eTasker.model.User;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,11 @@ public class EmailControllerTest extends AbstractControllerTest {
 
 	@Autowired
 	EmailController emailController;
+	
+	@Before
+	public void setUp() {
+		super.setUp();
+	}
 	
 	@Test
 	public void testEmailController() {

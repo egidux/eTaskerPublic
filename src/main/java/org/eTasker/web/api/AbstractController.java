@@ -18,7 +18,7 @@ public class AbstractController {
 	@Autowired
 	protected UserService userManagementService;
 	@Autowired
-	protected EmailController email;
+	protected EmailController emailController;
 	
 	protected String getSessionAuthorization(HttpSession session) {
 		return (String)session.getAttribute("Authorization");

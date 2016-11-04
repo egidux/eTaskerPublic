@@ -57,7 +57,7 @@ public class CustomerController extends AbstractController {
     	 
     	new Thread(() -> {
     		try {
-        		email.sendEmail(newUser);
+        		emailController.sendEmail(newUser);
         		logger.info("Http request /user/api/register email sent to: " + user.getEmail());
         	} catch (Exception e) {
         		logger.debug("Http request /user/api/register failed to sent email to: " + user.getEmail());

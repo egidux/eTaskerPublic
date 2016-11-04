@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import org.eTasker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -13,6 +16,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@DirtiesContext
+@Transactional
 public class AbstractControllerTest extends AbstractTest {
 
 	protected MockMvc mvc;
@@ -21,8 +26,9 @@ public class AbstractControllerTest extends AbstractTest {
     protected WebApplicationContext webApplicationContext;
 	@Autowired
 	protected UserService userManagementService;
+	protected  MockHttpSession session = new MockHttpSession();
 	
-	public AbstractControllerTest() {
+	protected void setUp() {
 		mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 	
