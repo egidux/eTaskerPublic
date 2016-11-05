@@ -38,7 +38,6 @@ public class UserImpl implements UserService {
 		if (userUpdate == null) {
 			return null;
 		}
-		//userToUpdate.setCompanyname(user.getCompanyname());
 		if (user.getName() != null && !user.getName().isEmpty()) {
 			userUpdate.setName(user.getName());
 			LOGGER.info("User with email=" + email + " updated name: " + user.getName());
@@ -46,10 +45,6 @@ public class UserImpl implements UserService {
 		if (user.getEmail() != null && !user.getEmail().isEmpty()) {
 			userUpdate.setEmail(user.getEmail());
 			LOGGER.info("User with email=" + email + " updated email: " + user.getEmail());
-		}
-		if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-			userUpdate.setPassword(user.getPassword());
-			LOGGER.info("User with email=" + email + " updated password: " + user.getPassword());
 		}
 		return userRepository.save(userUpdate);
 	}
@@ -66,12 +61,27 @@ public class UserImpl implements UserService {
 			return null;
 		}
 		user.setIsver(true);
-		userRepository.save(user);
-		return user;
+		return userRepository.save(user);
 	}
 
 	@Override
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email);
+	}
+
+	@Override
+	public User changePassword(String email, String currentPassword, String newPassword) {
+		User user = findByEmail(email);
+		if (user == null) {
+			LOGGER.debug("Failed change password for user:" + email + ", user not exists");
+			return null;
+		}
+		if (!user.getPassword().equals(currentPassword)) {
+			LOGGER.debug("Failed change password for user:" + email + ", given currentpassword:" + currentPassword + 
+					" doesn't match with existing password=" + user.getPassword());
+			return null; 
+		}
+		user.setPassword(newPassword);
+		return userRepository.save(user);
 	}
 }

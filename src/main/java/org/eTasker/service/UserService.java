@@ -19,4 +19,6 @@ public interface UserService {
     User validate(Long id);
     
     User findByEmail(String email);
+    
+    User changePassword(String email, String currentPassword, String newPassword);
 }

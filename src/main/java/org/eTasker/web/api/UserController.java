@@ -28,36 +28,26 @@ public class UserController extends AbstractController {
     				HttpStatus.BAD_REQUEST);
     	}
     	if (!user.getIsver()) {
-    		logger.debug("Http request /user/api/register user email not verified: " + email);
+    		logger.debug("Http request /user/api/login user email not verified: " + email);
     		return new ResponseEntity<>(MapBuilder.build("error", "please validate registration"), HttpStatus.BAD_REQUEST);
     	}
     	session.setAttribute("Authorization", email);
-    	logger.info("Http request /user/api/register created session: Authorization:" + email);
+    	logger.info("Http request /user/api/login created session: Authorization:" + email);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
-	@RequestMapping("/logout")
+	@RequestMapping("logout")
 	public ResponseEntity<?> logout(HttpSession session) {
+		String email = getSessionAuthorization(session);
 		logger.info("Http request /user/api/logout sesission invalidated for user: " + 
-				getSessionAuthorization(session));
+				email);
+		if (email == null) {
+			logger.info("Http request /user/api/logout not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
 		session.invalidate();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-    
-	//for testing
-    @RequestMapping(
-    		value = "testsession",
-    		method = RequestMethod.GET,
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> test(HttpSession session) {
-    	String email = getSessionAuthorization(session);
-    	if (email == null) {
-    		logger.debug("Http request /user/api/testsession no session created");
-    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
-    	}
-    	logger.info("Http request /user/api/testsession OK, session created for:" + email);
-    	return new ResponseEntity<>("OK", HttpStatus.OK);
-    }
     
     @RequestMapping(
             value = "updateprofile",
@@ -67,12 +57,46 @@ public class UserController extends AbstractController {
     	logger.info("Http request /user/api/updateprofile with params: name=" + user.getName() + 
     			", email=" + user.getEmail());
     	String email = getSessionAuthorization(session);
+    	if (email == null) {
+    		logger.debug("Http request /user/api/updateprofile failed, not logged in");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
     	User updatedUser = userManagementService.update(user, email); 
     	if (updatedUser == null) {
     		logger.debug("Http request /user/api/updateprofile failed update user");
-    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    		return new ResponseEntity<>(MapBuilder.build("error", "user does not exist"), 
+    				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	logger.info("Update for user=" + email + " success");
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @RequestMapping(
+            value = "changepassword",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> changePassword(@RequestParam(value="currentpassword") String currentPassword, 
+    		@RequestParam(value="newpassword") String newPassword, @RequestParam(value="confirmpassword") 
+    		String confirmPassword, HttpSession session) {
+    	logger.info("Http request /user/api/changepassword with params: currentpassword=" + currentPassword + 
+    			", newpassword=" + newPassword + ", confirmpassword=" + confirmPassword);
+    	String email = getSessionAuthorization(session);
+    	if (email == null) {
+    		logger.debug("Http request /user/api/changePassword failed, please login");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
+    	if (!newPassword.equals(confirmPassword)) {
+    		logger.debug("Http request /user/api/changePassword new password dont match -> newpassword:" +
+    				newPassword + " & confirmpassword:" + confirmPassword);
+    		return new ResponseEntity<>(MapBuilder.build("error", "new password doesn't match"), HttpStatus.BAD_REQUEST);
+    	}
+    	User user = userManagementService.changePassword(email, currentPassword, newPassword);
+    	if (user == null) {
+    		logger.debug("Http request /user/api/updatepassword failed");
+    		return new ResponseEntity<>(MapBuilder.build("error", "check password"), 
+    				HttpStatus.BAD_REQUEST);
+    	}
+    	logger.info("Password changed for user=" + email);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
 }

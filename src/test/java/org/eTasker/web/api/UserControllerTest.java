@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,19 +24,11 @@ public class UserControllerTest extends AbstractControllerTest {
     @Test
     public void testUserController() throws Exception {
         
-        // test /user/api/testsession when not logged in
-    	String uri = "/user/api/testsession";
-    	MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
+        // test /user/api/login when email not confirmed
+    	String uri = "/user/api/login?email=regisetasker@gmail.com&password=123";
+    	MvcResult result = mvc.perform(MockMvcRequestBuilders.post(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
         String content = result.getResponse().getContentAsString();
         int status = result.getResponse().getStatus();
-        Assert.assertEquals("/user/api/testsession failure - HTTP status", 401, status);
-        Assert.assertEquals("/user/api/testsession failure", "{\"error\":\"please login\"}", content);
-        
-        // test /user/api/login when email not confirmed
-    	uri = "/user/api/login?email=regisetasker@gmail.com&password=123";
-    	result = mvc.perform(MockMvcRequestBuilders.post(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
-        content = result.getResponse().getContentAsString();
-        status = result.getResponse().getStatus();
         Assert.assertEquals("/user/api/login failure - HTTP status", 400, status);
         Assert.assertEquals("/user/api/login failure", "{\"error\":\"please validate registration\"}", content);
         
@@ -71,7 +62,29 @@ public class UserControllerTest extends AbstractControllerTest {
     	uri = "/user/api/login?email=regisetasker@gmail.com&password=123";
     	result = mvc.perform(MockMvcRequestBuilders.post(uri).session(session)).andReturn();
         status = result.getResponse().getStatus();
-        Assert.assertEquals("/user/api/login failure - HTTP status", 200, status);
+        Assert.assertEquals("/user/api/login failure - HTTP status", 200, status);		
+        
+        // test change password with wong current password
+        uri = "/user/api/changepassword?currentpassword=12&newpassword=111&confirmpassword=111";
+        result = mvc.perform(MockMvcRequestBuilders.post(uri).session(session).accept(MediaType.APPLICATION_JSON)).andReturn();
+        content = result.getResponse().getContentAsString();
+        status = result.getResponse().getStatus();
+        Assert.assertEquals("/user/api/changepassword failure - HTTP status", 400, status);
+        Assert.assertEquals("/user/api/changepassword failure", "{\"error\":\"check password\"}", content);
+        
+        // test change password with not matching new passwords
+        uri = "/user/api/changepassword?currentpassword=123&newpassword=111&confirmpassword=11";
+        result = mvc.perform(MockMvcRequestBuilders.post(uri).session(session).accept(MediaType.APPLICATION_JSON)).andReturn();
+        content = result.getResponse().getContentAsString();
+        status = result.getResponse().getStatus();
+        Assert.assertEquals("/user/api/changepassword failure - HTTP status", 400, status);
+        Assert.assertEquals("/user/api/changepassword failure", "{\"error\":\"new password doesn't match\"}", content);
+        
+        // test change password 
+        uri = "/user/api/changepassword?currentpassword=123&newpassword=111&confirmpassword=111";
+        result = mvc.perform(MockMvcRequestBuilders.post(uri).session(session).accept(MediaType.APPLICATION_JSON)).andReturn();
+        status = result.getResponse().getStatus();
+        Assert.assertEquals("/user/api/changepassword failure - HTTP status", 200, status);
         
         // update profile
         uri = "/user/api/updateprofile?name=Tom&email=tom@email";
@@ -80,14 +93,14 @@ public class UserControllerTest extends AbstractControllerTest {
         status = result.getResponse().getStatus();
         Assert.assertEquals("/user/api/updateprofile failure - HTTP status", 200, status);
         
-        // test updates 
+        // test update profile
         uri = "/user/api/users";
         result = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
         content = result.getResponse().getContentAsString();
         status = result.getResponse().getStatus();
         Assert.assertEquals("/user/api/users failure - HTTP status", 200, status);
         Assert.assertEquals("/user/api/users failure", "[{\"id\":1,\"email\":\"tom@email\",\"name\":\"Tom\",\"companyname\":\"any\"}]",
-        		content);		
+        		content);
         
         // test /user/api/logout
     	uri = "/user/api/logout";

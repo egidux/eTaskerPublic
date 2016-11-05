@@ -23,5 +23,4 @@ public class AbstractController {
 	protected String getSessionAuthorization(HttpSession session) {
 		return (String)session.getAttribute("Authorization");
 	}
-	
 }
