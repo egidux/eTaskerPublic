@@ -24,7 +24,7 @@ public class UserImpl implements UserService {
 		if (users == null) {
 			LOGGER.debug("Failed to retrieve users");
 		}
-		
+		LOGGER.info("Users: " + users);
 		return users;
 	} 
 	
@@ -65,6 +65,7 @@ public class UserImpl implements UserService {
 	@Override
 	public void delete(User user) {
 		userRepository.delete(user);
+		LOGGER.info("Deleted user: " + user.getEmail());
 	}
 
 	@Override
@@ -83,9 +84,9 @@ public class UserImpl implements UserService {
 	public User findByEmail(String email) {
 		User user = userRepository.findByEmail(email);
 		if (user == null) {
-			LOGGER.debug("Not found user with email=" + email);
+			LOGGER.debug("Not found user:" + email);
 		}
-		LOGGER.debug("Found user with email=" + email);
+		LOGGER.debug("Found user:" + email);
 		return user;
 	}
 
@@ -102,7 +103,7 @@ public class UserImpl implements UserService {
 			return null; 
 		}
 		user.setPassword(newPassword);
-		LOGGER.info("Password change user: " + user.getEmail() + " successful");
+		LOGGER.info("Password changed user: " + user.getEmail() + " successful");
 		return userRepository.save(user);
 	}
 }

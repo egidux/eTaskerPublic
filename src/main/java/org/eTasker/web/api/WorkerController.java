@@ -20,67 +20,107 @@ import org.springframework.web.bind.annotation.RestController;
 public class WorkerController extends AbstractController {
 	
 	private static final String URL_WORKERS = "workers";
+	private static final String EMAIL_SUBJECT = "Welcome";
+	private static final String EMAIL_TEXT = "You are registered worker for ";
 
 	@Autowired
 	protected WorkerService workerService;
 	
 	/**
-	 * 
-	 * @return
+	 * Retrieves all workers
+	 @return if request successful   returns 200(OK) and all users as Json
+	 *       if request unsuccessful returns 500(Internal Server Error) and error message as Json
 	 */
     @RequestMapping(
             value = URL_WORKERS,
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getWorkers() {
+    public ResponseEntity<?> getWorkers(HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_WORKERS);
+    	String email = getSessionAuthorization(session);
+		if (email == null) {
+			logger.info("Http request GET /user/api/" + URL_WORKERS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
     	List<Worker> workers = workerService.findAll();
-    	logger.info("Http request GET /user/api/workers -> " + JsonBuilder.build(workers));
+    	if (workers == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
+    				HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
 		return new ResponseEntity<List<Worker>>(workers, HttpStatus.OK);
     }
     
+    /**
+     * Creates new worker
+     * @param worker
+     * @param session
+     * @return
+     */
     @RequestMapping(
             value = URL_WORKERS,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> registerWorker(Worker worker, HttpSession session) {
-		String email = getSessionAuthorization(session);
+    public ResponseEntity<?> createWorker(Worker worker, HttpSession session) {
+    	logger.info("Http request POST /user/api/workers with params: name=" + worker.getName() + 
+    			", email=" + worker.getEmail() + ", companyname=" + worker.getCompanyname() + 
+    			", password=" + worker.getPassword());
+    	String email = getSessionAuthorization(session);
 		if (email == null) {
-			logger.info("Http request POST /user/api/workers not logged in");
+			logger.info("Http request POST /user/api/" + URL_WORKERS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	logger.info("Http request POST /user/api/workers with params: name=" + worker.getName() + 
-    			", email=" + worker.getEmail() + ", companyname=" +
-    			worker.getCompanyname() + ", password=" + worker.getPassword());
     	if (worker.getEmail() == null || worker.getEmail().isEmpty() || worker.getCompanyname() == null || 
     			worker.getCompanyname().isEmpty() || worker.getName() == null || worker.getName().isEmpty() ||
     					worker.getPassword() == null || worker.getPassword().isEmpty()) {
-    		logger.debug("Http request POST /user/api/workers missing parameters: " + JsonBuilder.build(worker));
+    		logger.debug("Http request POST /user/api/" + URL_WORKERS + " missing parameters: " + 
+    					JsonBuilder.build(worker));
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
     				HttpStatus.BAD_REQUEST);
     	}
     	if (workerService.findByEmail(worker.getEmail()) != null) {
-    		logger.debug("Http request POST /user/api/workers failed, worker exists with email=" + worker.getEmail());
-    		return new ResponseEntity<>(MapBuilder.build("error", "worker with this email exists"), 
+    		return new ResponseEntity<>(MapBuilder.build("error", "worker exists"), 
     				HttpStatus.CONFLICT);
     	}
     	Worker newWorker = workerService.create(worker);
     	if (newWorker == null) {
-    		logger.debug("Http request POST /user/api/workers failed workerService.create(worker) for worker with email=" + 
-    				worker.getEmail());
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	new Thread(() -> {
-    		try {
-        		emailController.sendEmail(newWorker.getEmail(), "Welcome", 
-        				"You are registered worker for " + newWorker.getCompanyname());
-        		logger.info("Http request POST /user/api/workers email sent to: " + newWorker.getEmail());
-        	} catch (Exception e) {
-        		logger.debug("Http request POST /user/api/workers failed to sent email to: " + newWorker.getEmail());
-        		workerService.delete(newWorker);
-        	}
+    		if (!emailController.sendEmail(newWorker.getEmail(), EMAIL_SUBJECT, EMAIL_TEXT + 
+    				newWorker.getCompanyname())) {
+    			workerService.delete(newWorker);
+			}
     	}).start();
-    	logger.debug("Http request POST /user/api/workers created new worker with email: " + newWorker.getEmail());
     	return new ResponseEntity<>(JsonBuilder.build(newWorker), HttpStatus.CREATED);
+    }
+    
+	/**
+	 * Updates worker (name, email, company, password)
+	 * @param worker
+	 * @param session
+	 * @return if request successful returns 204(No Content)
+	 * 		   if Unauthorized returns       401(Unauthorized) and error message as Json
+	 * 		   if update fail return         500(Internal Server Error) and error message as Json
+	 */
+    @RequestMapping(
+            value = URL_WORKERS,
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateWorker(Worker worker, HttpSession session) {
+    	logger.info("Http request PUT /user/api/" + URL_WORKERS + " with params: name=" + worker.getName() + 
+    			", email=" + worker.getEmail() + ", companyName=" + worker.getCompanyname() + ", password=" +
+    			worker.getPassword());
+    	String email = getSessionAuthorization(session);
+    	if (email == null) {
+    		logger.debug("Http request PUT /user/api/" + URL_WORKERS + " failed, not logged in");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
+    	Worker updatedWorker = workerService.update(worker, email); 
+    	if (updatedWorker == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "worker does not exist"), 
+    				HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

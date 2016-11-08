@@ -14,10 +14,7 @@ public class UserControllerTest extends AbstractControllerTest {
 	@Before
 	public void setup() throws Exception {
 		super.setUp();
-		String uri = "/user/api/customer?name=John&email=regisetasker@gmail.com&companyname=any&password=123";
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.post(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
-        int status = result.getResponse().getStatus();
-        Assert.assertEquals("/user/api/customer failure - HTTP status", 201, status);
+		super.createUser();
 	}
 	
     @Test

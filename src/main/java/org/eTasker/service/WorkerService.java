@@ -17,6 +17,4 @@ public interface WorkerService {
     void delete(Worker user);
     
     Worker findByEmail(String email);
-    
-    Worker changePassword(String email, String currentPassword, String newPassword);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eTasker.model.Worker;
 import org.eTasker.repository.WorkerRepository;
+import org.eTasker.tool.JsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,12 @@ public class WorkerIml implements WorkerService {
 
 	@Override
 	public List<Worker> findAll() {
-		return workerRepository.findAll();
+		List<Worker> workers = workerRepository.findAll();
+		if (workers == null) {
+			LOGGER.debug("Failed to retrieve workers");
+		}
+		LOGGER.info("Workers: " + workers);
+		return workers;
 	}
 	
 	@Override
@@ -28,13 +34,19 @@ public class WorkerIml implements WorkerService {
 
 	@Override
 	public Worker create(Worker worker) {
-		return workerRepository.save(worker);
+		Worker newWorker = workerRepository.save(worker);
+		if (newWorker == null) {
+			LOGGER.debug("Failed create new uworker: " + JsonBuilder.build(worker));
+		}
+		LOGGER.debug("Created new worker: " + JsonBuilder.build(newWorker));
+		return newWorker;
 	}
 
 	@Override
 	public Worker update(Worker worker, String email) {
 		Worker workerUpdate = findByEmail(email);
 		if (workerUpdate == null) {
+			LOGGER.info("Worker with email=" + email + " not exists");
 			return null;
 		}
 		if (worker.getName() != null && !worker.getName().isEmpty()) {
@@ -45,32 +57,31 @@ public class WorkerIml implements WorkerService {
 			workerUpdate.setEmail(worker.getEmail());
 			LOGGER.info("Worker with email=" + email + " updated email: " + worker.getEmail());
 		}
+		if (worker.getPassword() != null && !worker.getPassword().isEmpty()) {
+			workerUpdate.setPassword(worker.getPassword());
+			LOGGER.info("Worker with email=" + email + " updated password: " + worker.getPassword());
+		}
+		if (worker.getCompanyname() != null && !worker.getCompanyname().isEmpty()) {
+			workerUpdate.setCompanyname(worker.getCompanyname());
+			LOGGER.info("Worker with email=" + email + " updated companyName: " + worker.getPassword());
+		}
+		LOGGER.info("Worker with email: " + email + " updated");
 		return workerRepository.save(workerUpdate);
 	}
 
 	@Override
 	public void delete(Worker worker) {
 		workerRepository.delete(worker);
+		LOGGER.info("Deleted worker: " + worker.getEmail());
 	}
 
 	@Override
 	public Worker findByEmail(String email) {
-		return workerRepository.findByEmail(email);
-	}
-
-	@Override
-	public Worker changePassword(String email, String currentPassword, String newPassword) {
-		Worker worker = findByEmail(email);
+		Worker worker = workerRepository.findByEmail(email);
 		if (worker == null) {
-			LOGGER.debug("Failed change password for worker:" + email + ", worker not exists");
-			return null;
+			LOGGER.debug("Not found worker:" + email);
 		}
-		if (!worker.getPassword().equals(currentPassword)) {
-			LOGGER.debug("Failed change password for worker:" + email + ", given currentpassword:" + currentPassword + 
-					" doesn't match with existing password=" + worker.getPassword());
-			return null; 
-		}
-		worker.setPassword(newPassword);
-		return workerRepository.save(worker);
+		LOGGER.debug("Found worker:" + email);
+		return worker;
 	}
 }

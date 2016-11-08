@@ -20,7 +20,7 @@ public class CustomerController extends AbstractController {
 	private static final String VERIFIED_MESSAGE = "Thank You";
 	
 	/**
-	 * Registers new user/owner 
+	 * Creates new user/owner 
 	 * @param user - new user to register
 	 * @return if request successful returns  201(Created) and newly created user/owner Json data
 	 * 		   if missing parameters returns  400(Bad Request) and error message as Json
@@ -31,7 +31,7 @@ public class CustomerController extends AbstractController {
             value = URL_CUSTOMER,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> registerUser(User user) {
+    public ResponseEntity<?> createUser(User user) {
     	logger.info("Http request POST /user/api/" + URL_CUSTOMER + " with params: name=" + user.getName() + 
     			", email=" + user.getEmail() + ", companyname=" +
     			user.getCompanyname() + ", password=" + user.getPassword());

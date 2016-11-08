@@ -60,7 +60,7 @@ public class UserController extends AbstractController {
 		logger.info("Http request POST /user/api/" + URL_LOGIN);
     	User user = userService.findByEmail(email);
     	if (user == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "wrong email"), HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<>(MapBuilder.build("error", "user not exist"), HttpStatus.BAD_REQUEST);
     	}
     	if (!user.getPassword().equals(password)) {
     		logger.debug("Http request POST /user/api/" + URL_LOGIN + " wrong password: " + password);
