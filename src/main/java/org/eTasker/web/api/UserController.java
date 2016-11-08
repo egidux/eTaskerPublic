@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController extends AbstractController {
 	
-	private static final String URL_USERS = "users";
-	private static final String URL_LOGIN = "login";
-	private static final String URL_LOGOUT = "logout";
-	private static final String URL_PROFILE = "profile";
+	private static final String URL_USERS    = "users";
+	private static final String URL_LOGIN    = "login";
+	private static final String URL_LOGOUT   = "logout";
+	private static final String URL_PROFILE  = "profile";
+	private static final String URL_PASSWORD = "password";
 
 	/**
 	 * Returns all users
@@ -82,6 +83,7 @@ public class UserController extends AbstractController {
 	 *         if not logged in      returns 401(Unauthorized) and error message as Json
 	 */
 	@RequestMapping(
+			value = URL_LOGOUT,
     		method = RequestMethod.POST,
     		produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> logout(HttpSession session) {
@@ -97,10 +99,12 @@ public class UserController extends AbstractController {
 	}
     
 	/**
-	 * 
+	 * Updates user profile (name, email)
 	 * @param user
 	 * @param session
-	 * @return
+	 * @return if request successful returns 204(No Content)
+	 * 		   if Unauthorized returns       401(Unauthorized) and error message as Json
+	 * 		   if update fail return         500(Internal Server Error) and error message as Json
 	 */
     @RequestMapping(
             value = URL_PROFILE,
@@ -119,36 +123,42 @@ public class UserController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "user does not exist"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-    	logger.info("Update for user=" + email + " success");
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
+    /**
+     * Change password
+     * @param currentPassword
+     * @param newPassword
+     * @param confirmPassword
+     * @param session
+     * @return if request successful returns  204(No Content)
+     * 		   if unauthorized returns        401(Unauthorized) and error message as Json
+     *         if pasword don't match returns 400(BasRequest) and error message as Json
+     */
     @RequestMapping(
-            value = "password",
+            value = URL_PASSWORD,
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> changePassword(@RequestParam(value="currentpassword") String currentPassword, 
     		@RequestParam(value="newpassword") String newPassword, @RequestParam(value="confirmpassword") 
     		String confirmPassword, HttpSession session) {
-    	logger.info("Http request PUT /user/api/password with params: currentpassword=" + currentPassword + 
+    	logger.info("Http request PUT /user/api/" + URL_PASSWORD + " with params: currentpassword=" + currentPassword + 
     			", newpassword=" + newPassword + ", confirmpassword=" + confirmPassword);
     	String email = getSessionAuthorization(session);
     	if (email == null) {
-    		logger.debug("Http request PUT /user/api/password failed, please login");
+    		logger.debug("Http request PUT /user/api/" + URL_PASSWORD + " failed, please login");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
     	}
     	if (!newPassword.equals(confirmPassword)) {
-    		logger.debug("Http request PUT /user/api/password new password dont match -> newpassword:" +
+    		logger.debug("Http request PUT /user/api/" + URL_PASSWORD + " new password dont match -> newpassword:" +
     				newPassword + " & confirmpassword:" + confirmPassword);
     		return new ResponseEntity<>(MapBuilder.build("error", "new password doesn't match"), HttpStatus.BAD_REQUEST);
     	}
     	User user = userService.changePassword(email, currentPassword, newPassword);
     	if (user == null) {
-    		logger.debug("Http request PUT /user/api/password failed");
-    		return new ResponseEntity<>(MapBuilder.build("error", "check password"), 
-    				HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<>(MapBuilder.build("error", "check password"), HttpStatus.BAD_REQUEST);
     	}
-    	logger.info("Password changed for user=" + email);
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

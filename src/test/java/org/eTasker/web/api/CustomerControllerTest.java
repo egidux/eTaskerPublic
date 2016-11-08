@@ -27,17 +27,17 @@ public class CustomerControllerTest extends AbstractControllerTest {
         Assert.assertTrue("/user/api/users failure - expected [] ", content.equals("[]"));
         
         // test user/api/register with missing params
-        uri = "/user/api/register";
+        uri = "/user/api/customer";
         result = mvc.perform(MockMvcRequestBuilders.post(uri)).andReturn();
         status = result.getResponse().getStatus();
-        Assert.assertEquals("/user/api/register failure - HTTP status", 400, status);
+        Assert.assertEquals("/user/api/customer failure - HTTP status", 400, status);
         
         //test user/api/register
         uri += "?name=John&email=regisetasker@gmail.com&companyname=any&password=123";
         result = mvc.perform(MockMvcRequestBuilders.post(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
         status = result.getResponse().getStatus();
         content = result.getResponse().getContentAsString();
-        Assert.assertEquals("/user/api/register failure - HTTP status", 201, status);
+        Assert.assertEquals("/user/api/customer failure - HTTP status", 201, status);
         //Assert.assertEquals("/user/api/register failure", "{\"id\":1,\"email\":\"regisetasker@gmail.com\"," +
         		//"\"name\":\"John\",\"companyname\":\"any\"}", content);
         
@@ -46,7 +46,7 @@ public class CustomerControllerTest extends AbstractControllerTest {
         status = result.getResponse().getStatus();
         content = result.getResponse().getContentAsString();
         Assert.assertEquals("/user/api/register failure - HTTP status", 409, status);
-        Assert.assertEquals("/user/api/register failure", "{\"error\":\"user with this email exists\"}", content);
+        Assert.assertEquals("/user/api/register failure", "{\"error\":\"user exists\"}", content);
         
     	// test /user/api/users when user exists
     	uri = "/user/api/users";

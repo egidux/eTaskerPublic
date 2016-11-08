@@ -58,7 +58,7 @@ public class UserImpl implements UserService {
 			userUpdate.setEmail(user.getEmail());
 			LOGGER.info("User with email=" + email + " updated email: " + user.getEmail());
 		}
-		LOGGER.info("User with email: " + email + " update finished");
+		LOGGER.info("User with email: " + email + " updated");
 		return userRepository.save(userUpdate);
 	}
 
@@ -93,15 +93,16 @@ public class UserImpl implements UserService {
 	public User changePassword(String email, String currentPassword, String newPassword) {
 		User user = findByEmail(email);
 		if (user == null) {
-			LOGGER.debug("Failed change password for user:" + email + ", user not exists");
+			LOGGER.debug("Failed change password user:" + email + ", user not exists");
 			return null;
 		}
 		if (!user.getPassword().equals(currentPassword)) {
-			LOGGER.debug("Failed change password for user:" + email + ", given currentpassword:" + currentPassword + 
+			LOGGER.debug("Failed change password user:" + email + ", given currentpassword:" + currentPassword + 
 					" doesn't match with existing password=" + user.getPassword());
 			return null; 
 		}
 		user.setPassword(newPassword);
+		LOGGER.info("Password change user: " + user.getEmail() + " successful");
 		return userRepository.save(user);
 	}
 }

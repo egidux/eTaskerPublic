@@ -60,7 +60,7 @@ public class CustomerController extends AbstractController {
     }
     
 	/**
-	 * Verifies email
+	 * Verify email
 	 * @param  id - new registered user/owner id to verify
 	 * @return if request successful returns 200(OK) and VERIFIED_MESSAGE as Json
 	 * 		   if unsuccesfull       returns 400(Bad Request) and error message as Json
@@ -70,11 +70,11 @@ public class CustomerController extends AbstractController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> confirm(@PathVariable("id") Long id) {
-    	logger.info("Http request GET /user/api/" + URL_CUSTOMER + " /{id} with id:" + id);
-    	if (userService.validate(id) != null) {
-    		return new ResponseEntity<>(VERIFIED_MESSAGE, HttpStatus.OK);
+    	logger.info("Http request GET /user/api/" + URL_CUSTOMER + "/{id} with id:" + id);
+    	if (userService.validate(id) == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "id=" + id + " dont exist"), 
+        			HttpStatus.BAD_REQUEST);
     	}
-    	return new ResponseEntity<>(MapBuilder.build("error", "id=" + id + " dont exist"), 
-    			HttpStatus.BAD_REQUEST);
+    	return new ResponseEntity<>(VERIFIED_MESSAGE, HttpStatus.OK);
     }
 }

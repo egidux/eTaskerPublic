@@ -19,13 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WorkerController extends AbstractController {
 	
-	private static final String WORKERS = "workers";
+	private static final String URL_WORKERS = "workers";
 
 	@Autowired
 	protected WorkerService workerService;
 	
+	/**
+	 * 
+	 * @return
+	 */
     @RequestMapping(
-            value = WORKERS,
+            value = URL_WORKERS,
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getWorkers() {
@@ -35,7 +39,7 @@ public class WorkerController extends AbstractController {
     }
     
     @RequestMapping(
-            value = WORKERS,
+            value = URL_WORKERS,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> registerWorker(Worker worker, HttpSession session) {
