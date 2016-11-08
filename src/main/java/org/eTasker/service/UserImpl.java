@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eTasker.model.User;
 import org.eTasker.repository.UserRepository;
+import org.eTasker.tool.JsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,13 @@ public class UserImpl implements UserService {
 
 	@Override
 	public List<User> findAll() {
-		return userRepository.findAll();
-	}
+		List<User> users = userRepository.findAll();
+		if (users == null) {
+			LOGGER.debug("Failed to retrieve users");
+		}
+		
+		return users;
+	} 
 	
 	@Override
 	public User findOne(Long id) {
@@ -29,13 +35,19 @@ public class UserImpl implements UserService {
 
 	@Override
 	public User create(User user) {
-		return userRepository.save(user);
+		User newUser = userRepository.save(user);
+		if (newUser == null) {
+			LOGGER.debug("Failed create new user: " + JsonBuilder.build(user));
+		}
+		LOGGER.debug("Created new user: " + JsonBuilder.build(newUser));
+		return newUser;
 	}
 
 	@Override
 	public User update(User user, String email) {
 		User userUpdate = findByEmail(email);
 		if (userUpdate == null) {
+			LOGGER.info("User with email=" + email + " not exists");
 			return null;
 		}
 		if (user.getName() != null && !user.getName().isEmpty()) {
@@ -46,6 +58,7 @@ public class UserImpl implements UserService {
 			userUpdate.setEmail(user.getEmail());
 			LOGGER.info("User with email=" + email + " updated email: " + user.getEmail());
 		}
+		LOGGER.info("User with email: " + email + " update finished");
 		return userRepository.save(userUpdate);
 	}
 
@@ -58,15 +71,22 @@ public class UserImpl implements UserService {
 	public User validate(Long id) {
 		User user = findOne(id);
 		if (user == null) {
-			return null;
+			LOGGER.debug("Failed validate id: " + id);
+			return user;
 		}
 		user.setIsver(true);
+		LOGGER.info("Id: " + id + " validated");
 		return userRepository.save(user);
 	}
 
 	@Override
 	public User findByEmail(String email) {
-		return userRepository.findByEmail(email);
+		User user = userRepository.findByEmail(email);
+		if (user == null) {
+			LOGGER.debug("Not found user with email=" + email);
+		}
+		LOGGER.debug("Found user with email=" + email);
+		return user;
 	}
 
 	@Override

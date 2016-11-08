@@ -1,7 +1,8 @@
-package org.eTasker;
+package org.eTasker.web.api;
 
 import java.io.IOException;
 
+import org.eTasker.AbstractTest;
 import org.eTasker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
@@ -25,8 +26,8 @@ public class AbstractControllerTest extends AbstractTest {
 	@Autowired
     protected WebApplicationContext webApplicationContext;
 	@Autowired
-	protected UserService userManagementService;
-	protected  MockHttpSession session = new MockHttpSession();
+	protected UserService userService;
+	protected MockHttpSession session = new MockHttpSession();
 	
 	protected void setUp() {
 		mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();

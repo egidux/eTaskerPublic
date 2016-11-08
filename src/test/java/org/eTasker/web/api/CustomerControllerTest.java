@@ -1,6 +1,5 @@
 package org.eTasker.web.api;
 
-import org.eTasker.AbstractControllerTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

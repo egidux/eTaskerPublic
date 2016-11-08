@@ -1,8 +1,8 @@
 package org.eTasker.controller;
 
-import org.eTasker.AbstractControllerTest;
 import org.eTasker.controller.EmailController;
 import org.eTasker.model.User;
+import org.eTasker.web.api.AbstractControllerTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class EmailControllerTest extends AbstractControllerTest {
         User user = new User();
         user.setEmail("noEmail");
         try {
-        	emailController.sendEmail(user);
+        	emailController.sendEmail(user.getEmail(), "", "");
         	Assert.fail();
         } catch(Exception e) {
         	Assert.assertTrue(e.getMessage().contains("The recipient address <noEmail>"));
@@ -35,7 +35,7 @@ public class EmailControllerTest extends AbstractControllerTest {
         //test with correct mail
         try {
         	user.setEmail("regisetasker@gmail.com");
-        	emailController.sendEmail(user);
+        	emailController.sendEmail(user.getEmail(), "Test", "");
         } catch(Exception e) {
         	Assert.fail();
         }

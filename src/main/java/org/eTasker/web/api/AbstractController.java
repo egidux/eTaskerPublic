@@ -16,10 +16,10 @@ public class AbstractController {
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	protected UserService userManagementService;
+	protected UserService userService;
 	@Autowired
 	protected EmailController emailController;
-	
+
 	protected String getSessionAuthorization(HttpSession session) {
 		return (String)session.getAttribute("Authorization");
 	}
