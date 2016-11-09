@@ -38,8 +38,7 @@ public class WorkerController extends AbstractController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getWorkers(HttpSession session) {
     	logger.info("Http request GET /user/api/" + URL_WORKERS);
-    	String email = getSessionAuthorization(session);
-		if (email == null) {
+		if (getSessionAuthorization(session) == null) {
 			logger.info("Http request GET /user/api/" + URL_WORKERS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
@@ -86,11 +85,8 @@ public class WorkerController extends AbstractController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createWorker(Worker worker, HttpSession session) {
-    	logger.info("Http request POST /user/api/" + URL_WORKERS + " with params: name=" + worker.getName() + 
-    			", email=" + worker.getEmail() + ", companyname=" + worker.getCompanyname() + 
-    			", password=" + worker.getPassword());
-    	String email = getSessionAuthorization(session);
-		if (email == null) {
+    	logger.info("Http request POST /user/api/" + URL_WORKERS + " with worker: " + JsonBuilder.build(worker));
+		if (getSessionAuthorization(session) == null) {
 			logger.info("Http request POST /user/api/" + URL_WORKERS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
@@ -133,9 +129,7 @@ public class WorkerController extends AbstractController {
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateWorker(Worker worker, HttpSession session, @PathVariable("id") Long id) {
-    	logger.info("Http request PUT /user/api/" + URL_WORKERS + " with params: name=" + worker.getName() + 
-    			", email=" + worker.getEmail() + ", companyName=" + worker.getCompanyname() + ", password=" +
-    			worker.getPassword());
+    	logger.info("Http request PUT /user/api/" + URL_WORKERS + " with worker: " + JsonBuilder.build(worker));
     	if (getSessionAuthorization(session) == null) {
     		logger.debug("Http request PUT /user/api/" + URL_WORKERS + " failed, not logged in");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkerIml implements WorkerService {
+public class WorkerImpl implements WorkerService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WorkerService.class);
 	
 	@Autowired

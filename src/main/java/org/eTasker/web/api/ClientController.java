@@ -35,8 +35,7 @@ public class ClientController extends AbstractController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getClients(HttpSession session) {
     	logger.info("Http request GET /user/api/" + URL_CLIENTS);
-    	String email = getSessionAuthorization(session);
-		if (email == null) {
+		if (getSessionAuthorization(session) == null) {
 			logger.info("Http request GET /user/api/" + URL_CLIENTS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
@@ -83,8 +82,7 @@ public class ClientController extends AbstractController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createClient(Client client, HttpSession session) {
-    	logger.info("Http request POST /user/api/" + URL_CLIENTS + " with params: name=" + client.getName() + 
-    			", email=" + client.getEmail() + ", companyname=" + client.getCompanyname());
+    	logger.info("Http request POST /user/api/" + URL_CLIENTS + " with client: " + JsonBuilder.build(client));
     	String email = getSessionAuthorization(session);
 		if (email == null) {
 			logger.info("Http request POST /user/api/" + URL_CLIENTS + " not logged in");
@@ -122,8 +120,7 @@ public class ClientController extends AbstractController {
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateClient(Client client, HttpSession session, @PathVariable("id") Long id) {
-    	logger.info("Http request PUT /user/api/" + URL_CLIENTS + " with params: name=" + client.getName() + 
-    			", email=" + client.getEmail() + ", companyName=" + client.getCompanyname());
+    	logger.info("Http request PUT /user/api/" + URL_CLIENTS + " with client: " + JsonBuilder.build(client));
     	if (getSessionAuthorization(session) == null) {
     		logger.debug("Http request PUT /user/api/" + URL_CLIENTS + " failed, not logged in");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
