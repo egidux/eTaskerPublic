@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +49,26 @@ public class WorkerController extends AbstractController {
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
 		return new ResponseEntity<List<Worker>>(workers, HttpStatus.OK);
+    }
+    
+    /**
+     * Retrives specific worker
+     * @param id
+     * @return if request successful returns   200(OK) and worker as Json
+     *         if request unsuccessful returns 400(Bad Request) and error message as Json
+     */
+    @RequestMapping(
+            value = URL_WORKERS + "/{id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getWorker(@PathVariable("id") Long id) {
+    	logger.info("Http request GET /user/api/" + URL_WORKERS + "/{id} with id:" + id);
+    	Worker worker = workerService.findOne(id);
+    	if (worker == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "No worker found with id=" + id), 
+    				HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<>(JsonBuilder.build(worker), HttpStatus.OK);
     }
     
     /**
