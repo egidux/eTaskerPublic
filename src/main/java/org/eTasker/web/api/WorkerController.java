@@ -75,14 +75,18 @@ public class WorkerController extends AbstractController {
      * Creates new worker
      * @param worker
      * @param session
-     * @return
+     * @return if request successful returns  201(Created) and newly created worker Json data
+     * 		   if unauthorized returns        401(Unauthorized) and error message as Json
+	 * 		   if missing parameters returns  400(Bad Request) and error message as Json
+	 * 		   if worker exists returns       409(Conflict) and error message as Json
+	 * 		   if any other error returns     500(Internal Server Error) and error message as Json
      */
     @RequestMapping(
             value = URL_WORKERS,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createWorker(Worker worker, HttpSession session) {
-    	logger.info("Http request POST /user/api/workers with params: name=" + worker.getName() + 
+    	logger.info("Http request POST /user/api/" + URL_WORKERS + " with params: name=" + worker.getName() + 
     			", email=" + worker.getEmail() + ", companyname=" + worker.getCompanyname() + 
     			", password=" + worker.getPassword());
     	String email = getSessionAuthorization(session);
@@ -125,21 +129,20 @@ public class WorkerController extends AbstractController {
 	 * 		   if update fail return         500(Internal Server Error) and error message as Json
 	 */
     @RequestMapping(
-            value = URL_WORKERS,
+            value = URL_WORKERS +"/{id}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateWorker(Worker worker, HttpSession session) {
+    public ResponseEntity<?> updateWorker(Worker worker, HttpSession session, @PathVariable("id") Long id) {
     	logger.info("Http request PUT /user/api/" + URL_WORKERS + " with params: name=" + worker.getName() + 
     			", email=" + worker.getEmail() + ", companyName=" + worker.getCompanyname() + ", password=" +
     			worker.getPassword());
-    	String email = getSessionAuthorization(session);
-    	if (email == null) {
+    	if (getSessionAuthorization(session) == null) {
     		logger.debug("Http request PUT /user/api/" + URL_WORKERS + " failed, not logged in");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
     	}
-    	Worker updatedWorker = workerService.update(worker, email); 
+    	Worker updatedWorker = workerService.update(worker, id); 
     	if (updatedWorker == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "worker does not exist"), 
+    		return new ResponseEntity<>(MapBuilder.build("error", "not found worker with id=" + id), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);

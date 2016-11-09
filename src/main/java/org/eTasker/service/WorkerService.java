@@ -12,7 +12,7 @@ public interface WorkerService {
 
     Worker create(Worker user);
 
-    Worker update(Worker user, String email);
+    Worker update(Worker user, Long id);
 
     void delete(Worker user);
     

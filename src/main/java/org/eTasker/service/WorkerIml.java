@@ -31,9 +31,9 @@ public class WorkerIml implements WorkerService {
 	public Worker findOne(Long id) {
 		Worker worker = workerRepository.findOne(id);
 		if (worker == null) {
-			LOGGER.debug("Not found worker id=" + id);
+			LOGGER.debug("Not found worker with id=" + id);
 		}
-		LOGGER.info("Found worker id=" + id);
+		LOGGER.info("Found worker with id=" + id);
 		return worker;
 	}
 
@@ -48,36 +48,36 @@ public class WorkerIml implements WorkerService {
 	}
 
 	@Override
-	public Worker update(Worker worker, String email) {
-		Worker workerUpdate = findByEmail(email);
+	public Worker update(Worker worker, Long id) {
+		Worker workerUpdate = findOne(id);
 		if (workerUpdate == null) {
-			LOGGER.info("Worker with email=" + email + " not exists");
+			LOGGER.info("Worker with id=" + id + " not exists");
 			return null;
 		}
 		if (worker.getName() != null && !worker.getName().isEmpty()) {
 			workerUpdate.setName(worker.getName());
-			LOGGER.info("Worker with email=" + email + " updated name= " + worker.getName());
+			LOGGER.info("Worker with id=" + id + " updated name= " + worker.getName());
 		}
 		if (worker.getEmail() != null && !worker.getEmail().isEmpty()) {
 			workerUpdate.setEmail(worker.getEmail());
-			LOGGER.info("Worker with email=" + email + " updated email= " + worker.getEmail());
+			LOGGER.info("Worker with id=" + id + " updated email= " + worker.getEmail());
 		}
 		if (worker.getPassword() != null && !worker.getPassword().isEmpty()) {
 			workerUpdate.setPassword(worker.getPassword());
-			LOGGER.info("Worker with email=" + email + " updated password= " + worker.getPassword());
+			LOGGER.info("Worker with id=" + id + " updated password= " + worker.getPassword());
 		}
 		if (worker.getCompanyname() != null && !worker.getCompanyname().isEmpty()) {
 			workerUpdate.setCompanyname(worker.getCompanyname());
-			LOGGER.info("Worker with email=" + email + " updated companyName= " + worker.getPassword());
+			LOGGER.info("Worker with id=" + id + " updated companyName= " + worker.getPassword());
 		}
-		LOGGER.info("Worker with email= " + email + " updated");
+		LOGGER.info("Worker with id=" + id + " updated");
 		return workerRepository.save(workerUpdate);
 	}
 
 	@Override
 	public void delete(Worker worker) {
 		workerRepository.delete(worker);
-		LOGGER.info("Deleted worker= " + worker.getEmail());
+		LOGGER.info("Deleted worker with id=" + worker.getId());
 	}
 
 	@Override
