@@ -11,8 +11,6 @@ public class Object {
     @GeneratedValue
     private long id;
 	private String address;
-	private String longitude;
-	private String latitude;
 	private Long client;
 	private String responsibleperson;
 	private String created;
@@ -29,18 +27,6 @@ public class Object {
 	}
 	public void setAddress(String address) {
 		this.address = address;
-	}
-	public String getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-	public String getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
 	}
 	public Long getClient() {
 		return client;
