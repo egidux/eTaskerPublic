@@ -16,6 +16,7 @@ public class ReportImpl implements ReportService {
 	@Autowired
 	private ReportRepository reportRepository;
 	private boolean init = true;
+	private final String REPORT_TEXT = "E-mail is generated automatically, so please do not reply to it.";
 
 	public synchronized void init() {
 		if (init) {
@@ -25,7 +26,7 @@ public class ReportImpl implements ReportService {
 			report.setShow_finish(Boolean.TRUE);
 			report.setShow_price(Boolean.TRUE);
 			report.setShow_start(Boolean.TRUE);
-			report.setShow_text(Boolean.TRUE);
+			report.setReport_text(REPORT_TEXT);
 			reportRepository.save(report);
 			init = false;
 		}
@@ -71,9 +72,9 @@ public class ReportImpl implements ReportService {
 			reportUpdate.setShow_start(report.getShow_start());
 			LOGGER.info("Report updated show task start time=" + report.getShow_start());
 		}
-		if (report.getShow_text() != null) {
-			reportUpdate.setShow_text(report.getShow_text());
-			LOGGER.info("Report updated show report informative text=" + report.getShow_text());
+		if (report.getReport_text() != null && !report.getReport_text().isEmpty()) {
+			reportUpdate.setReport_text(report.getReport_text());
+			LOGGER.info("Report updated show report informative text=" + report.getReport_text());
 		}
 		if (report.getCompany_address() != null && !report.getCompany_address().isEmpty()) {
 			reportUpdate.setCompany_address(report.getCompany_address());

@@ -15,7 +15,7 @@ public class Report {
 	private String company_code;
 	private String company_address;
 	private String company_phone;
-	private Boolean show_text;
+	private String report_text;
 	private Boolean show_price;
 	private Boolean show_description;
 	private Boolean show_start;
@@ -46,12 +46,6 @@ public class Report {
 	public void setCompany_phone(String company_phone) {
 		this.company_phone = company_phone;
 	}
-	public Boolean getShow_text() {
-		return show_text;
-	}
-	public void setShow_text(Boolean show_text) {
-		this.show_text = show_text;
-	}
 	public Boolean getShow_price() {
 		return show_price;
 	}
@@ -81,5 +75,11 @@ public class Report {
 	}
 	public void setShow_duration(Boolean show_duration) {
 		this.show_duration = show_duration;
+	}
+	public String getReport_text() {
+		return report_text;
+	}
+	public void setReport_text(String report_text) {
+		this.report_text = report_text;
 	}
 }

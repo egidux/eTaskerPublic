@@ -20,7 +20,6 @@ public class Task {
 	private Long object;
 	private Long worker;
 	private String status;
-	//String timeStamp = new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date());
 	private String created;
 	private String updated;
 	

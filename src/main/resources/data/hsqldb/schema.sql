@@ -61,7 +61,7 @@ CREATE TABLE Report (
   company_code VARCHAR(50),
   company_address VARCHAR(50),
   company_phone VARCHAR(50),
-  show_text BOOLEAN,
+  report_text VARCHAR(500),
   show_price BOOLEAN,
   show_description BOOLEAN,
   show_start BOOLEAN,
