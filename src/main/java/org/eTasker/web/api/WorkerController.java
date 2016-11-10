@@ -60,8 +60,12 @@ public class WorkerController extends AbstractController {
             value = URL_WORKERS + "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getWorker(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getWorker(@PathVariable("id") Long id, HttpSession session) {
     	logger.info("Http request GET /user/api/" + URL_WORKERS + "/{id} with id:" + id);
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request GET /user/api/" + URL_WORKERS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
     	Worker worker = workerService.findOne(id);
     	if (worker == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "No worker found with id=" + id), 

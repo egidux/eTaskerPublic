@@ -58,8 +58,12 @@ public class TaskController extends AbstractController {
             value = URL_TASKS + "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getTask(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getTask(@PathVariable("id") Long id, HttpSession session) {
     	logger.info("Http request GET /user/api/" + URL_TASKS + "/{id} with id:" + id);
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request GET /user/api/" + URL_TASKS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
     	Task task = taskService.findOne(id);
     	if (task == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "No task found with id=" + id), 

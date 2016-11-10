@@ -57,8 +57,12 @@ public class ClientController extends AbstractController {
             value = URL_CLIENTS + "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getClient(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getClient(@PathVariable("id") Long id, HttpSession session) {
     	logger.info("Http request GET /user/api/" + URL_CLIENTS + "/{id} with id:" + id);
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request GET /user/api/" + URL_CLIENTS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
     	Client client = clientService.findOne(id);
     	if (client == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "No client found with id=" + id), 
