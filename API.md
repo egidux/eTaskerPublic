@@ -197,7 +197,47 @@ PUT https://locallhost:8085/user/api/workers
 
 If your request will be successfull, you will recieve 204 (No Content) status code.
 
+##8. Tasks
 
+###Get all tasks
+
+This endpoint retrieves all tasks
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/tasks
+
+If your request successfull, you will receive 200 (OK) status code and all tasks as JSON.
+
+###Get an existing Task
+
+This endpoint retrieves a specific task
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/tasks/{id}
+
+If your request successfull, you will receive 200 (OK) status code and specific task as JSON.
+
+###Create a new Task
+
+This endpoint creates a new task.
+
+####HTTP Request
+
+POST https://locallhost:8085/user/api/tasks
+
+If your request will be successfull, you will recieve 201 (Created) status code and newly created task as JSON.
+
+###Update an existing Task
+
+This endpoint updates an existing task.
+
+####HTTP Request
+
+PUT https://locallhost:8085/user/api/tasks
+
+If your request will be successfull, you will recieve 204 (No Content) status code.
 
 
 
