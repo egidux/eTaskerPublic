@@ -2,22 +2,6 @@ eTasker API v.1.0
 
 eTasker API is RESTFul built on Http
 
-All http requests return response code. When error occured response will contain JSON describing error e.g {"error", "please login"}
-
-Http status codes:
-
-200 OK
-
-201 Created
-
-409 Conflict
-
-400 Bad Request
-
-500 Internal Server Error
-
-401 Unauthorized
-
 ###1.	Register
 
 This endpoint registers new user
