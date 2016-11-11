@@ -71,4 +71,46 @@ PUT https://locallhost:8085/user/api/clients
 
 If your request will be successfull, you will recieve 204 (No Content) status code.
 
+##4. Objects
+
+###Get all objects
+
+This endpoint retrieves all objects
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/objects
+
+If your request successfull, you will receive 200 (OK) status code and all objects as JSON.
+
+###Get an existing Object
+
+This endpoint retrieves a specific object
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/objects/{id}
+
+If your request successfull, you will receive 200 (OK) status code and specific object as JSON.
+
+###Create a new Object
+
+This endpoint creates a new object.
+
+####HTTP Request
+
+POST https://locallhost:8085/user/api/objects
+
+If your request will be successfull, you will recieve 201 (Created) status code and newly created object as JSON.
+
+###Update an existing Object
+
+This endpoint updates an existing object.
+
+####HTTP Request
+
+PUT https://locallhost:8085/user/api/objects
+
+If your request will be successfull, you will recieve 204 (No Content) status code.
+
 
