@@ -41,7 +41,7 @@ GET https://locallhost:8085/user/api/clients
 
 If your request successfull, you will receive 200 (OK) status code and all clients as JSON.
 
-####Get an existing Client
+###Get an existing Client
 
 This endpoint retrieves a specific client
 
@@ -51,7 +51,7 @@ GET https://locallhost:8085/user/api/clients/{id}
 
 If your request successfull, you will receive 200 (OK) status code and specific client as JSON.
 
-####Create a new Client
+###Create a new Client
 
 This endpoint creates a new client.
 
@@ -61,7 +61,7 @@ POST https://locallhost:8085/user/api/clients
 
 If your request will be successfull, you will recieve 201 (Created) status code and newly created client as JSON.
 
-####Update an existing Client
+###Update an existing Client
 
 This endpoint updates an existing client.
 
