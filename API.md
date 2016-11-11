@@ -239,5 +239,25 @@ PUT https://locallhost:8085/user/api/tasks
 
 If your request will be successfull, you will recieve 204 (No Content) status code.
 
+##9. Report
 
+###Get Report
+
+This endpoint retrieves report
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/report
+
+If your request successfull, you will receive 200 (OK) status code and report as JSON.
+
+###Update Report
+
+This endpoint updates report layout.
+
+####HTTP Request
+
+PUT https://locallhost:8085/user/api/report
+
+If your request will be successfull, you will recieve 204 (No Content) status code.
 
