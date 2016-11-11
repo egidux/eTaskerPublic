@@ -155,5 +155,49 @@ PUT https://locallhost:8085/user/api/materials
 
 If your request will be successfull, you will recieve 204 (No Content) status code.
 
+##7. Workers
+
+###Get all workers
+
+This endpoint retrieves all workers
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/workers
+
+If your request successfull, you will receive 200 (OK) status code and all workers as JSON.
+
+###Get an existing Worker
+
+This endpoint retrieves a specific worker
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/workers/{id}
+
+If your request successfull, you will receive 200 (OK) status code and specific material as JSON.
+
+###Create a new Worker
+
+This endpoint creates a new worker.
+
+####HTTP Request
+
+POST https://locallhost:8085/user/api/workers
+
+If your request will be successfull, you will recieve 201 (Created) status code and newly created worker as JSON.
+
+###Update an existing Worker
+
+This endpoint updates an existing worker.
+
+####HTTP Request
+
+PUT https://locallhost:8085/user/api/workers
+
+If your request will be successfull, you will recieve 204 (No Content) status code.
+
+
+
 
 
