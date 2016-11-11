@@ -71,7 +71,7 @@ PUT https://locallhost:8085/user/api/clients
 
 If your request will be successfull, you will recieve 204 (No Content) status code.
 
-##4. Objects
+##5. Objects
 
 ###Get all objects
 
@@ -112,5 +112,48 @@ This endpoint updates an existing object.
 PUT https://locallhost:8085/user/api/objects
 
 If your request will be successfull, you will recieve 204 (No Content) status code.
+
+##6. Materials
+
+###Get all materials
+
+This endpoint retrieves all materials
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/materials
+
+If your request successfull, you will receive 200 (OK) status code and all materials as JSON.
+
+###Get an existing Material
+
+This endpoint retrieves a specific material
+
+####HTTP Request
+
+GET https://locallhost:8085/user/api/materials/{id}
+
+If your request successfull, you will receive 200 (OK) status code and specific material as JSON.
+
+###Create a new Material
+
+This endpoint creates a new material.
+
+####HTTP Request
+
+POST https://locallhost:8085/user/api/materials
+
+If your request will be successfull, you will recieve 201 (Created) status code and newly created material as JSON.
+
+###Update an existing Material
+
+This endpoint updates an existing material.
+
+####HTTP Request
+
+PUT https://locallhost:8085/user/api/materials
+
+If your request will be successfull, you will recieve 204 (No Content) status code.
+
 
 
