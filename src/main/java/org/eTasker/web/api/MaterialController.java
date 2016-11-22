@@ -69,7 +69,7 @@ public class MaterialController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "No material found with id=" + id), 
     				HttpStatus.BAD_REQUEST);
     	}
-    	return new ResponseEntity<String>(JsonBuilder.build(material), HttpStatus.OK);
+    	return new ResponseEntity<>(material, HttpStatus.OK);
     }
     
     /**
