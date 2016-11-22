@@ -1,10 +1,10 @@
-package org.eTasker.web.api;
+package org.eTasker.controller.web.api;
 
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.eTasker.model.Responsibleperson;
+import org.eTasker.model.Responsible_person;
 import org.eTasker.service.ResponsiblePersonService;
 import org.eTasker.tool.JsonBuilder;
 import org.eTasker.tool.MapBuilder;
@@ -40,12 +40,12 @@ public class ResponsiblePersonController extends AbstractController {
 			logger.info("Http request GET /user/api/" + URL_RESPONSIBLE_PERSONS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	List<Responsibleperson> responsiblePersons = responsiblePersonService.findAll();
+    	List<Responsible_person> responsiblePersons = responsiblePersonService.findAll();
     	if (responsiblePersons == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-		return new ResponseEntity<List<Responsibleperson>>(responsiblePersons, HttpStatus.OK);
+		return new ResponseEntity<List<Responsible_person>>(responsiblePersons, HttpStatus.OK);
     }
     
     /**
@@ -64,7 +64,7 @@ public class ResponsiblePersonController extends AbstractController {
 			logger.info("Http request GET /user/api/" + URL_RESPONSIBLE_PERSONS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	Responsibleperson responsiblePerson = responsiblePersonService.findOne(id);
+    	Responsible_person responsiblePerson = responsiblePersonService.findOne(id);
     	if (responsiblePerson == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "No responsible person found with id=" + id), 
     				HttpStatus.BAD_REQUEST);
@@ -86,7 +86,7 @@ public class ResponsiblePersonController extends AbstractController {
             value = URL_RESPONSIBLE_PERSONS,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createResponsiblePerson(Responsibleperson responsiblePerson, HttpSession session) {
+    public ResponseEntity<?> createResponsiblePerson(Responsible_person responsiblePerson, HttpSession session) {
     	logger.info("Http request POST /user/api/" + URL_RESPONSIBLE_PERSONS + " with object: " + 
     			JsonBuilder.build(responsiblePerson));
 		if (getSessionAuthorization(session) == null) {
@@ -103,7 +103,7 @@ public class ResponsiblePersonController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
     				HttpStatus.BAD_REQUEST);
     	}
-    	Responsibleperson newResponsiblePerson = responsiblePersonService.create(responsiblePerson);
+    	Responsible_person newResponsiblePerson = responsiblePersonService.create(responsiblePerson);
     	if (newResponsiblePerson == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
@@ -123,7 +123,7 @@ public class ResponsiblePersonController extends AbstractController {
             value = URL_RESPONSIBLE_PERSONS +"/{id}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateResponsiblePerson(Responsibleperson responsiblePerson, HttpSession session, 
+    public ResponseEntity<?> updateResponsiblePerson(Responsible_person responsiblePerson, HttpSession session, 
     		@PathVariable("id") Long id) {
     	logger.info("Http request PUT /user/api/" + URL_RESPONSIBLE_PERSONS + " with material: " + 
     		JsonBuilder.build(responsiblePerson));
@@ -131,7 +131,7 @@ public class ResponsiblePersonController extends AbstractController {
     		logger.debug("Http request PUT /user/api/" + URL_RESPONSIBLE_PERSONS + " failed, not logged in");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
     	}
-    	Responsibleperson updatedResponsiblePerson = responsiblePersonService.update(responsiblePerson, id); 
+    	Responsible_person updatedResponsiblePerson = responsiblePersonService.update(responsiblePerson, id); 
     	if (updatedResponsiblePerson == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "not found responsible person with id=" + id), 
     				HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,11 +1,11 @@
-package org.eTasker.web.api;
+package org.eTasker.controller.web.api;
 
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.eTasker.model.Object;
-import org.eTasker.service.ObjectService;
+import org.eTasker.model.Task;
+import org.eTasker.service.TaskService;
 import org.eTasker.tool.JsonBuilder;
 import org.eTasker.tool.MapBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,97 +18,97 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ObjectController extends AbstractController {
+public class TaskController extends AbstractController {
 	
-	private static final String URL_OBJECTS = "objects";
+	private static final String URL_TASKS = "tasks";
 
 	@Autowired
-	protected ObjectService objectService;
+	protected TaskService taskService;
 	
 	/**
-	 * Retrieves all objects
-	 @return if request successful   returns 200(OK) and all objects as Json
+	 * Retrieves all tasks
+	 @return if request successful   returns 200(OK) and all tasks as Json
 	 *       if request unsuccessful returns 500(Internal Server Error) and error message as Json
 	 */
     @RequestMapping(
-            value = URL_OBJECTS,
+            value = URL_TASKS,
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getObjects(HttpSession session) {
-    	logger.info("Http request GET /user/api/" + URL_OBJECTS);
+    public ResponseEntity<?> getTasks(HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_TASKS);
 		if (getSessionAuthorization(session) == null) {
-			logger.info("Http request GET /user/api/" + URL_OBJECTS + " not logged in");
+			logger.info("Http request GET /user/api/" + URL_TASKS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	List<Object> objects = objectService.findAll();
-    	if (objects == null) {
+    	List<Task> tasks = taskService.findAll();
+    	if (tasks == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-		return new ResponseEntity<List<Object>>(objects, HttpStatus.OK);
+		return new ResponseEntity<List<Task>>(tasks, HttpStatus.OK);
     }
     
     /**
-     * Retrives specific object
+     * Retrives specific task
      * @param id
-     * @return if request successful returns   200(OK) and object as Json
+     * @return if request successful returns   200(OK) and task as Json
      *         if request unsuccessful returns 400(Bad Request) and error message as Json
      */
     @RequestMapping(
-            value = URL_OBJECTS + "/{id}",
+            value = URL_TASKS + "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getObject(@PathVariable("id") Long id, HttpSession session) {
-    	logger.info("Http request GET /user/api/" + URL_OBJECTS + "/{id} with id:" + id);
+    public ResponseEntity<?> getTask(@PathVariable("id") Long id, HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_TASKS + "/{id} with id:" + id);
 		if (getSessionAuthorization(session) == null) {
-			logger.info("Http request GET /user/api/" + URL_OBJECTS + " not logged in");
+			logger.info("Http request GET /user/api/" + URL_TASKS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	Object object = objectService.findOne(id);
-    	if (object == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "No object found with id=" + id), 
+    	Task task = taskService.findOne(id);
+    	if (task == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "No task found with id=" + id), 
     				HttpStatus.BAD_REQUEST);
     	}
-    	return new ResponseEntity<>(JsonBuilder.build(object), HttpStatus.OK);
+    	return new ResponseEntity<>(JsonBuilder.build(task), HttpStatus.OK);
     }
     
     /**
-     * Creates new object
-     * @param object
+     * Creates new task
+     * @param task
      * @param session
-     * @return if request successful returns  201(Created) and newly created object Json data
+     * @return if request successful returns  201(Created) and newly created task Json data
      * 		   if unauthorized returns        401(Unauthorized) and error message as Json
 	 * 		   if missing parameters returns  400(Bad Request) and error message as Json
 	 * 		   if worker exists returns       409(Conflict) and error message as Json
 	 * 		   if any other error returns     500(Internal Server Error) and error message as Json
      */
     @RequestMapping(
-            value = URL_OBJECTS,
+            value = URL_TASKS,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createObject(Object object, HttpSession session) {
-    	logger.info("Http request POST /user/api/" + URL_OBJECTS + " with object: " + JsonBuilder.build(object));
+    public ResponseEntity<?> createTask(Task task, HttpSession session) {
+    	logger.info("Http request POST /user/api/" + URL_TASKS + " with task: " + JsonBuilder.build(task));
 		if (getSessionAuthorization(session) == null) {
-			logger.info("Http request POST /user/api/" + URL_OBJECTS + " not logged in");
+			logger.info("Http request POST /user/api/" + URL_TASKS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	if (object.getAddress() == null || object.getAddress().isEmpty() || object.getClient() == null ||
-    			object.getResponsibleperson() == null || object.getResponsibleperson().isEmpty()) {
-    		logger.debug("Http request POST /user/api/" + URL_OBJECTS + " missing parameters: " + 
-    					JsonBuilder.build(object));
+    	if (task.getTitle() == null || task.getTitle().isEmpty() || task.getDescription() == null || 
+    			task.getDescription().isEmpty() || task.getClient() == null || task.getObject() == null) {
+    		logger.debug("Http request POST /user/api/" + URL_TASKS + " missing parameters: " + 
+    					JsonBuilder.build(task));
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
     				HttpStatus.BAD_REQUEST);
     	}
-    	Object newObject = objectService.create(object);
-    	if (newObject == null) {
+    	Task newTask = taskService.create(task);
+    	if (newTask == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-    	return new ResponseEntity<>(JsonBuilder.build(newObject), HttpStatus.CREATED);
+    	return new ResponseEntity<>(JsonBuilder.build(newTask), HttpStatus.CREATED);
     }
     
 	/**
-	 * Updates object
+	 * Updates task
 	 * @param task
 	 * @param session
 	 * @return if request successful returns 204(No Content)
@@ -116,20 +116,21 @@ public class ObjectController extends AbstractController {
 	 * 		   if update fail return         500(Internal Server Error) and error message as Json
 	 */
     @RequestMapping(
-            value = URL_OBJECTS +"/{id}",
+            value = URL_TASKS +"/{id}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateObject(Object object, HttpSession session, @PathVariable("id") Long id) {
-    	logger.info("Http request PUT /user/api/" + URL_OBJECTS + " with task: " + JsonBuilder.build(object));
+    public ResponseEntity<?> updateTask(Task task, HttpSession session, @PathVariable("id") Long id) {
+    	logger.info("Http request PUT /user/api/" + URL_TASKS + " with task: " + JsonBuilder.build(task));
     	if (getSessionAuthorization(session) == null) {
-    		logger.debug("Http request PUT /user/api/" + URL_OBJECTS + " failed, not logged in");
+    		logger.debug("Http request PUT /user/api/" + URL_TASKS + " failed, not logged in");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
     	}
-    	Object updatedObject = objectService.update(object, id); 
-    	if (updatedObject == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "not found object with id=" + id), 
+    	Task updatedTask = taskService.update(task, id); 
+    	if (updatedTask == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "not found task with id=" + id), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
+

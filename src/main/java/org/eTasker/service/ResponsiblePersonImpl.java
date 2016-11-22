@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.eTasker.model.Responsibleperson;
+import org.eTasker.model.Responsible_person;
 import org.eTasker.repository.ResponsiblePersonRepository;
 import org.eTasker.tool.JsonBuilder;
 import org.slf4j.Logger;
@@ -21,8 +21,8 @@ public class ResponsiblePersonImpl implements ResponsiblePersonService {
 	private ResponsiblePersonRepository responsiblePersonRepository;
 
 	@Override
-	public List<Responsibleperson> findAll() {
-		List<Responsibleperson> responsiblePersons = responsiblePersonRepository.findAll();
+	public List<Responsible_person> findAll() {
+		List<Responsible_person> responsiblePersons = responsiblePersonRepository.findAll();
 		if (responsiblePersons == null) {
 			LOGGER.debug("Failed to retrieve all responsible persons");
 		}
@@ -31,8 +31,8 @@ public class ResponsiblePersonImpl implements ResponsiblePersonService {
 	}
 	
 	@Override
-	public Responsibleperson findOne(Long id) {
-		Responsibleperson responsiblePerson = responsiblePersonRepository.findOne(id);
+	public Responsible_person findOne(Long id) {
+		Responsible_person responsiblePerson = responsiblePersonRepository.findOne(id);
 		if (responsiblePerson == null) {
 			LOGGER.debug("Not found responsible person with id=" + id);
 		}
@@ -41,9 +41,9 @@ public class ResponsiblePersonImpl implements ResponsiblePersonService {
 	}
 
 	@Override
-	public Responsibleperson create(Responsibleperson responsiblePerson) {
+	public Responsible_person create(Responsible_person responsiblePerson) {
 		responsiblePerson.setCreated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
-		Responsibleperson newResponsiblePerson = responsiblePersonRepository.save(responsiblePerson);
+		Responsible_person newResponsiblePerson = responsiblePersonRepository.save(responsiblePerson);
 		if (newResponsiblePerson == null) {
 			LOGGER.debug("Failed create new responsible person: " + JsonBuilder.build(responsiblePerson));
 		}
@@ -52,8 +52,8 @@ public class ResponsiblePersonImpl implements ResponsiblePersonService {
 	}
 
 	@Override
-	public Responsibleperson update(Responsibleperson responsiblePerson, Long id) {
-		Responsibleperson responsiblePersonUpdate = findOne(id);
+	public Responsible_person update(Responsible_person responsiblePerson, Long id) {
+		Responsible_person responsiblePersonUpdate = findOne(id);
 		if (responsiblePersonUpdate == null) {
 			LOGGER.info("Failed update, responsible person with id=" + id + " not exists");
 			return null;
@@ -84,7 +84,7 @@ public class ResponsiblePersonImpl implements ResponsiblePersonService {
 	}
 
 	@Override
-	public void delete(Responsibleperson responsiblePerson) {
+	public void delete(Responsible_person responsiblePerson) {
 		responsiblePersonRepository.delete(responsiblePerson);
 		LOGGER.info("Deleted responsible person with id=" + responsiblePerson.getId());
 	}

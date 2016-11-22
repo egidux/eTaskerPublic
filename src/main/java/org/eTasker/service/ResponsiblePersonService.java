@@ -2,17 +2,17 @@ package org.eTasker.service;
 
 import java.util.List;
 
-import org.eTasker.model.Responsibleperson;
+import org.eTasker.model.Responsible_person;
 
 public interface ResponsiblePersonService {
 
-	List<Responsibleperson> findAll();
+	List<Responsible_person> findAll();
 
-	Responsibleperson findOne(Long id);
+	Responsible_person findOne(Long id);
 
-	Responsibleperson create(Responsibleperson material);
+	Responsible_person create(Responsible_person material);
 
-	Responsibleperson update(Responsibleperson material, Long id);
+	Responsible_person update(Responsible_person material, Long id);
 
-    void delete(Responsibleperson material);
+    void delete(Responsible_person material);
 }

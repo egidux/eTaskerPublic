@@ -1,4 +1,4 @@
-package org.eTasker.web.api;
+package org.eTasker.controller.web.api;
 
 import org.eTasker.model.User;
 import org.eTasker.tool.JsonBuilder;
