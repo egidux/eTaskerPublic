@@ -42,7 +42,7 @@ public class TaskImpl implements TaskService {
 
 	@Override
 	public Task create(Task task) {
-		task.setStatus(Task.Status.CREATED.toString());
+		task.setStatus(0);
 		task.setCreated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
 		Task newTask = taskRepository.save(task);
 		if (newTask == null) {
@@ -58,6 +58,86 @@ public class TaskImpl implements TaskService {
 		if (taskUpdate == null) {
 			LOGGER.info("Task with id=" + id + " not exists");
 			return null;
+		}
+		if (task.getAgreement() != null) {
+			taskUpdate.setAgreement(task.getAgreement());
+			LOGGER.info("Task with id=" + id + " updated agreement= " + task.getAgreement());
+		}
+		if (task.getBill_status() != null) {
+			taskUpdate.setBill_status(task.getBill_status());
+			LOGGER.info("Task with id=" + id + " updated bill status= " + task.getBill_status());
+		}
+		if (task.getFetched() != null) {
+			taskUpdate.setFetched(task.getFetched());
+			LOGGER.info("Task with id=" + id + " updated fetched= " + task.getFetched());
+		}
+		if (task.getFile_exists() != null) {
+			taskUpdate.setFile_exists(task.getFile_exists());
+			LOGGER.info("Task with id=" + id + " updated file exists= " + task.getFile_exists());
+		}
+		if (task.getStart_on_time() != null) {
+			taskUpdate.setStart_on_time(task.getStart_on_time());
+			LOGGER.info("Task with id=" + id + " updated start on time= " + task.getStart_time());
+		}
+		if (task.getAbort_message() != null && !task.getAbort_message().isEmpty()) {
+			taskUpdate.setAbort_message(task.getAbort_message());
+			LOGGER.info("Task with id=" + id + " updated abort message= " + task.getAbort_message());
+		}
+		if (task.getBill_date() != null && !task.getBill_date().isEmpty()) {
+			taskUpdate.setBill_date(task.getBill_date());
+			LOGGER.info("Task with id=" + id + " updated bill date= " + task.getBill_date());
+		}
+		if (task.getClient_note() != null && !task.getClient_note().isEmpty()) {
+			taskUpdate.setClient_note(task.getClient_note());
+			LOGGER.info("Task with id=" + id + " updated client note= " + task.getClient_note());
+		}
+		if (task.getClient_note_reply() != null && !task.getClient_note_reply().isEmpty()) {
+			taskUpdate.setClient_note_reply(task.getClient_note_reply());
+			LOGGER.info("Task with id=" + id + " updated client note reply= " + task.getClient_note());
+		}
+		if (task.getDistance() != null) {
+			taskUpdate.setDistance(task.getDistance());
+			LOGGER.info("Task with id=" + id + " updated distance= " + task.getDistance());
+		}
+		if (task.getDuration() != null) {
+			taskUpdate.setDuration(task.getDuration());
+			LOGGER.info("Task with id=" + id + " updated duration= " + task.getDuration());
+		}
+		if (task.getEnd_time() != null && !task.getEnd_time().isEmpty()) {
+			taskUpdate.setEnd_time(task.getEnd_time());
+			LOGGER.info("Task with id=" + id + " updated end time= " + task.getEnd_time());
+		}
+		if (task.getFinal_price() != null) {
+			taskUpdate.setFinal_price(task.getFinal_price());
+			LOGGER.info("Task with id=" + id + " updated final price= " + task.getFinal_price());
+		}
+		if (task.getMaterial_price() != null) {
+			taskUpdate.setMaterial_price(task.getMaterial_price());
+			LOGGER.info("Task with id=" + id + " updated material price= " + task.getMaterial_price());
+		}
+		if (task.getPlanned_end_time() != null && !task.getPlanned_end_time().isEmpty()) {
+			taskUpdate.setPlanned_end_time(task.getPlanned_end_time());
+			LOGGER.info("Task with id=" + id + " updated planned end time= " + task.getPlanned_end_time());
+		}
+		if (task.getPlanned_time() != null && !task.getPlanned_time().isEmpty()) {
+			taskUpdate.setPlanned_time(task.getPlanned_time());
+			LOGGER.info("Task with id=" + id + " updated planned time= " + task.getPlanned_time());
+		}
+		if (task.getRating() != null) {
+			taskUpdate.setRating(task.getRating());
+			LOGGER.info("Task with id=" + id + " updated rating= " + task.getRating());
+		}
+		if (task.getSignature_type() != null) {
+			taskUpdate.setSignature_type(task.getSignature_type());
+			LOGGER.info("Task with id=" + id + " updated signature type= " + task.getSignature_type());
+		}
+		if (task.getStart_time() != null && !task.getStart_time().isEmpty()) {
+			taskUpdate.setStart_time(task.getStart_time());
+			LOGGER.info("Task with id=" + id + " updated start time= " + task.getStart_time());
+		}
+		if (task.getWork_price() != null) {
+			taskUpdate.setWork_price(task.getWork_price());
+			LOGGER.info("Task with id=" + id + " updated work price= " + task.getWork_price());
 		}
 		if (task.getClient() != null) {
 			taskUpdate.setClient(task.getClient());
