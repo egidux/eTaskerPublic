@@ -6,15 +6,12 @@ import javax.persistence.Id;
 
 @Entity
 public class Task {
-	/* Task status
-	    0   Created
-	  	1	Inactive
-		2	Unassigned
-		3   In progress
-		4	Stopped
-		5	Done
-		6	Done with note
-		7	Aborted
+	/* Task status  
+		0	Unassigned
+		1   In progress
+		2	Stopped
+		3	Done
+		4	Aborted
     */
 
 	@Id
@@ -39,7 +36,7 @@ public class Task {
     private String start_time;
     private String end_time;
     private Boolean start_on_time;
-    private Integer duration;
+    private Long duration; //total in minutes
     private Boolean bill_status; //true if client was billed
     private String bill_date;
     private Boolean file_exists;
@@ -170,10 +167,10 @@ public class Task {
 	public void setStart_on_time(Boolean start_on_time) {
 		this.start_on_time = start_on_time;
 	}
-	public Integer getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
-	public void setDuration(Integer duration) {
+	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 	public Boolean getBill_status() {

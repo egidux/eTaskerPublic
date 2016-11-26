@@ -1,12 +1,13 @@
 package org.eTasker.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.eTasker.model.Task;
 import org.eTasker.repository.TaskRepository;
 import org.eTasker.tool.JsonBuilder;
+import org.eTasker.tool.TimeStamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class TaskImpl implements TaskService {
 	@Override
 	public Task create(Task task) {
 		task.setStatus(0);
-		task.setCreated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
+		task.setCreated(TimeStamp.get());
 		Task newTask = taskRepository.save(task);
 		if (newTask == null) {
 			LOGGER.debug("Failed create new task: " + JsonBuilder.build(task));
@@ -67,17 +68,9 @@ public class TaskImpl implements TaskService {
 			taskUpdate.setBill_status(task.getBill_status());
 			LOGGER.info("Task with id=" + id + " updated bill status= " + task.getBill_status());
 		}
-		if (task.getFetched() != null) {
-			taskUpdate.setFetched(task.getFetched());
-			LOGGER.info("Task with id=" + id + " updated fetched= " + task.getFetched());
-		}
 		if (task.getFile_exists() != null) {
 			taskUpdate.setFile_exists(task.getFile_exists());
 			LOGGER.info("Task with id=" + id + " updated file exists= " + task.getFile_exists());
-		}
-		if (task.getStart_on_time() != null) {
-			taskUpdate.setStart_on_time(task.getStart_on_time());
-			LOGGER.info("Task with id=" + id + " updated start on time= " + task.getStart_time());
 		}
 		if (task.getAbort_message() != null && !task.getAbort_message().isEmpty()) {
 			taskUpdate.setAbort_message(task.getAbort_message());
@@ -99,21 +92,11 @@ public class TaskImpl implements TaskService {
 			taskUpdate.setDistance(task.getDistance());
 			LOGGER.info("Task with id=" + id + " updated distance= " + task.getDistance());
 		}
-		if (task.getDuration() != null) {
-			taskUpdate.setDuration(task.getDuration());
-			LOGGER.info("Task with id=" + id + " updated duration= " + task.getDuration());
-		}
-		if (task.getEnd_time() != null && !task.getEnd_time().isEmpty()) {
-			taskUpdate.setEnd_time(task.getEnd_time());
-			LOGGER.info("Task with id=" + id + " updated end time= " + task.getEnd_time());
-		}
-		if (task.getFinal_price() != null) {
-			taskUpdate.setFinal_price(task.getFinal_price());
-			LOGGER.info("Task with id=" + id + " updated final price= " + task.getFinal_price());
-		}
 		if (task.getMaterial_price() != null) {
-			taskUpdate.setMaterial_price(task.getMaterial_price());
-			LOGGER.info("Task with id=" + id + " updated material price= " + task.getMaterial_price());
+			Integer price = task.getMaterial_price();
+			taskUpdate.setMaterial_price(price);
+			LOGGER.info("Task with id=" + id + " updated material price= " + price);
+			taskUpdate.setFinal_price(taskUpdate.getWork_price() + price);
 		}
 		if (task.getPlanned_end_time() != null && !task.getPlanned_end_time().isEmpty()) {
 			taskUpdate.setPlanned_end_time(task.getPlanned_end_time());
@@ -131,13 +114,11 @@ public class TaskImpl implements TaskService {
 			taskUpdate.setSignature_type(task.getSignature_type());
 			LOGGER.info("Task with id=" + id + " updated signature type= " + task.getSignature_type());
 		}
-		if (task.getStart_time() != null && !task.getStart_time().isEmpty()) {
-			taskUpdate.setStart_time(task.getStart_time());
-			LOGGER.info("Task with id=" + id + " updated start time= " + task.getStart_time());
-		}
 		if (task.getWork_price() != null) {
-			taskUpdate.setWork_price(task.getWork_price());
-			LOGGER.info("Task with id=" + id + " updated work price= " + task.getWork_price());
+			int price = task.getWork_price();
+			taskUpdate.setWork_price(price);
+			LOGGER.info("Task with id=" + id + " updated work price= " + price);
+			taskUpdate.setFinal_price(taskUpdate.getMaterial_price() + price);
 		}
 		if (task.getClient() != null) {
 			taskUpdate.setClient(task.getClient());
@@ -152,22 +133,58 @@ public class TaskImpl implements TaskService {
 			LOGGER.info("Task with id=" + id + " updated object= " + task.getObject());
 		}
 		if (task.getStatus() != null) {
-			taskUpdate.setStatus(task.getStatus());
-			LOGGER.info("Task with id=" + id + " updated status= " + task.getStatus());
+			Integer status = task.getStatus();
+			taskUpdate.setStatus(status);
+			LOGGER.info("Task with id=" + id + " updated status= " + status);
+			String time = TimeStamp.get();
+			String[] current = time.split("\\.");
+			if (status == 1) {
+				taskUpdate.setStart_time(time);
+				taskUpdate.setFetched(true);
+				String[] planned = taskUpdate.getPlanned_time().split("\\.");
+				taskUpdate.setStart_on_time(true);
+				for (int i = 0; i < planned.length - 1; i++) {
+					if (Integer.parseInt(current[i]) > Integer.parseInt(planned[i])) {
+						taskUpdate.setStart_on_time(false);
+						LOGGER.info("Task with id=" + id + " updated started on time= " + false);
+						break;
+					}
+				}
+			} else if (status == 3) {
+				taskUpdate.setEnd_time(TimeStamp.get());
+				String[] start = taskUpdate.getStart_time().split("\\.");
+				String[] end = taskUpdate.getEnd_time().split("\\.");
+				int startDay = Integer.parseInt(start[0]);
+				int endDay = Integer.parseInt(end[0]);
+				int startMonth = Integer.parseInt(start[1]);
+				int endMonth = Integer.parseInt(end[1]);
+				int startYear = Integer.parseInt(start[2]);
+				int endYear= Integer.parseInt(end[2]);
+				int startHour = Integer.parseInt(start[3]);
+				int endHour = Integer.parseInt(end[3]);
+				int startMin = Integer.parseInt(start[4]);
+				int endMin = Integer.parseInt(end[4]);
+				Date startDate = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMin).
+						getTime();
+				Date endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMin).getTime();
+				long diff = (endDate.getTime() - startDate.getTime()) / 1000 / 60;
+				taskUpdate.setDuration(diff);
+				LOGGER.info("Task with id=" + id + " updated task duration= " + diff);
+			}
 		}
 		if (task.getTitle() != null && !task.getTitle().isEmpty()) {
 			taskUpdate.setTitle(task.getTitle());
 			LOGGER.info("Task with id=" + id + " updated title= " + task.getTitle());
 		}
-		if (task.getUpdated() != null && !task.getUpdated().isEmpty()) {
-			taskUpdate.setUpdated(task.getUpdated());
-			LOGGER.info("Task with id=" + id + " updated updated= " + task.getUpdated());
-		}
 		if (task.getWorker() != null) {
 			taskUpdate.setWorker(task.getWorker());
 			LOGGER.info("Task with id=" + id + " updated worker= " + task.getWorker());
 		}
-		taskUpdate.setUpdated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
+		if (task.getTask_type() != null) {
+			taskUpdate.setTask_type(task.getTask_type());
+			LOGGER.info("Task with id=" + id + " updated task type= " + task.getTask_type());
+		}
+		taskUpdate.setUpdated(TimeStamp.get());
 		LOGGER.info("Task with id=" + id + " updated");
 		return taskRepository.save(taskUpdate);
 	}

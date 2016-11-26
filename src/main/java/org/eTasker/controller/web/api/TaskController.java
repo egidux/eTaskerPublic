@@ -92,8 +92,9 @@ public class TaskController extends AbstractController {
 			logger.info("Http request POST /user/api/" + URL_TASKS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	if (task.getTitle() == null || task.getTitle().isEmpty() || task.getDescription() == null || 
-    			task.getDescription().isEmpty() || task.getClient() == null || task.getObject() == null) {
+    	if (task.getTitle() == null || task.getTitle().isEmpty() ||  task.getClient() == null || 
+    			task.getObject() == null || task.getPlanned_time() == null || task.getPlanned_time().isEmpty() ||
+    			task.getTask_type() == null) {
     		logger.debug("Http request POST /user/api/" + URL_TASKS + " missing parameters: " + 
     					JsonBuilder.build(task));
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
