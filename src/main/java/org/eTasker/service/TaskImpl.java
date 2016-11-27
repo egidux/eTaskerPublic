@@ -65,8 +65,14 @@ public class TaskImpl implements TaskService {
 			LOGGER.info("Task with id=" + id + " updated agreement= " + task.getAgreement());
 		}
 		if (task.getBill_status() != null) {
-			taskUpdate.setBill_status(task.getBill_status());
-			LOGGER.info("Task with id=" + id + " updated bill status= " + task.getBill_status());
+			Boolean status = task.getBill_status();
+			taskUpdate.setBill_status(status);
+			LOGGER.info("Task with id=" + id + " updated bill status= " + status);
+			if (status) {
+				String date = TimeStamp.get();
+				taskUpdate.setBill_date(date);
+				LOGGER.info("Task with id=" + id + " updated bill date= " + date);
+			}
 		}
 		if (task.getFile_exists() != null) {
 			taskUpdate.setFile_exists(task.getFile_exists());
@@ -75,10 +81,6 @@ public class TaskImpl implements TaskService {
 		if (task.getAbort_message() != null && !task.getAbort_message().isEmpty()) {
 			taskUpdate.setAbort_message(task.getAbort_message());
 			LOGGER.info("Task with id=" + id + " updated abort message= " + task.getAbort_message());
-		}
-		if (task.getBill_date() != null && !task.getBill_date().isEmpty()) {
-			taskUpdate.setBill_date(task.getBill_date());
-			LOGGER.info("Task with id=" + id + " updated bill date= " + task.getBill_date());
 		}
 		if (task.getClient_note() != null && !task.getClient_note().isEmpty()) {
 			taskUpdate.setClient_note(task.getClient_note());
@@ -97,6 +99,7 @@ public class TaskImpl implements TaskService {
 			taskUpdate.setMaterial_price(price);
 			LOGGER.info("Task with id=" + id + " updated material price= " + price);
 			taskUpdate.setFinal_price(taskUpdate.getWork_price() + price);
+			LOGGER.info("Task with id=" + id + " updated final price= " + taskUpdate.getFinal_price());
 		}
 		if (task.getPlanned_end_time() != null && !task.getPlanned_end_time().isEmpty()) {
 			taskUpdate.setPlanned_end_time(task.getPlanned_end_time());
@@ -119,6 +122,7 @@ public class TaskImpl implements TaskService {
 			taskUpdate.setWork_price(price);
 			LOGGER.info("Task with id=" + id + " updated work price= " + price);
 			taskUpdate.setFinal_price(taskUpdate.getMaterial_price() + price);
+			LOGGER.info("Task with id=" + id + " updated final price= " + taskUpdate.getFinal_price());
 		}
 		if (task.getClient() != null) {
 			taskUpdate.setClient(task.getClient());
@@ -150,7 +154,7 @@ public class TaskImpl implements TaskService {
 						break;
 					}
 				}
-			} else if (status == 3) {
+			} else if (status == 3 || status == 4) {
 				taskUpdate.setEnd_time(TimeStamp.get());
 				String[] start = taskUpdate.getStart_time().split("\\.");
 				String[] end = taskUpdate.getEnd_time().split("\\.");

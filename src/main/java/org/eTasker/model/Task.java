@@ -13,7 +13,6 @@ public class Task {
 		3	Done
 		4	Aborted
     */
-
 	@Id
     @GeneratedValue
     private Long id;
