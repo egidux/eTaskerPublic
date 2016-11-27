@@ -304,23 +304,37 @@ GET https://locallhost:8085/user/api/logout
 
 ##9. Report
 
-###Get Report
+* ### Get Report
 
-This endpoint retrieves report
+ This endpoint retrieves report
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/report
+ GET https://locallhost:8085/user/api/report
 
-If your request successfull, you will receive 200 (OK) status code and report as JSON.
+ If your request successfull, you will receive 200 (OK) status code and report as JSON.
+ 
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ |companyName|String|Company name|
+ |companyCode|String|~|
+ |companyAddress|String|~|
+ |companyPhone|String|~|
+ |reportText|String|~|
+ |showPrice|boolean|true if show price in report|
+ |showDescription|boolean|~|
+ |showStart|boolean|true if show task start time|
+ |showFinish|boolean|~|
+ |showDuration|boolean|~|
 
-###Update Report
+* ### Update Report
 
-This endpoint updates report layout.
+ This endpoint updates report layout.
 
-####HTTP Request
+ ####HTTP Request
 
-PUT https://locallhost:8085/user/api/report
+ PUT https://locallhost:8085/user/api/report
 
-If your request will be successfull, you will recieve 204 (No Content) status code.
+ If your request will be successfull, you will recieve 204 (No Content) status code.
 
