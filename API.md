@@ -200,13 +200,13 @@ GET https://locallhost:8085/user/api/logout
 
  If your request successfull, you will receive 200 (OK) status code and specific worker as JSON.
  
-   | Field | Format | Description |
+ | Field | Format | Description |
  | :----- |:------| :----------|
  | id    | String |Item id|
  |email|String|Worker email|
  |name|String|Worker name|
- |password|String|Login password|
- |companyName|String|Company name|
+ |password|String| Login password |
+ |companyName |String |Company name |
 
 * ### Create a new Worker
 
