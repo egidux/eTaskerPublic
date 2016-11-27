@@ -6,7 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.eTasker.model.Image;
+import org.eTasker.model.Task;
 import org.eTasker.repository.ImageRepository;
+import org.eTasker.repository.TaskRepository;
 import org.eTasker.tool.JsonBuilder;
 import org.eTasker.tool.TimeStamp;
 import org.slf4j.Logger;
@@ -23,7 +25,9 @@ public class ImageImpl implements ImageService {
 	
 	@Autowired
 	private ImageRepository fileRepository;
-
+	@Autowired
+	private TaskRepository taskRepository;
+	
 	@Override
 	public Image store(MultipartFile multFile, Image image) {
 		if (multFile.isEmpty()) {
@@ -38,6 +42,14 @@ public class ImageImpl implements ImageService {
         	image.setPath(filePath.toString());
         	fileRepository.save(image);
         	LOGGER.info("File:" + multFile.getOriginalFilename() + " stored");
+        	Task task = taskRepository.findOne(image.getTask());
+        	if (task == null) {
+        		LOGGER.debug("Failed retrieve task with id=" + image.getTask());
+        	} else {
+        		task.setFile_exists(Boolean.TRUE);
+        		taskRepository.save(task);
+        		LOGGER.debug("Updated task=" + image.getTask() + " has file true");
+        	}
         	return image;
         } catch (IOException e) {
         	return null;

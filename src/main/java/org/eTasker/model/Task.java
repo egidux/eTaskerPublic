@@ -25,18 +25,18 @@ public class Task {
     private String client_note;
     private String client_note_reply;
     private Integer distance; //	Distance in meters
-    private Integer work_price; //in cents
-    private Integer material_price;
-    private Integer final_price;
+    private Integer work_price = 0; //in cents
+    private Integer material_price = 0;
+    private Integer final_price; //work price + matterial price
     private Integer status;
     private String planned_time;
     private String planned_end_time;
-    private Boolean fetched; //true if Task was fetched by worker
+    private Boolean fetched = false; //true if Task was fetched by worker
     private String start_time;
     private String end_time;
     private Boolean start_on_time;
     private Long duration; //total in minutes
-    private Boolean bill_status; //true if client was billed
+    private Boolean bill_status = false; //true if client was billed
     private String bill_date;
     private Boolean file_exists;
     private Long worker;

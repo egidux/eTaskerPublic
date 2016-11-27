@@ -123,6 +123,7 @@ public class UserController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "user does not exist"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
+    	session.setAttribute("Authorization", updatedUser.getEmail());
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
