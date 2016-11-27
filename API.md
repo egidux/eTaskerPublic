@@ -444,6 +444,16 @@ GET https://locallhost:8085/user/api/logout
 
 ## 12. Image
 
+* ### Get all images
+
+ This endpoint retrieves all images.
+
+ #### HTTP Request
+
+ GET https://locallhost:8085/user/api/images
+
+ If your request successfull, you will receive 200 (OK) status code and all images as JSON.
+
 * ### Get an existing Image
 
  This endpoint retrieves a specific image.
@@ -453,6 +463,24 @@ GET https://locallhost:8085/user/api/logout
  GET https://locallhost:8085/user/api/images/{id}
 
  If your request successfull, you will receive 200 (OK) status code and image.
+ 
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ | name|String|image name|
+ |path|String|image path on server|
+ |task|String|task id|
+ |created|timestamp|~|
+ 
+* ### Download image
+
+ This endpoint downloads specific image.
+
+ #### HTTP Request
+
+ POST https://locallhost:8085/user/api/images/{id}/download
+
+ If your request will be successfull, you will recieve 200 (OK) status code.
 
 * ### Upload new image
 
@@ -463,11 +491,3 @@ GET https://locallhost:8085/user/api/logout
  POST https://locallhost:8085/user/api/images
 
  If your request will be successfull, you will recieve 200 (OK) status code.
-
- | Field | Format | Description |
- | :----- |:------| :----------|
- | id    | String |Item id|
- | name|String|image name|
- |path|String|image path on server|
- |task|String|task id|
- |created|timestamp|~|
