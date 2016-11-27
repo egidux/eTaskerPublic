@@ -74,7 +74,7 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- PUT https://locallhost:8085/user/api/clients{id}
+ PUT https://locallhost:8085/user/api/clients/{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
@@ -124,7 +124,7 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- PUT https://locallhost:8085/user/api/objects{id}
+ PUT https://locallhost:8085/user/api/objects/{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
@@ -174,7 +174,7 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- PUT https://locallhost:8085/user/api/materials{id}
+ PUT https://locallhost:8085/user/api/materials/{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
@@ -224,7 +224,7 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- PUT https://locallhost:8085/user/api/workers{id}
+ PUT https://locallhost:8085/user/api/workers/{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
@@ -298,7 +298,7 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- PUT https://locallhost:8085/user/api/tasks{1}
+ PUT https://locallhost:8085/user/api/tasks/{1}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
@@ -338,3 +338,53 @@ GET https://locallhost:8085/user/api/logout
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
+## 10. Task Type
+
+* ### Get all task types
+
+ This endpoint retrieves all task types
+
+ #### HTTP Request
+
+ GET https://locallhost:8085/user/api/task_types
+
+ If your request successfull, you will receive 200 (OK) status code and all task types as JSON.
+
+* ### Get an existing Task Type
+
+ This endpoint retrieves a specific task type
+
+ #### HTTP Request
+
+ GET https://locallhost:8085/user/api/task_types/{id}
+
+ If your request successfull, you will receive 200 (OK) status code and specific task type as JSON.
+
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ |title|String|Task type title|
+ |mailList|String|List of additional summary receivers (seprated by “;”)|
+ |signature|boolean|true if signature required|
+ |created|timestamp|~|
+ |updated|timestamp|~|
+
+* ### Create a new Task Type
+
+ This endpoint creates a new task type.
+
+ #### HTTP Request
+
+ POST https://locallhost:8085/user/api/task_types
+
+ If your request will be successfull, you will recieve 201 (Created) status code and newly created task type as JSON.
+
+* ### Update an existing Task Type
+
+ This endpoint updates an existing task type.
+
+ #### HTTP Request
+
+ PUT https://locallhost:8085/user/api/task_types/{id}
+
+ If your request will be successfull, you will recieve 204 (No Content) status code.
