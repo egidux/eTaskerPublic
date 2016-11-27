@@ -21,7 +21,7 @@ POST https://locallhost:8085/user/api/register
 
 ##2.	Login
 
-This endpoint login user when email confirmed
+This endpoint login user if email confirmed
 
 #### HTTP Request
 
