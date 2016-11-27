@@ -29,23 +29,23 @@ This endpoint logs out user
 
 GET https://locallhost:8085/user/api/logout
 
-##4. Clients
+## 4. Clients
 
 ### Get all Clients
 
 This endpoint retrieves all clients
 
-####HTTP Request
+* #### HTTP Request
 
-GET https://locallhost:8085/user/api/clients
+ GET https://locallhost:8085/user/api/clients
 
-If your request successfull, you will receive 200 (OK) status code and all clients as JSON.
+ If your request successfull, you will receive 200 (OK) status code and all clients as JSON.
 
-###Get an existing Client
+* ### Get an existing Client
 
-This endpoint retrieves a specific client
+ This endpoint retrieves a specific client
 
-####HTTP Request
+#### HTTP Request
 
 GET https://locallhost:8085/user/api/clients/{id}
 
