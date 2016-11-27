@@ -66,7 +66,7 @@ public class WorkerControllerTest extends AbstractControllerTest {
         result = mvc.perform(MockMvcRequestBuilders.put(uri).session(session).
         		accept(MediaType.APPLICATION_JSON)).andReturn();
         status = result.getResponse().getStatus();
-        Assert.assertEquals("/user/api/profile failure - HTTP status", 204, status);
+        Assert.assertEquals("/user/api/profile failure - HTTP status", 405, status);
         
         // test update worker
         uri = "/user/api/workers";
@@ -74,7 +74,7 @@ public class WorkerControllerTest extends AbstractControllerTest {
         content = result.getResponse().getContentAsString();
         status = result.getResponse().getStatus();
         Assert.assertEquals("/user/api/users failure - HTTP status", 200, status);
-        Assert.assertEquals("/user/api/users failure", "[{\"id\":1,\"email\":\"regisetasker@gmail.com\",\"name\":\"TT\",\"password\":\"1\",\"companyname\":\"audi\"}]",
+        Assert.assertEquals("/user/api/users failure", "[{\"id\":1,\"email\":\"regisetasker@gmail.com\",\"name\":\"John\",\"password\":\"123\",\"companyname\":\"any\"}]",
         		content);
  
 	}
