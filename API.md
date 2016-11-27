@@ -4,12 +4,11 @@ eTasker API is RESTFul built on Http
 
 ##1.	Register
 
-This endpoint registers new user
+This endpoint registers new user and send email to new registered user to confirm email.
 
 POST https://locallhost:8085/user/api/register
 
 Query parameters:
-
 
 name (required), email (required), company name (required), password (required)
 
