@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.eTasker.model.Image;
 import org.eTasker.model.Task;
@@ -24,10 +25,30 @@ public class ImageImpl implements ImageService {
 	private final Path LOCATION = Paths.get("images");
 	
 	@Autowired
-	private ImageRepository fileRepository;
+	private ImageRepository imageRepository;
 	@Autowired
 	private TaskRepository taskRepository;
 	
+	@Override
+	public List<Image> findAll() {
+		List<Image> images = imageRepository.findAll();
+		if (images == null) {
+			LOGGER.debug("Failed to retrieve all images");
+		}
+		LOGGER.info("Images: " + images);
+		return images;
+	}
+	
+	@Override
+	public Image findOne(Long id) {
+		Image image = imageRepository.findOne(id);
+		if (image == null) {
+			LOGGER.debug("Not found image with id=" + id);
+		}
+		LOGGER.info("Found image with id=" + id);
+		return image;
+	}
+
 	@Override
 	public Image store(MultipartFile multFile, Image image) {
 		if (multFile.isEmpty()) {
@@ -40,7 +61,7 @@ public class ImageImpl implements ImageService {
         	image.setCreated(TimeStamp.get());
         	image.setName(multFile.getOriginalFilename());
         	image.setPath(filePath.toString());
-        	fileRepository.save(image);
+        	imageRepository.save(image);
         	LOGGER.info("File:" + multFile.getOriginalFilename() + " stored");
         	Task task = taskRepository.findOne(image.getTask());
         	if (task == null) {
@@ -58,7 +79,7 @@ public class ImageImpl implements ImageService {
 
 	@Override
 	public Path load(Long id) {
-		Image image = fileRepository.findOne(id);
+		Image image = imageRepository.findOne(id);
 		if (image== null) {
 			LOGGER.debug("Not found file with id=" + id);
 		}

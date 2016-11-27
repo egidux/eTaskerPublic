@@ -131,6 +131,5 @@ CREATE TABLE Image (
   path VARCHAR(50),
   task BIGINT,
   created VARCHAR(50),
-  updated VARCHAR(50),
   PRIMARY KEY(id)
 );
