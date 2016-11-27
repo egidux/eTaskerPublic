@@ -33,7 +33,7 @@ GET https://locallhost:8085/user/api/logout
 
 ###Get all Clients
 
-This endpoint retrieves all clients
+⋅⋅⋅This endpoint retrieves all clients
 
 ####HTTP Request
 
@@ -50,6 +50,15 @@ This endpoint retrieves a specific client
 GET https://locallhost:8085/user/api/clients/{id}
 
 If your request successfull, you will receive 200 (OK) status code and specific client as JSON.
+
+####Default Fields:
+
+| Field | Format | Description |
+| :----- |:------| :----------|
+| id    | String |Item id|
+|email|String|Client email|
+|name|String|Client name|
+|companyName|String|Company name|
 
 ###Create a new Client
 
