@@ -23,7 +23,7 @@ Install Postman from google Chrome Web Store
 
 Import test collection into Postman from Link: https://www.getpostman.com/collections/fca07e5986b51fb1dc6d or File
 
-all api information in API.md 
+all API information in API.md 
 
 To edit request parameter click Params in Postman, to upload image click Body->form-data->Choose Files
 
