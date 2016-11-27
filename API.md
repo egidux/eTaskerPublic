@@ -51,8 +51,6 @@ GET https://locallhost:8085/user/api/logout
 
  If your request successfull, you will receive 200 (OK) status code and specific client as JSON.
 
-* #### Default Fields:
-
  | Field | Format | Description |
  | :----- |:------| :----------|
  | id    | String |Item id|
@@ -101,8 +99,6 @@ GET https://locallhost:8085/user/api/logout
  GET https://locallhost:8085/user/api/objects/{id}
 
  If your request successfull, you will receive 200 (OK) status code and specific object as JSON.
-
- #### Default Fields:
 
  | Field | Format | Description |
  | :----- |:------| :----------|
