@@ -480,7 +480,7 @@ GET https://locallhost:8085/user/api/logout
 
  GET https://locallhost:8085/user/api/images/{id}/download
 
- If your request will be successfull, you will recieve 200 (OK) status code.
+ If your request will be successfull, you will recieve 200 (OK) status code and image.
 
 * ### Upload new image
 
