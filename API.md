@@ -130,45 +130,53 @@ GET https://locallhost:8085/user/api/logout
 
 ##6. Materials
 
-###Get all materials
+* ### Get all materials
 
-This endpoint retrieves all materials
+ This endpoint retrieves all materials
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/materials
+ GET https://locallhost:8085/user/api/materials
 
-If your request successfull, you will receive 200 (OK) status code and all materials as JSON.
+ If your request successfull, you will receive 200 (OK) status code and all materials as JSON.
 
-###Get an existing Material
+* ### Get an existing Material
 
-This endpoint retrieves a specific material
+ This endpoint retrieves a specific material
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/materials/{id}
+ GET https://locallhost:8085/user/api/materials/{id}
 
-If your request successfull, you will receive 200 (OK) status code and specific material as JSON.
+ If your request successfull, you will receive 200 (OK) status code and specific material as JSON.
+ 
+  | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ |title|String|Material title|
+ |serial_nbumber|String|~|
+ |created|timestamp|~|
+ |updated|timestamp|~|
 
-###Create a new Material
+* ### Create a new Material
 
-This endpoint creates a new material.
+ This endpoint creates a new material.
 
-####HTTP Request
+ #### HTTP Request
 
-POST https://locallhost:8085/user/api/materials
+ POST https://locallhost:8085/user/api/materials
 
-If your request will be successfull, you will recieve 201 (Created) status code and newly created material as JSON.
+ If your request will be successfull, you will recieve 201 (Created) status code and newly created material as JSON.
 
-###Update an existing Material
+* ###Update an existing Material
 
-This endpoint updates an existing material.
+ This endpoint updates an existing material.
 
-####HTTP Request
+ #### HTTP Request
 
-PUT https://locallhost:8085/user/api/materials
+ PUT https://locallhost:8085/user/api/materials
 
-If your request will be successfull, you will recieve 204 (No Content) status code.
+ If your request will be successfull, you will recieve 204 (No Content) status code.
 
 ##7. Workers
 
