@@ -388,3 +388,56 @@ GET https://locallhost:8085/user/api/logout
  PUT https://locallhost:8085/user/api/task_types/{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
+
+## 11. Responsible Person
+
+* ### Get all responsible persons
+
+ This endpoint retrieves all responsible persons
+
+ #### HTTP Request
+
+ GET https://locallhost:8085/user/api/responsible_persons
+
+ If your request successfull, you will receive 200 (OK) status code and all responsible persons as JSON.
+
+* ### Get an existing Responsible Person
+
+ This endpoint retrieves a specific responsible person
+
+ #### HTTP Request
+
+ GET https://locallhost:8085/user/api/responsible_person/{id}
+
+ If your request successfull, you will receive 200 (OK) status code and specific responsible person as JSON.
+
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ |firstName|String|~|
+ |lastName|String|~|
+ |phone|String|~|
+ |email|String|~|
+ |client|String|client id|
+ |created|timestamp|~|
+ |updated|timestamp|~|
+
+* ### Create a new Responsible Person
+
+ This endpoint creates a new responsible person.
+
+ #### HTTP Request
+
+ POST https://locallhost:8085/user/api/responsible_person
+
+ If your request will be successfull, you will recieve 201 (Created) status code and newly created responsible person as JSON.
+
+* ### Update an existing Responsible Person
+
+ This endpoint updates an existing responsible person.
+
+ #### HTTP Request
+
+ PUT https://locallhost:8085/user/api/responsible_person/{id}
+
+ If your request will be successfull, you will recieve 204 (No Content) status code.
