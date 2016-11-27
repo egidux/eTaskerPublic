@@ -80,47 +80,57 @@ GET https://locallhost:8085/user/api/logout
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
-##5. Objects
+## 5. Objects
 
-###Get all objects
+* ### Get all objects
 
-This endpoint retrieves all objects
+ This endpoint retrieves all objects
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/objects
+ GET https://locallhost:8085/user/api/objects
 
-If your request successfull, you will receive 200 (OK) status code and all objects as JSON.
+ If your request successfull, you will receive 200 (OK) status code and all objects as JSON.
 
-###Get an existing Object
+* ### Get an existing Object
 
-This endpoint retrieves a specific object
+ This endpoint retrieves a specific object
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/objects/{id}
+ GET https://locallhost:8085/user/api/objects/{id}
 
-If your request successfull, you will receive 200 (OK) status code and specific object as JSON.
+ If your request successfull, you will receive 200 (OK) status code and specific object as JSON.
 
-###Create a new Object
+ #### Default Fields:
 
-This endpoint creates a new object.
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ |address|String|Object address|
+ |responsiblePerson|String|Responsible person id|
+ |created|timestamp|~|
+ |updated|timestamp|~|
 
-####HTTP Request
+* ### Create a new Object
 
-POST https://locallhost:8085/user/api/objects
+ This endpoint creates a new object.
 
-If your request will be successfull, you will recieve 201 (Created) status code and newly created object as JSON.
+ #### HTTP Request
 
-###Update an existing Object
+ POST https://locallhost:8085/user/api/objects
 
-This endpoint updates an existing object.
+ If your request will be successfull, you will recieve 201 (Created) status code and newly created object as JSON.
 
-####HTTP Request
+* ### Update an existing Object
 
-PUT https://locallhost:8085/user/api/objects
+ This endpoint updates an existing object.
 
-If your request will be successfull, you will recieve 204 (No Content) status code.
+ #### HTTP Request
+
+ PUT https://locallhost:8085/user/api/objects
+
+ If your request will be successfull, you will recieve 204 (No Content) status code.
 
 ##6. Materials
 
