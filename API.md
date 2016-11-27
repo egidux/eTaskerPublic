@@ -478,7 +478,7 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- POST https://locallhost:8085/user/api/images/{id}/download
+ GET https://locallhost:8085/user/api/images/{id}/download
 
  If your request will be successfull, you will recieve 200 (OK) status code.
 
