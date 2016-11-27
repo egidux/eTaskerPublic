@@ -33,7 +33,7 @@ GET https://locallhost:8085/user/api/logout
 
 ###Get all Clients
 
-⋅⋅⋅This endpoint retrieves all clients
+  This endpoint retrieves all clients
 
 ####HTTP Request
 
