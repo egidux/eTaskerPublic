@@ -10,9 +10,9 @@ Maven -> https://maven.apache.org/download.cgi
 Redis (for http session management), install on localhost and run it with the default port (6379) -> http://redis.io/download
 
 ###Run tests (partly done):
-
+```
 mvn test
-
+```
 ###Start server (to change default port src/main/resources/config/application.properties):
 
 mvn spring-boot:run
