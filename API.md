@@ -441,3 +441,33 @@ GET https://locallhost:8085/user/api/logout
  PUT https://locallhost:8085/user/api/responsible_person/{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
+
+## 12. Image
+
+* ### Get an existing Image
+
+ This endpoint retrieves a specific image.
+
+ #### HTTP Request
+
+ GET https://locallhost:8085/user/api/images/{id}
+
+ If your request successfull, you will receive 200 (OK) status code and image.
+
+* ### Upload new image
+
+ This endpoint stores new image on server.
+
+ #### HTTP Request
+
+ POST https://locallhost:8085/user/api/images
+
+ If your request will be successfull, you will recieve 200 (OK) status code.
+
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ | name|String|image name|
+ |path|String|image path on server|
+ |task|String|task id|
+ |created|timestamp|~|
