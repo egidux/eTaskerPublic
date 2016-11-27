@@ -10,7 +10,12 @@ POST https://locallhost:8085/user/api/register
 
 Query parameters:
 
-name (required), email (required), company name (required), password (required)
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ | name   | String |~|
+ |email|String|~|
+ |companyName|String|~|
+ |password|String|~|
 
 ##2.	Login
 
@@ -20,7 +25,10 @@ POST https://locallhost:8085/user/api/login
 
 Query parameters:
 
-email (required), password (required)
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ |email|String|~|
+ |password|String|~|
 
 ##3.	Logout
 
