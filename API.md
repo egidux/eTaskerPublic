@@ -74,7 +74,7 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- PUT https://locallhost:8085/user/api/clients
+ PUT https://locallhost:8085/user/api/clients{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
@@ -124,7 +124,7 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- PUT https://locallhost:8085/user/api/objects
+ PUT https://locallhost:8085/user/api/objects{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
@@ -174,51 +174,59 @@ GET https://locallhost:8085/user/api/logout
 
  #### HTTP Request
 
- PUT https://locallhost:8085/user/api/materials
+ PUT https://locallhost:8085/user/api/materials{id}
 
  If your request will be successfull, you will recieve 204 (No Content) status code.
 
 ##7. Workers
 
-###Get all workers
+* ### Get all workers
 
-This endpoint retrieves all workers
+ This endpoint retrieves all workers
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/workers
+ GET https://locallhost:8085/user/api/workers
 
-If your request successfull, you will receive 200 (OK) status code and all workers as JSON.
+ If your request successfull, you will receive 200 (OK) status code and all workers as JSON.
 
-###Get an existing Worker
+* ### Get an existing Worker
 
-This endpoint retrieves a specific worker
+ This endpoint retrieves a specific worker
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/workers/{id}
+ GET https://locallhost:8085/user/api/workers/{id}
 
-If your request successfull, you will receive 200 (OK) status code and specific material as JSON.
+ If your request successfull, you will receive 200 (OK) status code and specific worker as JSON.
+ 
+   | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ |email|String|Worker email|
+ |name|String|Worker name|
+ |password|String|Login password|
+ |companyName|String|Company name|
 
-###Create a new Worker
+* ### Create a new Worker
 
-This endpoint creates a new worker.
+ This endpoint creates a new worker.
 
-####HTTP Request
+ #### HTTP Request
 
-POST https://locallhost:8085/user/api/workers
+ POST https://locallhost:8085/user/api/workers
 
-If your request will be successfull, you will recieve 201 (Created) status code and newly created worker as JSON.
+ If your request will be successfull, you will recieve 201 (Created) status code and newly created worker as JSON.
 
-###Update an existing Worker
+* ### Update an existing Worker
 
-This endpoint updates an existing worker.
+ This endpoint updates an existing worker.
 
-####HTTP Request
+ #### HTTP Request
 
-PUT https://locallhost:8085/user/api/workers
+ PUT https://locallhost:8085/user/api/workers{id}
 
-If your request will be successfull, you will recieve 204 (No Content) status code.
+ If your request will be successfull, you will recieve 204 (No Content) status code.
 
 ##8. Tasks
 
