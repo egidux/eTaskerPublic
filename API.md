@@ -230,45 +230,77 @@ GET https://locallhost:8085/user/api/logout
 
 ##8. Tasks
 
-###Get all tasks
+* ### Get all tasks
 
-This endpoint retrieves all tasks
+ This endpoint retrieves all tasks
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/tasks
+ GET https://locallhost:8085/user/api/tasks
 
-If your request successfull, you will receive 200 (OK) status code and all tasks as JSON.
+ If your request successfull, you will receive 200 (OK) status code and all tasks as JSON.
 
-###Get an existing Task
+* ### Get an existing Task
 
-This endpoint retrieves a specific task
+ This endpoint retrieves a specific task
 
-####HTTP Request
+ #### HTTP Request
 
-GET https://locallhost:8085/user/api/tasks/{id}
+ GET https://locallhost:8085/user/api/tasks/{id}
 
-If your request successfull, you will receive 200 (OK) status code and specific task as JSON.
+ If your request successfull, you will receive 200 (OK) status code and specific task as JSON.
+ 
+ | Field | Format | Description |
+ | :----- |:------| :----------|
+ | id    | String |Item id|
+ |description|String|Task description|
+ |rating|int|Rating by client (1 - bad, 2 - average, 3 - good)|
+ |agreement|boolean|true if client agreed |
+ |signatureType|int|	(0 - no signature, 1 - signature) |
+ |abortMessage|String|Abort message|
+ |clientNote|String|Note written by client|
+ |clientNoteReply|String|Reply to client note by administrator|
+ |distance|int|Distance in meters|
+ |workPrice|int|Total price of Task works in cents|
+ |materialPrice|int|Total price of all Task materials in cents|
+ |finalPrice|int|workPrice + materialPrice|
+ |status|int|	Current Task status	(0	- Unassigned, 1 - In progress, 2	- Done, 3 -	Aborted)|
+ |plannedTime|timestamp|expected task start time|
+ |plannedEndTime|timestamp|expected task end time|
+ |fetched|boolean|true if Task was fetched by worker device|
+ |startTime|timestamp|Task start|
+ |endTime|timestamp|Task end|
+ |startOnTime|boolean|true if Task started on time|
+ |duration|int|Total duration of Task works in minutes|
+ |billStatus|boolean|true if client was billed|
+ |billDate|timestamp|when client was billed|
+ |fileExists|boolean|true if Task has files|
+ |worker|String|worker id|
+ |taskType|String| task type id|
+ |object|String|object id|
+ |client|String|client id|
+ |created|timestamp|~|
+ |updated|timestamp|~|
 
-###Create a new Task
+* ### Create a new Task
 
-This endpoint creates a new task.
+ This endpoint creates a new task.
 
-####HTTP Request
+ #### HTTP Request
 
-POST https://locallhost:8085/user/api/tasks
+ POST https://locallhost:8085/user/api/tasks
 
-If your request will be successfull, you will recieve 201 (Created) status code and newly created task as JSON.
+ If your request will be successfull, you will recieve 201 (Created) status code and newly created task as JSON.
 
-###Update an existing Task
+* ### Update an existing Task
 
-This endpoint updates an existing task.
+ This endpoint updates an existing task.
 
-####HTTP Request
+ #### HTTP Request
 
-PUT https://locallhost:8085/user/api/tasks
+ PUT https://locallhost:8085/user/api/tasks{1}
 
-If your request will be successfull, you will recieve 204 (No Content) status code.
+ If your request will be successfull, you will recieve 204 (No Content) status code.
 
 ##9. Report
 
