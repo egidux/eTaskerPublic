@@ -31,9 +31,9 @@ GET https://locallhost:8085/user/api/logout
 
 ##4. Clients
 
-* ### Get all Clients
+### Get all Clients
 
-  This endpoint retrieves all clients
+This endpoint retrieves all clients
 
 ####HTTP Request
 
