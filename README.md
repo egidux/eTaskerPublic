@@ -14,9 +14,9 @@ Redis (for http session management), install on localhost and run it with the de
 mvn test
 ```
 ###Start server (to change default port src/main/resources/config/application.properties):
-
+```
 mvn spring-boot:run
-
+```
 ###Test API
 
 Install Postman from google Chrome Web Store
