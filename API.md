@@ -6,9 +6,11 @@ eTasker API is RESTFul built on Http
 
 This endpoint registers new user and send email to new registered user to confirm email.
 
+#### HTTP Request
+ 
 POST https://locallhost:8085/user/api/register
 
-Query parameters:
+#### Query parameters
 
 | Field | Format | Description |
 | :----- |:------| :----------|
@@ -21,9 +23,11 @@ Query parameters:
 
 This endpoint login user when email confirmed
 
+#### HTTP Request
+
 POST https://locallhost:8085/user/api/login
 
-Query parameters:
+#### Query parameters
 
 | Field | Format | Description |
 | :----- |:------| :----------|
@@ -33,6 +37,8 @@ Query parameters:
 ##3.	Logout
 
 This endpoint logs out user
+
+#### HTTP Request
 
 GET https://locallhost:8085/user/api/logout
 
