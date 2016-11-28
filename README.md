@@ -19,7 +19,7 @@ mvn spring-boot:run
 ```
 ###Test API
 
-Install Postman from google Chrome Web Store
+Install Postman from google Chrome Web Store -> https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en
 
 Import test collection into Postman from Link: https://www.getpostman.com/collections/fca07e5986b51fb1dc6d or File
 
