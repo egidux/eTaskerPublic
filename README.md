@@ -23,7 +23,7 @@ Install Postman from google Chrome Web Store -> https://chrome.google.com/websto
 
 Import test collection into Postman from Link: https://www.getpostman.com/collections/fca07e5986b51fb1dc6d or File
 
-Postman might get error connecting, need to accept unsecure SSL connection -> open in google chrome [https://localhost:8085/user/api/users]:https://localhost:8085/user/api/users -> ADVANCED -> Proceed to localhost (unsafe)
+Postman might get error connecting, need to accept unsecure SSL connection -> open in google chrome https://localhost:8085/user/api/users -> ADVANCED -> Proceed to localhost (unsafe)
 
 all API information in API.md 
 
