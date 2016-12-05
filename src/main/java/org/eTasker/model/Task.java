@@ -9,9 +9,8 @@ public class Task {
 	/* Task status  
 		0	Unassigned
 		1   In progress
-		2	Stopped
-		3	Done
-		4	Aborted
+		2	Done
+		3	Aborted
     */
 	@Id
     @GeneratedValue

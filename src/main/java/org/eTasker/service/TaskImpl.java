@@ -154,7 +154,7 @@ public class TaskImpl implements TaskService {
 						break;
 					}
 				}
-			} else if (status == 3 || status == 4) {
+			} else if (status == 2 || status == 3) {
 				taskUpdate.setEnd_time(TimeStamp.get());
 				String[] start = taskUpdate.getStart_time().split("\\.");
 				String[] end = taskUpdate.getEnd_time().split("\\.");
