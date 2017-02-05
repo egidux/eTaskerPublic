@@ -1,29 +1,52 @@
-<!DOCTYPE HTML>
-<html>
-<head> 
-    <title>Create an account</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="/js/index.js"></script>
-    <script type="text/javascript">
-    </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/eTasker.js"></script>
+
 </head>
 <body>
-	<form id="register" action='/user/api/register' method='post' accept-charset='UTF-8'>
-		<fieldset >
-			<legend>Register</legend>
-			<p><label for='name' >Your Name*: </label>
-			<input type='text' name='name' id='name' maxlength="50" /></p>
-			<p><label for='email' >Email Address*:</label>
-			<input type='text' name='email' id='email' maxlength="50" /></p>
-			<p><label for='companyname' >Company Name*:</label>
-			<input type='text' name='companyname' id='companyname' maxlength="50" /></p>
-			<p><label for='password' >Password*:</label>
-			<input type='password' name='password' id='password' maxlength="50" /></p>
-			<p><input type='submit' value='Register' /></p>
-		 </fieldset>
-	</form>
-	<br/>
-	<label id="info" style="color:red;"></label>
+    <div class="container">
+		<div class="modal fade modal-register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h3 class="modal-title" id="modal-register-label"></h3>
+		      </div>
+		      <div class="modal-body">
+		        <h4 id="modal-register-body"></h4>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+        <div class="row">
+            <div class="wrap-login col-md-4">
+                <form class="register-login-form">
+                    <h1 class="etasker-logo text-center">eTasker</h1><br>
+                    <div class="form-group">
+                        <input type="email" class="form-control input-email" name='email' id='email' placeholder="Email..">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control input-password" name='password' id='password' placeholder="Password..">
+                    </div>
+                    <button type="submit" class="btn-login btn btn-primary">LOGIN</button></br>
+                    <button type="submit" class="btn-register btn btn-primary">REGISTER</button>
+                    <div class="row">
+                        <div class="forgot-password text-center col-md-4">
+                            <a href="#">Forgot your password?</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

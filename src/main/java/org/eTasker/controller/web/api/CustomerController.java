@@ -35,8 +35,7 @@ public class CustomerController extends AbstractController {
     	logger.info("Http request POST /user/api/" + URL_CUSTOMER + " with params: name=" + user.getName() + 
     			", email=" + user.getEmail() + ", companyname=" +
     			user.getCompanyname() + ", password=" + user.getPassword());
-    	if (user.getEmail() == null || user.getEmail().isEmpty() || user.getCompanyname() == null || 
-    			user.getCompanyname().isEmpty() || user.getName() == null || user.getName().isEmpty() ||
+    	if (user.getEmail() == null || user.getEmail().isEmpty() ||
     			user.getPassword() == null || user.getPassword().isEmpty()) {
     		logger.debug("Http request /user/api/" + URL_CUSTOMER + "  missing parameters: " + JsonBuilder.build(user));
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
