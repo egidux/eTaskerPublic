@@ -2,3 +2,6 @@
 *.log
 *.classpath
 .project
+src/main/resources/static/.idea/modules.xml
+src/main/resources/static/.idea/static.iml
+src/main/resources/static/.idea/workspace.xml

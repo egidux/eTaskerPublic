@@ -68,3 +68,14 @@ input::-webkit-input-placeholder {
 a {
     color: white;
 }
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+    overflow:hidden;
+    text-align: center;
+    font-size: 12px;
+}
