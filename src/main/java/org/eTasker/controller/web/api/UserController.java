@@ -112,7 +112,7 @@ public class UserController extends AbstractController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateProfile(User user, HttpSession session) {
     	logger.info("Http request PUT /user/api/" + URL_PROFILE + " with params: name=" + user.getName() + 
-    			", email=" + user.getEmail());
+    			", email=" + user.getEmail() + ", companyname=" + user.getCompanyname());
     	String email = getSessionAuthorization(session);
     	if (email == null) {
     		logger.debug("Http request PUT /user/api/" + URL_PROFILE + " failed, not logged in");

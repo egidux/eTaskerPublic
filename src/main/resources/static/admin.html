@@ -1,1 +1,156 @@
-lalala
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eTΛSKER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/admin.js"></script>
+</head>
+<body>
+    <div class="modal fade" id="modal-startup" tabindex="-1" role="dialog" aria-labelledby="modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-label">Please enter details:</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modal-startup-form">
+                        <div class="form-group">
+                            <label for="modal-startup-name" class="control-label">Name:</label>
+                            <input type="text" class="form-control" id="modal-startup-name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-startup-companyname" class="control-label">Company Name:</label>
+                            <input type="text" class="form-control" id="modal-startup-companyname" name="companyname">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-startup-save" type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="top-navbar navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">eTΛSKER</a>
+            </div>
+            <p id="time-label" class="navbar-text">
+            </p>
+            <button id="logout" type="button" class="btn btn-danger navbar-btn navbar-right">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </button>
+            <p id="name-label" class="navbar-text navbar-right"></p>
+        </div>
+    </nav>
+    <div class="container-fluid" id="nav-left">
+        <ul class="nav nav-pills nav-stacked col-md-2">
+            <li><a href="#nav-dashboard" data-toggle="pill">Dashboard</a></li>
+            <li><a href="#nav-calendar" data-toggle="pill">Calendar</a></li>
+            <li class="active"><a href="#nav-tasks" data-toggle="pill">Tasks</a></li>
+            <li><a href="#nav-customers" data-toggle="pill">Customers</a></li>
+            <li><a href="#nav-objects" data-toggle="pill">Objects</a></li>
+            <li><a href="#nav-materials" data-toggle="pill">Materials</a></li>
+            <li><a href="#nav-users" data-toggle="pill">Users</a></li>
+            <li><a href="#nav-settings" data-toggle="pill">Settings</a></li>
+        </ul>
+        <div class="tab-content col-md-10">
+            <div class="tab-pane " id="nav-dashboard">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane " id="nav-calendar">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">Calendar</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane active" id="nav-tasks">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Tasks</a></li>
+                    <li role="presentation"><a href="#test2" data-toggle="tab">Task Types</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane" id="nav-customers">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Customers</a></li>
+                    <li role="presentation"><a href="#test2" data-toggle="tab">Responsible Persons</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane" id="nav-objects">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Objects</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane" id="nav-materials">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Used Materials</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane" id="nav-users">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Employees</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane" id="nav-profile">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">My Profile</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane" id="nav-settings">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#tab-profile" data-toggle="tab">My Profile</a></li>
+                    <li role="presentation"><a href="#tab-password" data-toggle="tab">Change Password</a></li>
+                    <li role="presentation"><a href="#tab-layout" data-toggle="tab">Report Layout</a></li>
+                </ul>
+                <div class="tab-content col-md-10">
+                    <div class="tab-pane fade in active" id="tab-profile">
+                        <div class="alert alert-success alert-dismissible" role="alert" id="tab-profile-alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Success!</strong> Data successfully updated
+                        </div>
+                        <form class="form-horizontal" id="tab-profile-form">
+                            <div class="form-group">
+                                <label for="profile-email" class="col-sm-2 control-label">Email</label>
+                                <div class="col-md-6">
+                                    <input type="email" class="form-control" id="profile-email" placeholder="Email" name="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-name" class="col-sm-2 control-label">Name</label>
+                                <div class="col-md-6">
+                                    <input class="form-control" id="profile-name" placeholder="Name" name="name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-companyname" class="col-sm-2 control-label">Company Name</label>
+                                <div class="col-md-6">
+                                    <input class="form-control" id="profile-companyname" placeholder="Company Name" name="companyname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-md-6">
+                                    <button type="submit" class="btn btn-primary" id="tab-profile-btn">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="tab-password">
+                        <p>pasword</p>
+                    </div>
+                    <div class="tab-pane fade" id="tab-layout">
+                        <p>layout</p>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+</body>
+</html>

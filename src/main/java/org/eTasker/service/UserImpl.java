@@ -58,6 +58,10 @@ public class UserImpl implements UserService {
 			userUpdate.setEmail(user.getEmail());
 			LOGGER.info("User with email=" + email + " updated email: " + user.getEmail());
 		}
+		if (user.getCompanyname() != null && !user.getCompanyname().isEmpty()) {
+			userUpdate.setCompanyname(user.getCompanyname());
+			LOGGER.info("User with email=" + email + " updated companyName: " + user.getCompanyname());
+		}
 		LOGGER.info("User with email: " + email + " updated");
 		return userRepository.save(userUpdate);
 	}

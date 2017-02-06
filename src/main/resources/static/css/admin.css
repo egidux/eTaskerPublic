@@ -1,0 +1,23 @@
+.top-navbar {
+    padding-right: 15px;
+    padding-left: 11px;
+}
+
+#time-label {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+}
+
+#name-label {
+    margin-right: 30px;
+}
+
+.navbar-brand {
+    font-size: 25px;
+}
+
+#tab-profile {
+    margin-top: 40px;
+}

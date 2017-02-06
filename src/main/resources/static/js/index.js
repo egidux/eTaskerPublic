@@ -1,21 +1,46 @@
 $(document).ready(function() {
-	$('#register').on('submit', function(e) {
-		e.preventDefault();
-		$.ajax({
-			type : "POST",
-			url : "/user/api/register",
-			data : $('#register').serialize(),
-			success : function(data) {
-				window.location = 'login.html'
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				json = JSON.parse(e.responseText);
-				$('#info').text('*' + json.error);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
-		});
-	});
+    $('.btn-register').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : "POST",
+            url : "/user/api/customer",
+            data : $(".register-login-form").serialize(),
+            success : function(data) {
+            	$('#modal-register-label').html('Registration Successful !!!');
+            	$('#modal-register-body').html("Please verify email: " + $('.input-email').val());
+            	$('.modal-register').modal()
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+                json = JSON.parse(e.responseText);
+                $('#modal-register-label').html("Error:");
+            	$('#modal-register-body').html(json.error);
+            	$('.modal-register').modal();
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    });
+    $('.btn-login').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : "POST",
+            url : "/user/api/login",
+            data : $(".register-login-form").serialize(),
+            success : function(data) {
+            	window.location = 'admin.html'
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+                json = JSON.parse(e.responseText);
+                $('#modal-register-label').html("Error:");
+            	$('#modal-register-body').html(json.error);
+            	$('.modal-register').modal()
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    });
 });
