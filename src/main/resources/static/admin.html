@@ -12,6 +12,7 @@
     <script src="js/admin.js"></script>
 </head>
 <body>
+    <!--STARTUP MODAL-->
     <div class="modal fade" id="modal-startup" tabindex="-1" role="dialog" aria-labelledby="modal-label">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -37,29 +38,62 @@
             </div>
         </div>
     </div>
+    <!--NAV BAR TOP-->
     <nav class="top-navbar navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">eTΛSKER</a>
             </div>
-            <p id="time-label" class="navbar-text">
-            </p>
             <button id="logout" type="button" class="btn btn-danger navbar-btn navbar-right">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </button>
-            <p id="name-label" class="navbar-text navbar-right"></p>
+            <p id="time-label" class="navbar-text navbar-right"></p>
+            <p id="name-label" class="navbar-text navbar-right">Hi, Egidijus Zutautas</p>
         </div>
     </nav>
+    <!--NAV LEFT-->
     <div class="container-fluid" id="nav-left">
         <ul class="nav nav-pills nav-stacked col-md-2">
-            <li><a href="#nav-dashboard" data-toggle="pill">Dashboard</a></li>
-            <li><a href="#nav-calendar" data-toggle="pill">Calendar</a></li>
-            <li class="active"><a href="#nav-tasks" data-toggle="pill">Tasks</a></li>
-            <li><a href="#nav-customers" data-toggle="pill">Customers</a></li>
-            <li><a href="#nav-objects" data-toggle="pill">Objects</a></li>
-            <li><a href="#nav-materials" data-toggle="pill">Materials</a></li>
-            <li><a href="#nav-users" data-toggle="pill">Users</a></li>
-            <li><a href="#nav-settings" data-toggle="pill">Settings</a></li>
+            <li>
+                <a href="#nav-dashboard" data-toggle="pill">
+                    <span class="glyphicon glyphicon-dashboard" id="icon-nav-left" aria-hidden="true"></span>Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#nav-calendar" data-toggle="pill">
+                    <span class="glyphicon glyphicon-calendar" id="icon-nav-left" aria-hidden="true"></span>Calendar
+                </a>
+            </li>
+            <li class="active">
+                <a href="#nav-tasks" data-toggle="pill">
+                    <span class="glyphicon glyphicon-tasks" id="icon-nav-left" aria-hidden="true"></span>Tasks
+                </a>
+            </li>
+            <li>
+                <a href="#nav-customers" data-toggle="pill">
+                    <span class="glyphicon glyphicon-user" id="icon-nav-left" aria-hidden="true"></span>Customers
+                </a>
+            </li>
+            <li>
+                <a href="#nav-objects" data-toggle="pill">
+                    <span class="glyphicon glyphicon-object-align-bottom" id="icon-nav-left" aria-hidden="true"></span>Objects
+                </a>
+            </li>
+            <li>
+                <a href="#nav-materials" data-toggle="pill">
+                    <span class="glyphicon glyphicon-inbox" id="icon-nav-left" aria-hidden="true"></span>Materials
+                </a>
+            </li>
+            <li>
+                <a href="#nav-users" data-toggle="pill">
+                    <span class="glyphicon glyphicon-user" id="icon-nav-left" aria-hidden="true"></span>Users
+                </a>
+            </li>
+            <li>
+                <a href="#nav-settings" data-toggle="pill">
+                    <span class="glyphicon glyphicon-cog" id="icon-nav-left" aria-hidden="true"></span>Settings
+                </a>
+            </li>
         </ul>
         <div class="tab-content col-md-10">
             <div class="tab-pane " id="nav-dashboard">
@@ -111,6 +145,7 @@
                     <li role="presentation"><a href="#tab-layout" data-toggle="tab">Report Layout</a></li>
                 </ul>
                 <div class="tab-content col-md-10">
+                    <!--TAB SETTINGS CHANGE PROFILE DETAILS-->
                     <div class="tab-pane fade in active" id="tab-profile">
                         <div class="alert alert-success alert-dismissible" role="alert" id="tab-profile-alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -118,39 +153,68 @@
                         </div>
                         <form class="form-horizontal" id="tab-profile-form">
                             <div class="form-group">
-                                <label for="profile-email" class="col-sm-2 control-label">Email</label>
+                                <label for="profile-email" class="col-md-3 control-label">Email</label>
                                 <div class="col-md-6">
                                     <input type="email" class="form-control" id="profile-email" placeholder="Email" name="email">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="profile-name" class="col-sm-2 control-label">Name</label>
+                                <label for="profile-name" class="col-md-3 control-label">Name</label>
                                 <div class="col-md-6">
                                     <input class="form-control" id="profile-name" placeholder="Name" name="name">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="profile-companyname" class="col-sm-2 control-label">Company Name</label>
+                                <label for="profile-companyname" class="col-md-3 control-label">Company Name</label>
                                 <div class="col-md-6">
                                     <input class="form-control" id="profile-companyname" placeholder="Company Name" name="companyname">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-md-6">
+                                <div class="col-sm-offset-3 col-md-6">
                                     <button type="submit" class="btn btn-primary" id="tab-profile-btn">Save</button>
                                 </div>
                             </div>
                         </form>
                     </div>
+                    <!--TAB SETTINGS CHANGE PASSWORD-->
                     <div class="tab-pane fade" id="tab-password">
-                        <p>pasword</p>
+                        <div class="alert alert-success alert-dismissible" role="alert" id="tab-password-alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Success!</strong> Password successfully changed
+                        </div>
+                        <form class="form-horizontal" id="tab-password-form">
+                            <div class="form-group">
+                                <label for="current-password" class="col-md-3 control-label">Current password</label>
+                                <div class="col-md-6">
+                                    <input class="form-control" id="current-password" placeholder="Current password" name="currentpassword">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-md-3 control-label">Password</label>
+                                <div class="col-md-6">
+                                    <input type="password" class="form-control" id="password" placeholder="Password" name="newpassword">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password" class="col-md-3 control-label">Confirm password</label>
+                                <div class="col-md-6">
+                                    <input type="password" class="form-control" id="confirm-password" placeholder="Confirm password" name="confirmpassword">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-md-6">
+                                    <button type="submit" class="btn btn-primary" id="tab-password-btn">Save</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="tab-pane fade" id="tab-layout">
                         <p>layout</p>
                     </div>
                 </div>
             </div>
-
+        </div>
     </div>
 </body>
 </html>

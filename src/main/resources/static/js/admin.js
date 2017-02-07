@@ -53,10 +53,24 @@ $(document).ready(function() {
             },
             error : function(e) {
                 console.log("ERROR: ", e);
-                json = JSON.parse(e.responseText);
-                $('#modal-register-label').html("Error:");
-                $('#modal-register-body').html(json.error);
-                $('.modal-register').modal();
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    })
+    $('#tab-password-alert').hide();
+    $('#tab-password-btn').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : "PUT",
+            url : "/user/api/password",
+            data : $("#tab-password-form").serialize(),
+            success : function(data) {
+                $('#tab-password-alert').show();
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
             },
             done : function(e) {
                 console.log("DONE");
