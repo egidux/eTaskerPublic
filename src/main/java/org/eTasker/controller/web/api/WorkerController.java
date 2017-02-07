@@ -94,8 +94,8 @@ public class WorkerController extends AbstractController {
 			logger.info("Http request POST /user/api/" + URL_WORKERS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	if (worker.getEmail() == null || worker.getEmail().isEmpty() || worker.getName() == null || worker.getName().isEmpty() ||
-    					worker.getPassword() == null || worker.getPassword().isEmpty()) {
+    	if (worker.getEmail() == null || worker.getEmail().isEmpty() || worker.getName() == null 
+    			|| worker.getName().isEmpty() || worker.getPassword() == null || worker.getPassword().isEmpty()) {
     		logger.debug("Http request POST /user/api/" + URL_WORKERS + " missing parameters: " + 
     					JsonBuilder.build(worker));
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),

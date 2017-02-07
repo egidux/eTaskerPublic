@@ -3,6 +3,8 @@ $(document).ready(function() {
     var d = new Date().toString();
     $('#time-label').text(d.slice(0, -29));
 
+    $('#table-worker').DataTable();
+
     //ON START PAGE CHECK IF TO SHOW STARTUP MODAL
     $.ajax({
         type : "GET",
@@ -165,6 +167,7 @@ $(document).ready(function() {
         });
     })
 
+    $('#alert-worker').hide();
     $('#btn-new-worker').on('click', function(e) {
         e.preventDefault();
         $.ajax({
@@ -172,7 +175,8 @@ $(document).ready(function() {
             url : "/user/api/workers",
             data : $("#form-new-worker").serialize(),
             success : function(data) {
-                
+                $('#modal-worker').modal('toggle')
+                $('#alert-worker').show();
             },
             error : function(e) {
                 console.log("ERROR: ", e);
