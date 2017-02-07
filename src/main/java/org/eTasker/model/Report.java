@@ -16,11 +16,11 @@ public class Report {
 	private String company_address;
 	private String company_phone;
 	private String report_text;
-	private Boolean show_price;
-	private Boolean show_description;
-	private Boolean show_start;
-	private Boolean show_finish;
-	private Boolean show_duration;
+	private Boolean show_price = Boolean.TRUE;
+	private Boolean show_description = Boolean.TRUE;
+	private Boolean show_start = Boolean.TRUE;
+	private Boolean show_finish = Boolean.TRUE;
+	private Boolean show_duration = Boolean.TRUE;
 	
 	public String getCompany_name() {
 		return company_name;

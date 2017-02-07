@@ -5,10 +5,12 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.eTasker.model.User;
+import org.eTasker.tool.JsonBuilder;
 import org.eTasker.tool.MapBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +45,30 @@ public class UserController extends AbstractController {
     }
     
     /**
+     * Retrives specific user
+     * @param id
+     * @return if request successful returns   200(OK) and user as Json
+     *         if request unsuccessful returns 400(Bad Request) and error message as Json
+     */
+    @RequestMapping(
+            value = URL_USERS+ "/{id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserr(@PathVariable("id") Long id, HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_USERS + "/{id} with id:" + id);
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request GET /user/api/" + URL_USERS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
+    	User user = userService.findOne(id);
+    	if (user == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "No worker found with id=" + id), 
+    				HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<>(JsonBuilder.build(user), HttpStatus.OK);
+    }
+    
+    /**
      * Log in and create session
      * @param email
      * @param password
@@ -66,14 +92,14 @@ public class UserController extends AbstractController {
     		logger.debug("Http request POST /user/api/" + URL_LOGIN + " wrong password: " + password);
     		return new ResponseEntity<>(MapBuilder.build("error", "wrong password"), HttpStatus.BAD_REQUEST);
     	}
-    	if (!user.getIsver()) {
+    	/*if (!user.getIsver()) {
     		logger.debug("Http request POST /user/api/" + URL_LOGIN + " user email not verified: " + email);
     		return new ResponseEntity<>(MapBuilder.build("error", "please validate registration"), 
     				HttpStatus.UNAUTHORIZED);
-    	}
+    	}*/
     	session.setAttribute("Authorization", email);
     	logger.info("Http request POST /user/api/" + URL_LOGIN + " session created: Authorization:" + email);
-    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    	return new ResponseEntity<>(JsonBuilder.build(user), HttpStatus.OK);
     }
     
 	/**

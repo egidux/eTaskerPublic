@@ -16,13 +16,30 @@
 }
 
 #tab-profile {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 #tab-password {
-    margin-top: 50px;
+     margin-top: 30px;
+ }
+
+#tab-layout {
+    margin-top: 30px;
 }
 
-#icon-nav-left {
+.icon-nav-left {
     margin-right: 10px;
+}
+
+textarea {
+    text-align: left;
+}
+
+.red-star {
+    color: red;
+    font-size: 17px;
+}
+
+#row-btn-new-worker {
+    margin-top: 30px;
 }

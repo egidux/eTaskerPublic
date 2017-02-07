@@ -59,7 +59,7 @@ public class ReportController extends AbstractController {
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateReport(Report report, HttpSession session) {
-    	logger.info("Http request PUT /user/api/" + URL_REPORT + " with task: " + JsonBuilder.build(report));
+    	logger.info("Http request PUT /user/api/" + URL_REPORT + ": " + JsonBuilder.build(report));
     	if (getSessionAuthorization(session) == null) {
     		logger.debug("Http request PUT /user/api/" + URL_REPORT + " failed, not logged in");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);

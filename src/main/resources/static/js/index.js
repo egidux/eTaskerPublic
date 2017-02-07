@@ -6,6 +6,7 @@ $(document).ready(function() {
             url : "/user/api/customer",
             data : $(".register-login-form").serialize(),
             success : function(data) {
+                console.log(JSON.stringify(data));
             	$('#modal-register-label').html('Registration Successful !!!');
             	$('#modal-register-body').html("Please verify email: " + $('.input-email').val());
             	$('.modal-register').modal()
@@ -28,7 +29,11 @@ $(document).ready(function() {
             type : "POST",
             url : "/user/api/login",
             data : $(".register-login-form").serialize(),
-            success : function(data) {
+            success : function(json) {
+                console.log(JSON.stringify(json));
+                sessionStorage.setItem('id', json.id);
+                sessionStorage.setItem("email", json.email);
+                console.log("sessionStorage id:" + json.id);
             	window.location = 'admin.html'
             },
             error : function(e) {

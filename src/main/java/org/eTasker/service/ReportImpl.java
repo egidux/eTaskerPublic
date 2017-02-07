@@ -16,7 +16,8 @@ public class ReportImpl implements ReportService {
 	@Autowired
 	private ReportRepository reportRepository;
 	private boolean init = true;
-	private final String REPORT_TEXT = "E-mail is generated automatically, so please do not reply to it.";
+	private final String REPORT_TEXT = "Hello,\n\nyou can find task %task_id% PDF report at the attachment.\n\n" +
+			"E-mail is generated automatically, so please do not reply to it.\n\nhttp://www.etasker.com";
 
 	public synchronized void init() {
 		if (init) {

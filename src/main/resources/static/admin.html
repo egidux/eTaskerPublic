@@ -23,11 +23,11 @@
                 <div class="modal-body">
                     <form id="modal-startup-form">
                         <div class="form-group">
-                            <label for="modal-startup-name" class="control-label">Name:</label>
+                            <label for="modal-startup-name" class="control-label">Name<span class="red-star">*</span></label>
                             <input type="text" class="form-control" id="modal-startup-name" name="name">
                         </div>
                         <div class="form-group">
-                            <label for="modal-startup-companyname" class="control-label">Company Name:</label>
+                            <label for="modal-startup-companyname" class="control-label">Company Name<span class="red-star">*</span></label>
                             <input type="text" class="form-control" id="modal-startup-companyname" name="companyname">
                         </div>
                     </form>
@@ -42,13 +42,13 @@
     <nav class="top-navbar navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">eTΛSKER</a>
+                <a class="navbar-brand" href="admin.html">eTΛSKER</a>
             </div>
             <button id="logout" type="button" class="btn btn-danger navbar-btn navbar-right">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </button>
             <p id="time-label" class="navbar-text navbar-right"></p>
-            <p id="name-label" class="navbar-text navbar-right">Hi, Egidijus Zutautas</p>
+            <p id="name-label" class="navbar-text navbar-right"></p>
         </div>
     </nav>
     <!--NAV LEFT-->
@@ -56,88 +56,132 @@
         <ul class="nav nav-pills nav-stacked col-md-2">
             <li>
                 <a href="#nav-dashboard" data-toggle="pill">
-                    <span class="glyphicon glyphicon-dashboard" id="icon-nav-left" aria-hidden="true"></span>Dashboard
+                    <span class="glyphicon glyphicon-dashboard icon-nav-left" aria-hidden="true"></span>Dashboard
                 </a>
             </li>
             <li>
                 <a href="#nav-calendar" data-toggle="pill">
-                    <span class="glyphicon glyphicon-calendar" id="icon-nav-left" aria-hidden="true"></span>Calendar
+                    <span class="glyphicon glyphicon-calendar icon-nav-left" aria-hidden="true"></span>Calendar
                 </a>
             </li>
             <li class="active">
                 <a href="#nav-tasks" data-toggle="pill">
-                    <span class="glyphicon glyphicon-tasks" id="icon-nav-left" aria-hidden="true"></span>Tasks
+                    <span class="glyphicon glyphicon-tasks icon-nav-left" aria-hidden="true"></span>Tasks
                 </a>
             </li>
             <li>
                 <a href="#nav-customers" data-toggle="pill">
-                    <span class="glyphicon glyphicon-user" id="icon-nav-left" aria-hidden="true"></span>Customers
+                    <span class="glyphicon glyphicon-user icon-nav-left" aria-hidden="true"></span>Clients
                 </a>
             </li>
             <li>
                 <a href="#nav-objects" data-toggle="pill">
-                    <span class="glyphicon glyphicon-object-align-bottom" id="icon-nav-left" aria-hidden="true"></span>Objects
+                    <span class="glyphicon glyphicon-object-align-bottom icon-nav-left" aria-hidden="true"></span>Objects
                 </a>
             </li>
             <li>
                 <a href="#nav-materials" data-toggle="pill">
-                    <span class="glyphicon glyphicon-inbox" id="icon-nav-left" aria-hidden="true"></span>Materials
+                    <span class="glyphicon glyphicon-inbox icon-nav-left" aria-hidden="true"></span>Materials
                 </a>
             </li>
             <li>
                 <a href="#nav-users" data-toggle="pill">
-                    <span class="glyphicon glyphicon-user" id="icon-nav-left" aria-hidden="true"></span>Users
+                    <span class="glyphicon glyphicon-user icon-nav-left" aria-hidden="true"></span>Workers
                 </a>
             </li>
             <li>
-                <a href="#nav-settings" data-toggle="pill">
-                    <span class="glyphicon glyphicon-cog" id="icon-nav-left" aria-hidden="true"></span>Settings
+                <a href="#nav-settings" data-toggle="pill" id="nav-left-settings">
+                    <span class="glyphicon glyphicon-cog icon-nav-left"  aria-hidden="true"></span>Settings
                 </a>
             </li>
         </ul>
         <div class="tab-content col-md-10">
+            <!--TAB DASBOARD-->
             <div class="tab-pane " id="nav-dashboard">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#">Dashboard</a></li>
                 </ul>
             </div>
+            <!--TAB CALENDAR-->
             <div class="tab-pane " id="nav-calendar">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#">Calendar</a></li>
                 </ul>
             </div>
+            <!--TAB TASKS-->
             <div class="tab-pane active" id="nav-tasks">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Tasks</a></li>
                     <li role="presentation"><a href="#test2" data-toggle="tab">Task Types</a></li>
                 </ul>
             </div>
+            <!--TAB CLIENTS-->
             <div class="tab-pane" id="nav-customers">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Customers</a></li>
+                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Clients</a></li>
                     <li role="presentation"><a href="#test2" data-toggle="tab">Responsible Persons</a></li>
                 </ul>
             </div>
+            <!--TAB OBJECTS-->
             <div class="tab-pane" id="nav-objects">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Objects</a></li>
                 </ul>
             </div>
+            <!--TAB MATERIALS-->
             <div class="tab-pane" id="nav-materials">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Used Materials</a></li>
                 </ul>
             </div>
+            <!--TAB WORKERS-->
             <div class="tab-pane" id="nav-users">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Employees</a></li>
+                    <li role="presentation" class="active"><a href="#tab-workers" data-toggle="tab">Workers</a></li>
                 </ul>
+                <div class="tab-content col-md-10">
+                    <div class="tab-pane fade in active" id="tab-workers">
+                        <div class="row" id="row-btn-new-worker">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-worker" aria-label="Left Align">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New worker
+                                </button>
+                            </div>
+                        </div>
+                        <!--MODAL NEW WORKER-->
+                        <div class="modal fade" id="modal-worker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">New worker</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="form-new-worker">
+                                            <div class="form-group">
+                                                <label for="worker-name">Name<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="worker-name" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="worker-email">Email<span class="red-star">*</span></label>
+                                                <input type="email" class="form-control" id="worker-email" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="worker-password">Password<span class="red-star">*</span></label>
+                                                <input type="password" class="form-control" id="worker-password" name="password">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="btn-new-worker" type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="tab-pane" id="nav-profile">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">My Profile</a></li>
-                </ul>
-            </div>
+            <!--TAB SETTINGS-->
             <div class="tab-pane" id="nav-settings">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#tab-profile" data-toggle="tab">My Profile</a></li>
@@ -145,7 +189,7 @@
                     <li role="presentation"><a href="#tab-layout" data-toggle="tab">Report Layout</a></li>
                 </ul>
                 <div class="tab-content col-md-10">
-                    <!--TAB SETTINGS CHANGE PROFILE DETAILS-->
+                    <!--TAB MY PROFILE-->
                     <div class="tab-pane fade in active" id="tab-profile">
                         <div class="alert alert-success alert-dismissible" role="alert" id="tab-profile-alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -165,19 +209,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="profile-companyname" class="col-md-3 control-label">Company Name</label>
-                                <div class="col-md-6">
-                                    <input class="form-control" id="profile-companyname" placeholder="Company Name" name="companyname">
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <div class="col-sm-offset-3 col-md-6">
                                     <button type="submit" class="btn btn-primary" id="tab-profile-btn">Save</button>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <!--TAB SETTINGS CHANGE PASSWORD-->
+                    <!--TAB CHANGE PASSWORD-->
                     <div class="tab-pane fade" id="tab-password">
                         <div class="alert alert-success alert-dismissible" role="alert" id="tab-password-alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -209,8 +247,149 @@
                             </div>
                         </form>
                     </div>
+                    <!--TAB REPORT LAYOUT-->
                     <div class="tab-pane fade" id="tab-layout">
-                        <p>layout</p>
+                        <div class="alert alert-success alert-dismissible" role="alert" id="tab-layout-alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Success!</strong> Layout successfully changed
+                        </div>
+                        <div class="alert alert-danger alert-dismissible" role="alert" id="tab-layout-alert-error">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Error!</strong> <span id="tab-layout-alert-erro-text"></span>
+                        </div>
+                        <form class="form-horizontal" id="tab-layout-form">
+                            <div class="form-group">
+                                <div class=" panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                    <!--Collapse Company details-->
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Company details
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label for="layout-companyname" class="col-md-3 control-label">Company name<span class="red-star">*</span></label>
+                                                    <div class="col-md-6">
+                                                        <input required="true" class="form-control" id="layout-companyname" name="company_name">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="layout-companycode" class="col-md-3 control-label">Company code<span class="red-star">*</span></label>
+                                                    <div class="col-md-6">
+                                                        <input class="form-control" id="layout-companycode" name="company_code">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="layout-companyaddress" class="col-md-3 control-label">Company address<span class="red-star">*</span></label>
+                                                    <div class="col-md-6">
+                                                        <input class="form-control" id="layout-companyaddress" name="company_address">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="layout-companyphone" class="col-md-3 control-label">Company phone<span class="red-star">*</span></label>
+                                                    <div class="col-md-6">
+                                                        <input class="form-control" id="layout-companyphone" name="company_phone">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Collapse text-->
+                                    <div class="panel panel-default collapse-layout ">
+                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    Informative text
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label for="layout-text" class="col-md-3 control-label">Report email text<span class="red-star">*</span></label>
+                                                    <div class="col-md-6">
+                                                        <textarea rows="8" class="form-control" id="layout-text" name="report_text"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Collapse task details-->
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingThree">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    Task details
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="" name="show_price" id="cb-price">
+                                                                Show price
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="" name="show_description" id="cb-description">
+                                                                Show description
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="" name="show_start" id="cb-start">
+                                                                Show task start time
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="" name="show_finish" id="cb-finish">
+                                                                Show task finish time
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="show_duration" name="show_duration" id="cb-duration">
+                                                                Show task execution time
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-primary" id="tab-layout-btn">Save</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
