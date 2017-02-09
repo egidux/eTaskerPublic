@@ -56,7 +56,7 @@ public class AbstractControllerTest extends AbstractTest {
 		uri = "/user/api/login?email=regisetasker@gmail.com&password=123";
     	result = mvc.perform(MockMvcRequestBuilders.post(uri).session(session)).andReturn();
         status = result.getResponse().getStatus();
-        Assert.assertEquals("/user/api/login failure - HTTP status", 204, status);	
+        Assert.assertEquals("/user/api/login failure - HTTP status", 200, status);	
 	}
 	
     protected String mapToJson(Object obj) throws JsonProcessingException {
