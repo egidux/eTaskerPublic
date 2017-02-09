@@ -1,4 +1,8 @@
 $(document).ready(function() {
+
+    /*
+    Register btn listener
+     */
     $('.btn-register').on('click', function(e) {
         e.preventDefault();
         $.ajax({
@@ -7,7 +11,7 @@ $(document).ready(function() {
             data : $(".register-login-form").serialize(),
             success : function(data) {
                 console.log(JSON.stringify(data));
-            	$('#modal-register-label').html('Registration Successful !!!');
+            	$('#modal-register-label').html('Registration Successful!');
             	$('#modal-register-body').html("Please verify email: " + $('.input-email').val());
             	$('.modal-register').modal()
             },
@@ -23,6 +27,10 @@ $(document).ready(function() {
             }
         });
     });
+
+    /*
+    Login btn listener
+     */
     $('.btn-login').on('click', function(e) {
         e.preventDefault();
         $.ajax({

@@ -47,6 +47,7 @@ public class JsonBuilder {
 				jsonArray.put(tempArray);
 			}
 		}
+		LOGGER.info(jsonObject.toString());
 		return jsonObject.toString();
     }
 }
