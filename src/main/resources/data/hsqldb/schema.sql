@@ -24,7 +24,6 @@ CREATE TABLE Worker (
   email VARCHAR(50) NOT NULL,
   name VARCHAR(50) NOT NULL,
   password VARCHAR(50) NOT NULL,
-  companyName VARCHAR(50),
   PRIMARY KEY(id)
 );
 
@@ -101,7 +100,6 @@ CREATE TABLE Report (
   show_description BOOLEAN,
   show_start BOOLEAN,
   show_finish BOOLEAN,
-  show_duration BOOLEAN 
 );
 
 CREATE TABLE Material (

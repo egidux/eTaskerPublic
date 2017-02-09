@@ -88,7 +88,7 @@
                 </a>
             </li>
             <li>
-                <a href="#nav-users" data-toggle="pill">
+                <a href="#nav-users" data-toggle="pill" id="nav-left-workers">
                     <span class="glyphicon glyphicon-user icon-nav-left" aria-hidden="true"></span>Workers
                 </a>
             </li>
@@ -144,19 +144,19 @@
                 </ul>
                 <div class="tab-content col-md-10">
                     <div class="tab-pane fade in active" id="tab-workers">
-                        <div class="alert alert-success alert-dismissible" role="alert" id="alert-worker">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Success!</strong> New worker created
+                        <div class="alert alert-success " role="alert" id="alert-worker" hidden="hidden">
+                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Success!</strong> <span id="alert-tab-worker">New worker created</span>
                         </div>
                         <div class="row" id="row-btn-new-worker">
-                            <div class="col-md-12">
+                            <div class="col-md-10">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-worker" aria-label="Left Align">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New worker
                                 </button>
                             </div>
                         </div>
                         <div class="row" id="row-table-worker">
-                            <div class="col-md-10">
+                            <div class="col-md-12">
                                 <table id="table-worker" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
@@ -184,6 +184,11 @@
                                         <h4 class="modal-title" id="myModalLabel">New worker</h4>
                                     </div>
                                     <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-worker-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-worker-modal-text"></span>
+                                        </div>
                                         <form id="form-new-worker">
                                             <div class="form-group">
                                                 <label for="worker-name">Name<span class="red-star">*</span></label>
@@ -200,7 +205,43 @@
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="btn-new-worker" type="button" class="btn btn-primary">Save</button>
+                                        <button id="modal-btn-save-worker" type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--MODAL EDIT WORKER-->
+                        <div class="modal fade" id="modal-edit-worker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel1">Edit worker</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-worker-edit-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-worker-edit-modal-text"></span>
+                                        </div>
+                                        <form id="form-edit-worker">
+                                            <div class="form-group">
+                                                <label for="worker-name-edit">Name<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="worker-name-edit" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="worker-email-edit">Email<span class="red-star">*</span></label>
+                                                <input type="email" class="form-control" id="worker-email-edit" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="worker-password-edit">Password<span class="red-star">*</span></label>
+                                                <input type="password" class="form-control" id="worker-password-edit" name="password">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="modal-btn-delete-worker" type="button" class="btn btn-danger">Delete</button>
+                                        <button id="modal-btn-edit-worker" type="button" class="btn btn-primary">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -218,8 +259,8 @@
                 <div class="tab-content col-md-10">
                     <!--TAB MY PROFILE-->
                     <div class="tab-pane fade in active" id="tab-profile">
-                        <div class="alert alert-success alert-dismissible" role="alert" id="tab-profile-alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="alert alert-success" role="alert" hidden="hidden" id="tab-profile-alert">
+                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <strong>Success!</strong> Data successfully updated
                         </div>
                         <form class="form-horizontal" id="tab-profile-form">
@@ -244,8 +285,8 @@
                     </div>
                     <!--TAB CHANGE PASSWORD-->
                     <div class="tab-pane fade" id="tab-password">
-                        <div class="alert alert-success alert-dismissible" role="alert" id="tab-password-alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="alert alert-success" hidden="hidden" role="alert" id="tab-password-alert">
+                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <strong>Success!</strong> Password successfully changed
                         </div>
                         <form class="form-horizontal" id="tab-password-form">
@@ -276,12 +317,12 @@
                     </div>
                     <!--TAB REPORT LAYOUT-->
                     <div class="tab-pane fade" id="tab-layout">
-                        <div class="alert alert-success alert-dismissible" role="alert" id="tab-layout-alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="alert alert-success" role="alert" hidden="hidden" id="tab-layout-alert">
+                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <strong>Success!</strong> Layout successfully changed
                         </div>
-                        <div class="alert alert-danger alert-dismissible" role="alert" id="tab-layout-alert-error">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="alert alert-danger " role="alert" hidden="hidden" id="tab-layout-alert-error">
+                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <strong>Error!</strong> <span id="tab-layout-alert-erro-text"></span>
                         </div>
                         <form class="form-horizontal" id="tab-layout-form">
@@ -396,24 +437,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" value="show_duration" name="show_duration" id="cb-duration">
-                                                                Show task execution time
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-1">
-                                    <button type="submit" class="btn btn-primary" id="tab-layout-btn">Save</button>
+                                <div class="form-group">
+                                    <div class="col-md-1">
+                                        <button type="submit" class="btn btn-primary" id="tab-layout-btn">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>

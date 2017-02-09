@@ -62,7 +62,7 @@ public class UserController extends AbstractController {
 		}
     	User user = userService.findOne(id);
     	if (user == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "No worker found with id=" + id), 
+    		return new ResponseEntity<>(MapBuilder.build("error", "No user found with id=" + id), 
     				HttpStatus.BAD_REQUEST);
     	}
     	return new ResponseEntity<>(JsonBuilder.build(user), HttpStatus.OK);

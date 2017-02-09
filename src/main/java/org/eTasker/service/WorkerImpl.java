@@ -66,10 +66,6 @@ public class WorkerImpl implements WorkerService {
 			workerUpdate.setPassword(worker.getPassword());
 			LOGGER.info("Worker with id=" + id + " updated password= " + worker.getPassword());
 		}
-		if (worker.getCompanyname() != null && !worker.getCompanyname().isEmpty()) {
-			workerUpdate.setCompanyname(worker.getCompanyname());
-			LOGGER.info("Worker with id=" + id + " updated companyName= " + worker.getPassword());
-		}
 		LOGGER.info("Worker with id=" + id + " updated");
 		return workerRepository.save(workerUpdate);
 	}

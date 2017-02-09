@@ -20,7 +20,6 @@ public class Report {
 	private Boolean show_description = Boolean.TRUE;
 	private Boolean show_start = Boolean.TRUE;
 	private Boolean show_finish = Boolean.TRUE;
-	private Boolean show_duration = Boolean.TRUE;
 	
 	public String getCompany_name() {
 		return company_name;
@@ -69,12 +68,6 @@ public class Report {
 	}
 	public void setShow_finish(Boolean show_finish) {
 		this.show_finish = show_finish;
-	}
-	public Boolean getShow_duration() {
-		return show_duration;
-	}
-	public void setShow_duration(Boolean show_duration) {
-		this.show_duration = show_duration;
 	}
 	public String getReport_text() {
 		return report_text;

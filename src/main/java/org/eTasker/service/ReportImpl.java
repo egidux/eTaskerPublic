@@ -23,7 +23,6 @@ public class ReportImpl implements ReportService {
 		if (init) {
 			Report report = new Report();
 			report.setShow_description(Boolean.TRUE);
-			report.setShow_duration(Boolean.TRUE);
 			report.setShow_finish(Boolean.TRUE);
 			report.setShow_price(Boolean.TRUE);
 			report.setShow_start(Boolean.TRUE);
@@ -56,10 +55,6 @@ public class ReportImpl implements ReportService {
 		if (report.getShow_description() != null) {
 			reportUpdate.setShow_description(report.getShow_description());
 			LOGGER.info("Report updated show description=" + report.getShow_description());
-		}
-		if (report.getShow_duration() != null) {
-			reportUpdate.setShow_duration(report.getShow_duration());
-			LOGGER.info("Report updated show duration=" + report.getShow_duration());
 		}
 		if (report.getShow_finish() != null) {
 			reportUpdate.setShow_finish(report.getShow_finish());

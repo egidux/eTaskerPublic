@@ -22,7 +22,7 @@ public class WorkerController extends AbstractController {
 	
 	private static final String URL_WORKERS = "workers";
 	private static final String EMAIL_SUBJECT = "Welcome";
-	private static final String EMAIL_TEXT = "You are registered worker for ";
+	private static final String EMAIL_TEXT = "You are registered worker for ..";
 
 	@Autowired
 	protected WorkerService workerService;
@@ -47,7 +47,7 @@ public class WorkerController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-		return new ResponseEntity<List<Worker>>(workers, HttpStatus.OK);
+		return new ResponseEntity<String>(JsonBuilder.datatable(workers), HttpStatus.OK);
     }
     
     /**
@@ -111,8 +111,7 @@ public class WorkerController extends AbstractController {
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	new Thread(() -> {
-    		if (!emailController.sendEmail(newWorker.getEmail(), EMAIL_SUBJECT, EMAIL_TEXT + 
-    				newWorker.getCompanyname())) {
+    		if (!emailController.sendEmail(newWorker.getEmail(), EMAIL_SUBJECT, EMAIL_TEXT)) {
     			workerService.delete(newWorker);
 			}
     	}).start();
@@ -142,6 +141,28 @@ public class WorkerController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "not found worker with id=" + id), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
+    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+	/**
+	 * Deletes worker
+	 * @param worker
+	 * @param session
+	 * @return if request successful returns 204(No Content)
+	 * 		   if Unauthorized returns       401(Unauthorized) and error message as Json
+	 * 		   if delete fail return         500(Internal Server Error) and error message as Json
+	 */
+    @RequestMapping(
+            value = URL_WORKERS +"/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteWorker(Worker worker, HttpSession session, @PathVariable("id") Long id) {
+    	logger.info("Http request DELETE /user/api/" + URL_WORKERS + " with worker: " + JsonBuilder.build(worker));
+    	if (getSessionAuthorization(session) == null) {
+    		logger.debug("Http request PUT /user/api/" + URL_WORKERS + " failed, not logged in");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
+    	workerService.delete(worker);
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
