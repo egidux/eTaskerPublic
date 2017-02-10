@@ -17,4 +17,6 @@ public interface ClientService {
     void delete(Client client);
     
     Client findByEmail(String email);
+    
+    Client findByName(String name);
 }

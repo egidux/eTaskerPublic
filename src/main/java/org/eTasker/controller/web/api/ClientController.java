@@ -44,7 +44,7 @@ public class ClientController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-		return new ResponseEntity<>(JsonBuilder.datatable(clients), HttpStatus.OK);
+		return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
     }
     
     /**
@@ -98,7 +98,7 @@ public class ClientController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
     				HttpStatus.BAD_REQUEST);
     	}
-    	if (clientService.findByEmail(client.getEmail()) != null) {
+    	if (clientService.findByName(client.getName()) != null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "client exists"), 
     				HttpStatus.CONFLICT);
     	}
@@ -133,6 +133,28 @@ public class ClientController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "client does not exist"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
+    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+	/**
+	 * Deletes client
+	 * @param client
+	 * @param session
+	 * @return if request successful returns 204(No Content)
+	 * 		   if Unauthorized returns       401(Unauthorized) and error message as Json
+	 * 		   if delete fail return         500(Internal Server Error) and error message as Json
+	 */
+    @RequestMapping(
+            value = URL_CLIENTS +"/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteClient(Client client, HttpSession session, @PathVariable("id") Long id) {
+    	logger.info("Http request DELETE /user/api/" + URL_CLIENTS + " with client: " + JsonBuilder.build(client));
+    	if (getSessionAuthorization(session) == null) {
+    		logger.debug("Http request PUT /user/api/" + URL_CLIENTS + " failed, not logged in");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
+    	clientService.delete(client);
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -75,7 +75,7 @@
                 </a>
             </li>
             <li>
-                <a href="#nav-customers" data-toggle="pill">
+                <a href="#nav-clients" data-toggle="pill" id="nav-left-clients">
                     <span class="glyphicon glyphicon-user icon-nav-left" aria-hidden="true"></span>Clients
                 </a>
             </li>
@@ -90,7 +90,7 @@
                 </a>
             </li>
             <li>
-                <a href="#nav-users" data-toggle="pill" id="nav-left-workers">
+                <a href="#nav-workers" data-toggle="pill" id="nav-left-workers">
                     <span class="glyphicon glyphicon-user icon-nav-left" aria-hidden="true"></span>Workers
                 </a>
             </li>
@@ -127,11 +127,129 @@
             </div>
 
             <!--TAB CLIENTS-->
-            <div class="tab-pane" id="nav-customers">
+            <div class="tab-pane" id="nav-clients">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Clients</a></li>
                     <li role="presentation"><a href="#test2" data-toggle="tab">Responsible Persons</a></li>
                 </ul>
+                <div class="tab-content col-md-10">
+                    <div class="tab-pane fade in active" id="tab-client">
+                        <div class="alert alert-success " role="alert" id="alert-client" hidden="hidden">
+                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Success!</strong> <span id="alert-tab-client">New worker created</span>
+                        </div>
+                        <div class="row" id="row-btn-new-client">
+                            <div class="col-md-10">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-client" aria-label="Left Align">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Client
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" id="row-table-client">
+                            <div class="col-md-12">
+                                <table id="table-client" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                    <tfoot>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Company Name</th>
+                                        <th>Company code</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Phone</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <!--MODAL NEW CLIENT-->
+                        <div class="modal fade" id="modal-client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel3">New Client</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-client-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-client-modal-text"></span>
+                                        </div>
+                                        <form id="form-new-client">
+                                            <div class="form-group">
+                                                <label for="client-name">Company Name<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="client-name" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-code">Company code</label>
+                                                <input class="form-control" id="client-code" name="code">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-email">Email</label>
+                                                <input type="email" class="form-control" id="client-email" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-address">Address</label>
+                                                <input  class="form-control" id="client-address" name="address">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-phone">Phone</label>
+                                                <input class="form-control" id="client-phone" name="phone">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="modal-btn-save-client" type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--MODAL EDIT WORKER-->
+                        <div class="modal fade" id="modal-edit-client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel2">Edit worker</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-client-edit-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-client-edit-modal-text"></span>
+                                        </div>
+                                        <form id="form-edit-client">
+                                            <div class="form-group">
+                                                <label for="client-name-edit">Company Name<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="client-name-edit" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-code-edit">Company code</label>
+                                                <input class="form-control" id="client-code-edit" name="code">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-email-edit">Email</label>
+                                                <input type="email" class="form-control" id="client-email-edit" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-address-edit">Address</label>
+                                                <input  class="form-control" id="client-address-edit" name="address">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-phone-edit">Phone</label>
+                                                <input class="form-control" id="client-phone-edit" name="phone">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="modal-btn-delete-client" type="button" class="btn btn-danger">Delete</button>
+                                        <button id="modal-btn-edit-client" type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!--TAB OBJECTS-->
@@ -149,7 +267,7 @@
             </div>
 
             <!--TAB WORKERS-->
-            <div class="tab-pane" id="nav-users">
+            <div class="tab-pane" id="nav-workers">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#tab-workers" data-toggle="tab">Workers</a></li>
                 </ul>

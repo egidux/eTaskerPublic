@@ -93,6 +93,161 @@ $(document).ready(function() {
     });
 
     /**
+     * NAV CLIENTS
+     */
+
+    //Draw Worker table
+    function drawClientTable() {
+        $.ajax({
+            type : "GET",
+            url : "/user/api/clients",
+            success : function(json) {
+                var dataSet = [];
+                $.each(json, function(i, obj) {
+                    var temp = [];
+                    temp.push(obj.id);
+                    temp.push(obj.name);
+                    temp.push(obj.code);
+                    temp.push(obj.email);
+                    temp.push(obj.address);
+                    temp.push(obj.phone);
+                    dataSet.push(temp);
+                });
+                var table = $('#table-client').DataTable( {
+                    destroy: true,
+                    data: dataSet,
+                    columns: [
+                        { title: "ID" },
+                        { title: "Company Name" },
+                        { title: "Company code" },
+                        { title: "Email" },
+                        { title: "Address" },
+                        { title: "Phone" }
+                    ]
+                } );
+                setClientTableListener(table);
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    }
+
+    //NAV LEFT WORKERS LISTENER
+    $('#nav-left-clients').on('click', function(e) {
+        drawClientTable();
+    });
+
+    // BTN NEW WORKER SAVE LISTENER
+    $('#modal-btn-save-client').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : "POST",
+            url : "/user/api/clients",
+            data : $("#form-new-client").serialize(),
+            success : function(data) {
+                drawClientTable();
+                $('#modal-client').modal('toggle');
+                $('#alert-tab-client').html('New Client created')
+                $('#alert-client').show();
+                hideAlert();
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+                json = JSON.parse(e.responseText);
+                $('#alert-client-modal-text').html(json.error);
+                $('#alert-client-modal').show();
+                hideAlert();
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    })
+
+    function setClientTableListener(table) {
+        //Worker table click listener
+        $('#table-client tbody').off('click');
+        $('#table-client tbody').on('click', 'tr', function () {
+            var data = table.row( this ).data();
+            $.ajax({
+                type : "GET",
+                url : "/user/api/clients/" + data[0],
+                success : function(json) {
+                    $('#modal-edit-client').modal();
+                    $('#client-name-edit').val(json.name);
+                    $('#client-code-edit').val(json.code);
+                    $('#client-email-edit').val(json.email);
+                    $('#client-address-edit').val(json.address);
+                    $('#client-phone-edit').val(json.phone);
+
+                    $('#modal-btn-edit-client').off('click');
+                    $('#modal-btn-edit-client').on('click', function (e) {
+                        e.preventDefault();
+                        $.ajax({
+                            type : "PUT",
+                            url : "/user/api/clients/" + data[0],
+                            data : $("#form-edit-client").serialize(),
+                            success : function(json) {
+                                $('#modal-edit-client').modal('toggle');
+                                $('#alert-tab-client').html('Client updated');
+                                hideAlert();
+                                $('#alert-client').show();
+                                drawClientTable();
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                                json = JSON.parse(e.responseText);
+                                $('#alert-client-edit-modal-text').html(json.error);
+                                $('#alert-client-edit-modal').show();
+                                hideAlert();
+                            },
+                            done : function(e) {
+                                console.log("DONE");
+                            }
+                        })
+                    })
+                    $('#modal-btn-delete-client').off('click');
+                    $('#modal-btn-delete-client').on('click', function (e) {
+                        e.preventDefault();
+                        $.ajax({
+                            type : "DELETE",
+                            url : "/user/api/clients/" + data[0],
+                            success : function(json) {
+                                $('#modal-edit-client').modal('toggle');
+                                $('#alert-tab-client').html('Client deleted');
+                                $('#alert-client').show();
+                                hideAlert();
+                                drawClientTable();
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                                json = JSON.parse(e.responseText);
+                                $('#alert-client-edit-modal-text').html(json.error);
+                                $('#alert-client-edit-modal').show();
+                                hideAlert();
+                            },
+                            done : function(e) {
+                                console.log("DONE");
+                            }
+                        })
+                    })
+                },
+                error : function(e) {
+                    console.log("ERROR: ", e);
+                },
+                done : function(e) {
+                    console.log("DONE");
+                }
+            });
+        } );
+    }
+
+
+    /**
      * NAV WORKERS
      */
 

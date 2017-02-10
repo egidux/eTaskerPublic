@@ -93,4 +93,14 @@ public class ClientImpl implements ClientService {
 		LOGGER.debug("Found client with email=" + email);
 		return client;
 	}
+	
+	@Override
+	public Client findByName(String name) {
+		Client client = clientRepository.findByName(name);
+		if (client == null) {
+			LOGGER.debug("Not found client with name=" + name);
+		}
+		LOGGER.debug("Found client with name=" + name);
+		return client;
+	}
 }
