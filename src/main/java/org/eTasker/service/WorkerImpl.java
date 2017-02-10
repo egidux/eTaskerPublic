@@ -1,5 +1,7 @@
 package org.eTasker.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.eTasker.model.Worker;
@@ -39,6 +41,7 @@ public class WorkerImpl implements WorkerService {
 
 	@Override
 	public Worker create(Worker worker) {
+		worker.setCreated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
 		Worker newWorker = workerRepository.save(worker);
 		if (newWorker == null) {
 			LOGGER.debug("Failed create new uworker: " + JsonBuilder.build(worker));
@@ -66,6 +69,7 @@ public class WorkerImpl implements WorkerService {
 			workerUpdate.setPassword(worker.getPassword());
 			LOGGER.info("Worker with id=" + id + " updated password= " + worker.getPassword());
 		}
+		workerUpdate.setUpdated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
 		LOGGER.info("Worker with id=" + id + " updated");
 		return workerRepository.save(workerUpdate);
 	}

@@ -9,7 +9,7 @@ $(document).ready(function() {
         $(this).closest("." + $(this).attr("data-hide")).hide();
     });
     function hideAlert() {
-        $(".alert").delay(3000).slideUp(500, function() {
+        $(".alert").delay(2500).slideUp(500, function() {
             $(this).slideUp(500);
         });
     }
@@ -98,19 +98,19 @@ $(document).ready(function() {
 
     //Draw Worker table
     function drawWorkerTable() {
+        $('#table-worker tbody').remove();
         var table = $('#table-worker').DataTable( {
             destroy: true,
             "processing": true,
             "clientSide": true,
             "ajax": "/user/api/workers"
         } );
-        return table;
+        setWorkerTableListener(table);
     }
 
     //NAV LEFT WORKERS LISTENER
     $('#nav-left-workers').on('click', function(e) {
-        var table = drawWorkerTable();
-        setWorkerTableListener(table);
+        drawWorkerTable();
     });
 
     // BTN NEW WORKER SAVE LISTENER
@@ -121,8 +121,7 @@ $(document).ready(function() {
             url : "/user/api/workers",
             data : $("#form-new-worker").serialize(),
             success : function(data) {
-                var table = drawWorkerTable();
-                setWorkerTableListener(table);
+                drawWorkerTable();
                 $('#modal-worker').modal('toggle');
                 $('#alert-tab-worker').html('New Worker created')
                 $('#alert-worker').show();
@@ -143,7 +142,6 @@ $(document).ready(function() {
 
     function setWorkerTableListener(table) {
         //Worker table click listener
-        $('#table-worker tbody').off();
         $('#table-worker tbody').off('click');
         $('#table-worker tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
@@ -155,6 +153,8 @@ $(document).ready(function() {
                     $('#worker-name-edit').val(json.name);
                     $('#worker-email-edit').val(json.email);
                     $('#worker-password-edit').val(json.password);
+
+                    $('#modal-btn-edit-worker').off('click');
                     $('#modal-btn-edit-worker').on('click', function (e) {
                         e.preventDefault();
                         $.ajax({
@@ -163,7 +163,9 @@ $(document).ready(function() {
                             data : $("#form-edit-worker").serialize(),
                             success : function(json) {
                                 $('#modal-edit-worker').modal('toggle');
-                                $('#alert-tab-worker').html('Worker updated!')
+                                $('#alert-tab-worker').html('Worker updated');
+                                hideAlert();
+                                $('#alert-worker').show();
                                 drawWorkerTable();
                             },
                             error : function(e) {
@@ -178,6 +180,7 @@ $(document).ready(function() {
                             }
                         })
                     })
+                    $('#modal-btn-delete-worker').off('click');
                     $('#modal-btn-delete-worker').on('click', function (e) {
                         e.preventDefault();
                         $.ajax({
@@ -185,7 +188,9 @@ $(document).ready(function() {
                             url : "/user/api/workers/" + data[0],
                             success : function(json) {
                                 $('#modal-edit-worker').modal('toggle');
-                                $('#alert-tab-worker').html('Worker deleted successfully')
+                                $('#alert-tab-worker').html('Worker deleted');
+                                $('#alert-worker').show();
+                                hideAlert();
                                 drawWorkerTable();
                             },
                             error : function(e) {

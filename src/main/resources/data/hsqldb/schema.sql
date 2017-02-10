@@ -24,6 +24,8 @@ CREATE TABLE Worker (
   email VARCHAR(50),
   name VARCHAR(50),
   password VARCHAR(50),
+  created VARCHAR(50),
+  updated VARCHAR(50),
   PRIMARY KEY(id)
 );
 

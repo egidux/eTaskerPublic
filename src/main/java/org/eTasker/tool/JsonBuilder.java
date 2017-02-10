@@ -44,6 +44,8 @@ public class JsonBuilder {
 				tempArray.put(worker.getId());
 				tempArray.put(worker.getName());
 				tempArray.put(worker.getEmail());
+				tempArray.put(worker.getCreated());
+				tempArray.put(worker.getUpdated());
 				jsonArray.put(tempArray);
 			}
 		}
