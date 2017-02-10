@@ -12,7 +12,9 @@ public class Client {
     private long id;
 	private String email;
 	private String name;
-	private String companyname;
+	private String code;
+	private String address;
+	private String phone;
 	
 	public String getName() {
 		return name;
@@ -26,16 +28,31 @@ public class Client {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getCompanyname() {
-		return companyname;
-	}
-	public void setCompanyname(String companyName) {
-		this.companyname = companyName;
-	}
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public void setId(long id) {
 		this.id = id;
 	}
 }

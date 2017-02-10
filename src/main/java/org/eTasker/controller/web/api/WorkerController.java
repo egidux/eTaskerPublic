@@ -47,7 +47,7 @@ public class WorkerController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-		return new ResponseEntity<String>(JsonBuilder.datatable(workers), HttpStatus.OK);
+		return new ResponseEntity<List<Worker>>(workers, HttpStatus.OK);
     }
     
     /**

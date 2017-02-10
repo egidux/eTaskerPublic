@@ -2,6 +2,7 @@ package org.eTasker.tool;
 
 import java.util.List;
 
+import org.eTasker.model.Client;
 import org.eTasker.model.Worker;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,6 +47,18 @@ public class JsonBuilder {
 				tempArray.put(worker.getEmail());
 				tempArray.put(worker.getCreated());
 				tempArray.put(worker.getUpdated());
+				jsonArray.put(tempArray);
+			}
+		} else if (list.get(0) instanceof Client) {
+			for (int i = 0; i < list.size(); i++) {
+				Client client = (Client)list.get(i);
+				JSONArray tempArray = new JSONArray();
+				tempArray.put(client.getId());
+				tempArray.put(client.getName());
+				tempArray.put(client.getEmail());
+				tempArray.put(client.getCode());
+				tempArray.put(client.getAddress());
+				tempArray.put(client.getPhone());
 				jsonArray.put(tempArray);
 			}
 		}

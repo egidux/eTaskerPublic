@@ -44,7 +44,7 @@ public class ClientController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-		return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
+		return new ResponseEntity<>(JsonBuilder.datatable(clients), HttpStatus.OK);
     }
     
     /**
@@ -92,8 +92,7 @@ public class ClientController extends AbstractController {
 			logger.info("Http request POST /user/api/" + URL_CLIENTS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	if (client.getEmail() == null || client.getEmail().isEmpty() || client.getCompanyname() == null || 
-    			client.getCompanyname().isEmpty() || client.getName() == null || client.getName().isEmpty()) {
+    	if (client.getName() == null || client.getName().isEmpty()) {
     		logger.debug("Http request POST /user/api/" + URL_CLIENTS + " missing parameters: " + 
     					JsonBuilder.build(client));
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),

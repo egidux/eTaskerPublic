@@ -62,9 +62,17 @@ public class ClientImpl implements ClientService {
 			clientUpdate.setEmail(client.getEmail());
 			LOGGER.info("Client with id=" + id + " updated email= " + client.getEmail());
 		}
-		if (client.getCompanyname() != null && !client.getCompanyname().isEmpty()) {
-			clientUpdate.setCompanyname(client.getCompanyname());
-			LOGGER.info("Client with id=" + id + " updated companyName= " + client.getCompanyname());
+		if (client.getAddress()!= null && !client.getAddress().isEmpty()) {
+			clientUpdate.setAddress(client.getAddress());
+			LOGGER.info("Client with id=" + id + " updated addresse= " + client.getAddress());
+		}
+		if (client.getCode()!= null && !client.getCode().isEmpty()) {
+			clientUpdate.setCode(client.getCode());
+			LOGGER.info("Client with id=" + id + " updated code= " + client.getCode());
+		}
+		if (client.getPhone() != null && !client.getPhone().isEmpty()) {
+			clientUpdate.setPhone(client.getPhone());
+			LOGGER.info("Client with id=" + id + " updated phone= " + client.getPhone());
 		}
 		LOGGER.info("Client with id=" + id + " updated");
 		return clientRepository.save(clientUpdate);

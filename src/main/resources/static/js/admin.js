@@ -98,14 +98,40 @@ $(document).ready(function() {
 
     //Draw Worker table
     function drawWorkerTable() {
-        $('#table-worker tbody').remove();
-        var table = $('#table-worker').DataTable( {
-            destroy: true,
-            "processing": true,
-            "clientSide": true,
-            "ajax": "/user/api/workers"
-        } );
-        setWorkerTableListener(table);
+        $.ajax({
+            type : "GET",
+            url : "/user/api/workers",
+            success : function(json) {
+                var dataSet = [];
+                $.each(json, function(i, obj) {
+                    var temp = [];
+                    temp.push(obj.id);
+                    temp.push(obj.name);
+                    temp.push(obj.email);
+                    temp.push(obj.created);
+                    temp.push(obj.updated);
+                    dataSet.push(temp);
+                });
+                var table = $('#table-worker').DataTable( {
+                    destroy: true,
+                    data: dataSet,
+                    columns: [
+                        { title: "ID" },
+                        { title: "Name" },
+                        { title: "Email" },
+                        { title: "Created" },
+                        { title: "Updated" }
+                    ]
+                } );
+               setWorkerTableListener(table);
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
     }
 
     //NAV LEFT WORKERS LISTENER
