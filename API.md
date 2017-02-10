@@ -69,7 +69,9 @@ GET https://locallhost:8085/user/api/logout
  | id    | String |Item id|
  |email|String|Client email|
  |name|String|Client name|
- |companyName|String|Company name|
+ |code|String|Client code|
+ |address|String|Client address|
+ |phone|String|Client phone|
 
 * ### Create a new Client
 
