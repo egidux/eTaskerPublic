@@ -220,6 +220,8 @@ GET https://locallhost:8085/user/api/logout
  |name|String|Worker name|
  |password|String| Login password |
  |companyName |String |Company name |
+ |created|time stamp|date created|
+ |updated|time stamp|date updated|
 
 * ### Create a new Worker
 
