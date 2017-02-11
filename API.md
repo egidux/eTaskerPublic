@@ -119,9 +119,8 @@ GET https://locallhost:8085/user/api/logout
  | :----- |:------| :----------|
  | id    | String |Item id|
  |address|String|Object address|
- |responsiblePerson|String|Responsible person id|
- |created|timestamp|~|
- |updated|timestamp|~|
+ |name|String|Object's name|
+ |client|Int|Client ID|
 
 * ### Create a new Object
 
