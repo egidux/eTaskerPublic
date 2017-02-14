@@ -78,6 +78,10 @@ th {
     height: 100%;
 }
 
+#calendar {
+    margin-top: 30px;
+}
+
 /*WORKER*/
 #row-btn-new-worker {
     margin-top: 30px;

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css">
     <link rel="stylesheet" href="css/admin.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -16,6 +17,7 @@
     <script type="text/javascript" src="js/moment.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7cdlY9e-mNAzmsBZucijb7SOeOA0FS-0&libraries=places" async defer></script>
+    <script src="js/fullcalendar.js"></script>
     <script src="js/admin.js"></script>
 </head>
 <body>
@@ -130,8 +132,17 @@
             <!--TAB CALENDAR-->
             <div class="tab-pane " id="nav-calendar">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#">Calendar</a></li>
+                    <li role="presentation" class="active"><a href="#tab-calendar">Calendar</a></li>
                 </ul>
+                <div class="tab-content col-md-10">
+                    <div class="tab-pane fade in active" id="tab-calendar">
+                        <div class="row">
+                            <div id="calendar" class="col-md-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!--TAB TASKS-->

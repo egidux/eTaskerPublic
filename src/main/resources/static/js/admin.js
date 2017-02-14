@@ -226,6 +226,19 @@ $(document).ready(function() {
     });
 
     /**
+     *
+     * NAV CALENDAR
+     */
+    function initCalendar(){
+        $('#calendar').fullCalendar({
+            height: "auto"
+        });
+    }
+    $('#nav-left-calendar').on('click', function(e) {
+        setTimeout(initCalendar, 10);
+    });
+
+    /**
      * NAV TASKS
      */
 

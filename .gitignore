@@ -5,3 +5,5 @@
 src/main/resources/static/.idea/modules.xml
 src/main/resources/static/.idea/static.iml
 src/main/resources/static/.idea/workspace.xml
+*.1
+eTasker.log.1
