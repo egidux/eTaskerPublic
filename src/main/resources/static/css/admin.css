@@ -44,9 +44,40 @@ th {
     font-weight: normal;
 }
 
-.modal-header {
-    background-color: #fff;
+.pac-container {
+    z-index: 10000 !important;
 }
+
+.modal{
+    overflow:auto !important;
+}
+
+.btnw {
+    width: 130px !important;
+}
+
+#map-wrapper-dashboard {
+    margin-top: 30px;
+    height: 65vh;
+}
+
+#map-wrapper-planning {
+    margin-top: 30px;
+    height: 65vh;
+}
+
+.panel-heading {
+    font-size: medium;
+}
+
+#map-container-dashboard {
+    height: 100%;
+}
+
+#map-container-planning {
+    height: 100%;
+}
+
 /*WORKER*/
 #row-btn-new-worker {
     margin-top: 30px;
@@ -66,5 +97,29 @@ th {
     margin-top: 30px;
 }
 #row-btn-new-client {
+    margin-top: 30px;
+}
+
+/*Object*/
+#alert-object {
+    margin-top: 30px;
+}
+#row-table-object {
+    margin-top: 30px;
+}
+#row-btn-new-object {
+    margin-top: 30px;
+}
+
+
+
+/*Task*/
+#alert-task {
+    margin-top: 30px;
+}
+#row-table-task {
+    margin-top: 30px;
+}
+#row-btn-new-task {
     margin-top: 30px;
 }

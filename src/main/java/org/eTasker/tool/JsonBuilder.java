@@ -1,11 +1,5 @@
 package org.eTasker.tool;
 
-import java.util.List;
-
-import org.eTasker.model.Client;
-import org.eTasker.model.Worker;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,44 +19,5 @@ public class JsonBuilder {
 			LOGGER.debug("Failed create JSON string", e);
 		}
         return null;
-    }
-	
-	public static String datatable(List<?> list) {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("draw", 1);
-		jsonObject.put("recordsTotal", list.size());
-		jsonObject.put("recordsFiltered", list.size());
-		JSONArray jsonArray = new JSONArray();
-		jsonObject.put("data", jsonArray);
-		if (list.isEmpty()) {
-			LOGGER.info(jsonObject.toString());
-			return jsonObject.toString();
-		}
-		if (list.get(0) instanceof Worker) {
-			for (int i = 0; i < list.size(); i++) {
-				Worker worker = (Worker)list.get(i);
-				JSONArray tempArray = new JSONArray();
-				tempArray.put(worker.getId());
-				tempArray.put(worker.getName());
-				tempArray.put(worker.getEmail());
-				tempArray.put(worker.getCreated());
-				tempArray.put(worker.getUpdated());
-				jsonArray.put(tempArray);
-			}
-		} else if (list.get(0) instanceof Client) {
-			for (int i = 0; i < list.size(); i++) {
-				Client client = (Client)list.get(i);
-				JSONArray tempArray = new JSONArray();
-				tempArray.put(client.getId());
-				tempArray.put(client.getName());
-				tempArray.put(client.getEmail());
-				tempArray.put(client.getCode());
-				tempArray.put(client.getAddress());
-				tempArray.put(client.getPhone());
-				jsonArray.put(tempArray);
-			}
-		}
-		LOGGER.info(jsonObject.toString());
-		return jsonObject.toString();
     }
 }

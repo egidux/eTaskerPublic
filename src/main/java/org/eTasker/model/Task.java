@@ -38,10 +38,10 @@ public class Task {
     private Boolean bill_status = false; //true if client was billed
     private String bill_date;
     private Boolean file_exists;
-    private Long worker;
+    private String worker;
     private Long task_type;
-    private Long object;
-    private Long client;
+    private String object;
+    private String client;
     private String created;
     private String updated;
     
@@ -189,10 +189,10 @@ public class Task {
 	public void setFile_exists(Boolean file_exists) {
 		this.file_exists = file_exists;
 	}
-	public Long getWorker() {
+	public String getWorker() {
 		return worker;
 	}
-	public void setWorker(Long worker) {
+	public void setWorker(String worker) {
 		this.worker = worker;
 	}
 	public Long getTask_type() {
@@ -201,16 +201,16 @@ public class Task {
 	public void setTask_type(Long task_type) {
 		this.task_type = task_type;
 	}
-	public Long getObject() {
+	public String getObject() {
 		return object;
 	}
-	public void setObject(Long object) {
+	public void setObject(String object) {
 		this.object = object;
 	}
-	public Long getClient() {
+	public String getClient() {
 		return client;
 	}
-	public void setClient(Long client) {
+	public void setClient(String client) {
 		this.client = client;
 	}
 	public String getCreated() {

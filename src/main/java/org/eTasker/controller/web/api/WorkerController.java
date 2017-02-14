@@ -22,7 +22,6 @@ public class WorkerController extends AbstractController {
 	
 	private static final String URL_WORKERS = "workers";
 	private static final String EMAIL_SUBJECT = "Welcome";
-	private static final String EMAIL_TEXT = "You are registered worker for ..";
 
 	@Autowired
 	protected WorkerService workerService;
@@ -111,8 +110,11 @@ public class WorkerController extends AbstractController {
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	new Thread(() -> {
-    		if (!emailController.sendEmail(newWorker.getEmail(), EMAIL_SUBJECT, EMAIL_TEXT)) {
-    			workerService.delete(newWorker);
+    		if (!emailController.sendEmail(newWorker.getEmail(), 
+    				EMAIL_SUBJECT + " " + worker.getName(), "Username :" + worker.getEmail() + 
+    				"\nPassword: " + worker.getPassword())) {
+    			
+    			//workerService.delete(newWorker);
 			}
     	}).start();
     	return new ResponseEntity<>(JsonBuilder.build(newWorker), HttpStatus.CREATED);

@@ -92,8 +92,8 @@ public class ObjectController extends AbstractController {
 			logger.info("Http request POST /user/api/" + URL_OBJECTS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	if (object.getAddress() == null || object.getAddress().isEmpty() || object.getClient() == null ||
-    			object.getResponsibleperson() == null || object.getResponsibleperson().isEmpty()) {
+    	if (object.getName() == null || object.getName().isEmpty() || object.getClient() == null ||
+    			object.getClient().isEmpty()) {
     		logger.debug("Http request POST /user/api/" + URL_OBJECTS + " missing parameters: " + 
     					JsonBuilder.build(object));
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
@@ -125,11 +125,40 @@ public class ObjectController extends AbstractController {
     		logger.debug("Http request PUT /user/api/" + URL_OBJECTS + " failed, not logged in");
     		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
     	}
+    	if (object.getName() == null || object.getName().isEmpty() || object.getClient() == null ||
+    			object.getClient().isEmpty()) {
+    		logger.debug("Http request POST /user/api/" + URL_OBJECTS + " missing parameters: " + 
+    					JsonBuilder.build(object));
+    		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
+    				HttpStatus.BAD_REQUEST);
+    	}
     	Object updatedObject = objectService.update(object, id); 
     	if (updatedObject == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "not found object with id=" + id), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
+    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+	/**
+	 * Deletes object
+	 * @param object
+	 * @param session
+	 * @return if request successful returns 204(No Content)
+	 * 		   if Unauthorized returns       401(Unauthorized) and error message as Json
+	 * 		   if delete fail return         500(Internal Server Error) and error message as Json
+	 */
+    @RequestMapping(
+            value = URL_OBJECTS +"/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteObject(Object object, HttpSession session, @PathVariable("id") Long id) {
+    	logger.info("Http request DELETE /user/api/" + URL_OBJECTS + " : " + JsonBuilder.build(object));
+    	if (getSessionAuthorization(session) == null) {
+    		logger.debug("Http request PUT /user/api/" + URL_OBJECTS + " failed, not logged in");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
+    	objectService.delete(object);
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

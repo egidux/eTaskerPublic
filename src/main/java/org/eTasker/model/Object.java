@@ -10,11 +10,9 @@ public class Object {
 	@Id
     @GeneratedValue
     private long id;
+	private String name;
 	private String address;
-	private Long client;
-	private String responsibleperson;
-	private String created;
-	private String updated;
+	private String client;
 	
 	public long getId() {
 		return id;
@@ -28,28 +26,16 @@ public class Object {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Long getClient() {
+	public String getClient() {
 		return client;
 	}
-	public void setClient(Long client) {
+	public void setClient(String client) {
 		this.client = client;
 	}
-	public String getResponsibleperson() {
-		return responsibleperson;
+	public String getName() {
+		return name;
 	}
-	public void setResponsibleperson(String responsibleperson) {
-		this.responsibleperson = responsibleperson;
-	}
-	public String getCreated() {
-		return created;
-	}
-	public void setCreated(String created) {
-		this.created = created;
-	}
-	public String getUpdated() {
-		return updated;
-	}
-	public void setUpdated(String updated) {
-		this.updated = updated;
+	public void setName(String name) {
+		this.name = name;
 	}
 }

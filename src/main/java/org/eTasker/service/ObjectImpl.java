@@ -1,7 +1,5 @@
 package org.eTasker.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.eTasker.model.Object;
@@ -26,7 +24,7 @@ public class ObjectImpl implements ObjectService {
 		if (objects == null) {
 			LOGGER.debug("Failed to retrieve all objects");
 		}
-		LOGGER.info("Objects: " + objects);
+		LOGGER.info("Objects: " + JsonBuilder.build(objects));
 		return objects;
 	}
 	
@@ -42,7 +40,6 @@ public class ObjectImpl implements ObjectService {
 
 	@Override
 	public Object create(Object object) {
-		object.setCreated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
 		Object newObject = objectRepository.save(object);
 		if (newObject == null) {
 			LOGGER.debug("Failed create new object: " + JsonBuilder.build(object));
@@ -66,11 +63,10 @@ public class ObjectImpl implements ObjectService {
 			objectUpdate.setClient(object.getClient());
 			LOGGER.info("Object with id=" + id + " updated client= " + object.getClient());
 		}
-		if (object.getResponsibleperson() != null && !object.getResponsibleperson().isEmpty()) {
-			objectUpdate.setResponsibleperson(object.getResponsibleperson());
-			LOGGER.info("Object with id=" + id + " updated responsible person= " + object.getResponsibleperson());
+		if (object.getName() != null && !object.getName().isEmpty()) {
+			objectUpdate.setName(object.getName());
+			LOGGER.info("Object with id=" + id + " updated name= " + object.getName());
 		}
-		objectUpdate.setUpdated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
 		LOGGER.info("Object with id=" + id + " updated");
 		return objectRepository.save(objectUpdate);
 	}
