@@ -3,7 +3,7 @@
  */
 //autocomplete address
 var clientAddress, clientAddressEdit, objectAddress, objectAddressEdit, objectClientAddress, taskClientAddress,
-    taskObjectAddress, taskObjectClientAddress;
+    taskObjectAddress, taskObjectClientAddress, layoutAddress;
 function initAutocomplete() {
     clientAddress = new google.maps.places.Autocomplete(
         (document.getElementById('client-address')), {types: ['geocode']});
@@ -21,6 +21,8 @@ function initAutocomplete() {
         (document.getElementById('task-object-address')), {types: ['geocode']});
     taskObjectClientAddress = new google.maps.places.Autocomplete(
         (document.getElementById('task-object-client-address')), {types: ['geocode']});
+    layoutAddress = new google.maps.places.Autocomplete(
+        (document.getElementById('layout-companyaddress')), {types: ['geocode']});
 }
 function geolocate() {
     if (navigator.geolocation) {
@@ -41,6 +43,7 @@ function geolocate() {
             taskClientAddress.setBounds(circle.getBounds());
             taskObjectAddress.setBounds(circle.getBounds());
             taskObjectClientAddress.setBounds(circle.getBounds());
+            layoutAddress.setBounds(circle.getBounds());
         });
     }
 }
@@ -828,7 +831,7 @@ $(document).ready(function() {
     }
 
     /**
-     * NAV OBJECTS
+     * NAV LOCATIONS
      */
 
     //Draw Object table
@@ -851,7 +854,7 @@ $(document).ready(function() {
                     data: dataSet,
                     columns: [
                         { title: "ID" },
-                        { title: "Object name" },
+                        { title: "Name" },
                         { title: "Address" },
                         { title: "Client" }
                     ]
@@ -947,7 +950,7 @@ $(document).ready(function() {
             success : function(data) {
                 drawObjectTable();
                 $('#modal-object').modal('toggle');
-                $('#alert-tab-object').html('New object created')
+                $('#alert-tab-object').html('New location created')
                 $('#alert-object').show();
                 hideAlert();
             },
@@ -1005,7 +1008,7 @@ $(document).ready(function() {
                             data : $("#form-edit-object").serialize(),
                             success : function(json) {
                                 $('#modal-edit-object').modal('toggle');
-                                $('#alert-tab-object').html('Object updated');
+                                $('#alert-tab-object').html('Location updated');
                                 hideAlert();
                                 $('#alert-object').show();
                                 drawObjectTable();
@@ -1030,7 +1033,7 @@ $(document).ready(function() {
                             url : "/user/api/objects/" + data[0],
                             success : function(json) {
                                 $('#modal-edit-object').modal('toggle');
-                                $('#alert-tab-object').html('Object deleted');
+                                $('#alert-tab-object').html('Location deleted');
                                 $('#alert-object').show();
                                 hideAlert();
                                 drawObjectTable();

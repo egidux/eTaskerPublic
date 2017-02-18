@@ -87,7 +87,7 @@
             </li>
             <li>
                 <a href="#nav-objects" data-toggle="pill" id="nav-left-objects">
-                    <span class="glyphicon glyphicon-object-align-bottom icon-nav-left" aria-hidden="true"></span>Objects
+                    <span class="glyphicon glyphicon-map-marker icon-nav-left" aria-hidden="true"></span>Locations
                 </a>
             </li>
             <li>
@@ -156,7 +156,7 @@
                         <div class="row">
                             <div class="map col-md-12">
                                 <div class="panel panel-default" id="map-wrapper-planning">
-                                    <div class="panel-heading">Object locations</div>
+                                    <div class="panel-heading">Client locations</div>
                                     <div class="panel-body" id="map-container-planning"></div>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@
                                         <th>Task title</th>
                                         <th>Worker</th>
                                         <th>Client</th>
-                                        <th>Object</th>
+                                        <th>Location</th>
                                         <th>Status</th>
                                     </tr>
                                     </tfoot>
@@ -247,14 +247,14 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <label>Object<span class="red-star">*</span></label>
+                                                        <label>Location<span class="red-star">*</span></label>
                                                         <div class="input-group">
                                                             <select name="object" class="form-control" id="task-object">
                                                                 <option selected></option>
                                                             </select>
                                                             <span class="input-group-btn">
                                                                 <button data-toggle="modal" data-target="#modal-task-new-object" id="btn-modal-task-new-object" class="btnw btn btn-primary" type="button">
-                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New object
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New location
                                                                 </button>
                                                             </span>
                                                         </div>
@@ -396,7 +396,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel8">New object</h4>
+                                        <h4 class="modal-title" id="myModalLabel8">New location</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="alert alert-danger" role="alert" id="alert-task-object-modal" hidden="hidden">
@@ -613,18 +613,18 @@
             <!--TAB OBJECTS-->
             <div class="tab-pane" id="nav-objects">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#test1" data-toggle="tab">Objects</a></li>
+                    <li role="presentation" class="active"><a href="#tab-object" data-toggle="tab">Locations</a></li>
                 </ul>
                 <div class="tab-content col-md-10">
                     <div class="tab-pane fade in active" id="tab-object">
                         <div class="alert alert-success " role="alert" id="alert-object" hidden="hidden">
                             <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Success!</strong> <span id="alert-tab-object">New object created</span>
+                            <strong>Success!</strong> <span id="alert-tab-object">New location created</span>
                         </div>
                         <div class="row" id="row-btn-new-object">
                             <div class="col-md-10">
                                 <button id="btn-new-object" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-object" aria-label="Left Align">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New object
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New location
                                 </button>
                             </div>
                         </div>
@@ -634,7 +634,7 @@
                                     <tfoot>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Object name</th>
+                                        <th>Name</th>
                                         <th>Address</th>
                                         <th>Client</th>
                                     </tr>
@@ -648,7 +648,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel4">New Object</h4>
+                                        <h4 class="modal-title" id="myModalLabel4">New location</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="alert alert-danger" role="alert" id="alert-object-modal" hidden="hidden">
@@ -696,7 +696,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel5">Edit object</h4>
+                                        <h4 class="modal-title" id="myModalLabel5">Edit location</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="alert alert-danger" role="alert" id="alert-object-edit-modal" hidden="hidden">
@@ -998,7 +998,7 @@
                                                 <div class="form-group">
                                                     <label for="layout-companyaddress" class="col-md-3 control-label">Company address<span class="red-star">*</span></label>
                                                     <div class="col-md-6">
-                                                        <input class="form-control" id="layout-companyaddress" name="company_address">
+                                                        <input type="text" onFocus="geolocate()" class="form-control" id="layout-companyaddress" name="company_address" placeholder="">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
