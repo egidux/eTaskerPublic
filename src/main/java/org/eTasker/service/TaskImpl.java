@@ -27,7 +27,7 @@ public class TaskImpl implements TaskService {
 		if (tasks == null) {
 			LOGGER.debug("Failed to retrieve all tasks");
 		}
-		LOGGER.info("Tasks: " + tasks);
+		LOGGER.info("Tasks: " + JsonBuilder.build(tasks));
 		return tasks;
 	}
 	

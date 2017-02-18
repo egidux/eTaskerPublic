@@ -10,6 +10,8 @@ public interface ObjectService {
 	List<Object> findAll();
 
     Object findOne(Long id);
+    
+    Object findByName(String name);
 
     Object create(Object object);
 

@@ -156,7 +156,7 @@
                         <div class="row">
                             <div class="map col-md-12">
                                 <div class="panel panel-default" id="map-wrapper-planning">
-                                    <div class="panel-heading">Client locations</div>
+                                    <div class="panel-heading">Task locations</div>
                                     <div class="panel-body" id="map-container-planning"></div>
                                 </div>
                             </div>
@@ -413,6 +413,8 @@
                                                 <label>Address</label>
                                                 <input type="text" onFocus="geolocate()" class="form-control" id="task-object-address" name="address" placeholder="">
                                             </div>
+                                            <input type="hidden" id="task-object-lat" name="lat"/>
+                                            <input type="hidden" id="task-object-lng" name="lng"/>
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -665,6 +667,8 @@
                                                 <label for="object-address">Address</label>
                                                 <input type="text" onFocus="geolocate()" class="form-control" id="object-address" name="address" placeholder="">
                                             </div>
+                                            <input type="hidden" id="object-lat" name="lat"/>
+                                            <input type="hidden" id="object-lng" name="lng"/>
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -713,6 +717,8 @@
                                                 <label for="object-address">Address</label>
                                                 <input type="text" onFocus="geolocate()" class="form-control" id="object-address-edit" name="address" placeholder="">
                                             </div>
+                                            <input type="hidden" id="object-lat-edit" name="lat"/>
+                                            <input type="hidden" id="object-lng-edit" name="lng"/>
                                             <div class="form-group">
                                                 <label>Client<span class="red-star">*</span></label>
                                                 <select name="client" class="form-control" id="object-client-edit">

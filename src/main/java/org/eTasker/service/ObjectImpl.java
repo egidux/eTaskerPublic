@@ -37,6 +37,16 @@ public class ObjectImpl implements ObjectService {
 		LOGGER.info("Found object with id=" + id);
 		return object;
 	}
+	
+	@Override
+	public Object findByName(String name) {
+		Object object = objectRepository.findByName(name);
+		if (object == null) {
+			LOGGER.debug("Not found object with name=" + name);
+		}
+		LOGGER.info("Found object with name=" + name);
+		return object;
+	}
 
 	@Override
 	public Object create(Object object) {
@@ -66,6 +76,14 @@ public class ObjectImpl implements ObjectService {
 		if (object.getName() != null && !object.getName().isEmpty()) {
 			objectUpdate.setName(object.getName());
 			LOGGER.info("Object with id=" + id + " updated name= " + object.getName());
+		}
+		if (object.getLat() != null) {
+			objectUpdate.setLat(object.getLat());
+			LOGGER.info("Object with id=" + id + " updated latitude= " + object.getLat());
+		}
+		if (object.getLng() != null) {
+			objectUpdate.setLng(object.getLng());
+			LOGGER.info("Object with id=" + id + " updated longitude= " + object.getLng());
 		}
 		LOGGER.info("Object with id=" + id + " updated");
 		return objectRepository.save(objectUpdate);

@@ -49,7 +49,7 @@ public class ObjectController extends AbstractController {
     }
     
     /**
-     * Retrives specific object
+     * Retrives specific object by ID
      * @param id
      * @return if request successful returns   200(OK) and object as Json
      *         if request unsuccessful returns 400(Bad Request) and error message as Json
@@ -58,7 +58,7 @@ public class ObjectController extends AbstractController {
             value = URL_OBJECTS + "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getObject(@PathVariable("id") Long id, HttpSession session) {
+    public ResponseEntity<?> getObjectByID(@PathVariable("id") Long id, HttpSession session) {
     	logger.info("Http request GET /user/api/" + URL_OBJECTS + "/{id} with id:" + id);
 		if (getSessionAuthorization(session) == null) {
 			logger.info("Http request GET /user/api/" + URL_OBJECTS + " not logged in");
@@ -67,6 +67,30 @@ public class ObjectController extends AbstractController {
     	Object object = objectService.findOne(id);
     	if (object == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "No object found with id=" + id), 
+    				HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<>(JsonBuilder.build(object), HttpStatus.OK);
+    }
+    
+    /**
+     * Retrives specific object by name
+     * @param name
+     * @return if request successful returns   200(OK) and object as Json
+     *         if request unsuccessful returns 400(Bad Request) and error message as Json
+     */
+    @RequestMapping(
+            value = URL_OBJECTS + "/name/{name}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getObjectByName(@PathVariable("name") String name, HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_OBJECTS + "/{name} with name:" + name);
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request GET /user/api/" + URL_OBJECTS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
+    	Object object = objectService.findByName	(name);
+    	if (object == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "No object found with name=" + name), 
     				HttpStatus.BAD_REQUEST);
     	}
     	return new ResponseEntity<>(JsonBuilder.build(object), HttpStatus.OK);

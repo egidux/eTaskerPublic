@@ -23,6 +23,21 @@ function initAutocomplete() {
         (document.getElementById('task-object-client-address')), {types: ['geocode']});
     layoutAddress = new google.maps.places.Autocomplete(
         (document.getElementById('layout-companyaddress')), {types: ['geocode']});
+    google.maps.event.addListener(objectAddress, 'place_changed', function () {
+        var place = objectAddress.getPlace();
+        document.getElementById('object-lat').value = place.geometry.location.lat();
+        document.getElementById('object-lng').value = place.geometry.location.lng();
+    });
+    google.maps.event.addListener(objectAddressEdit, 'place_changed', function () {
+        var place = objectAddressEdit.getPlace();
+        document.getElementById('object-lat-edit').value = place.geometry.location.lat();
+        document.getElementById('object-lng-edit').value = place.geometry.location.lng();
+    });
+    google.maps.event.addListener(taskObjectAddress, 'place_changed', function () {
+        var place = taskObjectAddress.getPlace();
+        document.getElementById('task-object-lat').value = place.geometry.location.lat();
+        document.getElementById('task-object-lng').value = place.geometry.location.lng();
+    });
 }
 function geolocate() {
     if (navigator.geolocation) {
@@ -249,9 +264,55 @@ $(document).ready(function() {
     $('#date-task-planned-end').datetimepicker();
 
     $('.nav-tabs a[href="#tab-planning"]').on('click', function(e) {
-        initPlanningMap()
         setTimeout(initPlanningMap, 300);
-
+        setTimeout(addMarker, 300);
+        function drawMarker(objTask) {
+            $.ajax({
+                type: "GET",
+                url: "/user/api/objects/name/" + objTask.object,
+                success: function (jsonObject) {
+                    var myLatlng = new google.maps.LatLng(jsonObject.lat, jsonObject.lng);
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        title: "Hello",
+                        map: mapPlanning
+                    });
+                    var contentString = '<style>#left {padding-right: 5px;}</style><table> <tr> <td id="left">Task ID</td> <td>'+objTask.id+'</td> </tr> <tr> <td id="left">Client</td>' +
+                        '<td>'+objTask.client+'</td> </tr> <tr> <td id="left">Location</td> <td>'+objTask.object+'</td> </tr> <tr> <td id="left">Task title</td>' +
+                        '<td>'+objTask.title+'</td> </tr> <tr> <td id="left">Status</td> <td>'+objTask.status+'</td> </tr> '+
+                        '<tr> <td id="left">Description</td> <td>'+objTask.description+'</td> </tr></table>';
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString,
+                    });
+                    marker.addListener('click', function() {
+                        infowindow.open(mapPlanning, marker);
+                    });
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                },
+                done: function (e) {
+                    console.log("DONE");
+                }
+            });
+        }
+        function addMarker() {
+            $.ajax({
+                type: "GET",
+                url: "/user/api/tasks",
+                success: function (jsonTask) {
+                    $.each(jsonTask, function (i, objTask) {
+                        drawMarker(objTask)
+                    });
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                },
+                done: function (e) {
+                    console.log("DONE");
+                }
+            });
+        }
     });
 
     //Draw task table
