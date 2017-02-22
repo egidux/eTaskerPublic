@@ -246,9 +246,10 @@ $(document).ready(function() {
     /**
      *
      * NAV CALENDAR
+     *
      */
-    function initCalendar(){
-        $('#calendar').fullCalendar('removeEvents')
+
+    function getCalendarEvents() {
         $.ajax({
             url : "/user/api/tasks",
             type: 'GET',
@@ -263,9 +264,45 @@ $(document).ready(function() {
                         id: task.id
                     });
                 });
+                $('#calendar').fullCalendar( 'rerenderEvents' )
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            },
+            done: function (e) {
+                console.log("DONE");
+            }
+        });
+    }
+    function initCalendar(){
+        $.ajax({
+            url : "/user/api/tasks",
+            type: 'GET',
+            success: function(tasks) {
+                var events = [];
+                $.each(tasks, function(i, task) {
+                    var time = task.planned_time.split(" ").pop();
+                    var date = Date.parse(task.planned_time)
+                    events.push({
+                        title: time + ' ' + task.worker,
+                        start: date.toISOString(),
+                        id: task.id
+                    });
+                });
+                $('#calendar').fullCalendar('removeEvents');
+                $('#calendar').fullCalendar('addEventSource', events);
                 $('#calendar').fullCalendar({
                     height: "auto",
-                    events: events,
+                    //events: events,
+                    dayClick: function(date, jsEvent, view) {
+                        $('#modal-calendar-create-task').modal()
+                        $('#date-calendar-create-task-planned-start').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
+                        var tmpDate = new Date();
+                        $('#date-calendar-create-task-planned-start').data("DateTimePicker").date(date.get('date') + '/' + (date.get('month')+1) + '/' + date.get('year') + ' ' + tmpDate.getHours() +
+                            ':' + tmpDate.getMinutes());
+                        $('#date-calendar-create-task-planned-end').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
+
+                    },
                     eventClick: function(event, jsEvent, view) {
                         $.ajax({
                             type : "GET",
@@ -662,8 +699,7 @@ $(document).ready(function() {
 
     //NAV LEFT TASK LISTENER
     $('#nav-left-tasks').on('click', function(e) {
-        $('#ul-task li:nth-child(2)').removeClass('active');
-        $('#ul-task li:first').addClass('active');
+        $('#ul-task li:first').find('a[data-toggle="tab"]').tab('show');
         drawTaskTable();
     });
 

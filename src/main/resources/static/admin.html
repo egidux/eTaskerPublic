@@ -143,6 +143,95 @@
                             </div>
                         </div>
                         <!--MODAL CALENDAR TASK-->
+                        <div class="modal fade" id="modal-calendar-create-task" tabindex="-1" role="dialog" aria-labelledby="my">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="my">New task</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-calendar-create-task-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-calendar-create-task-modal-text"></span>
+                                        </div>
+                                        <form id="form-calendar-create-task">
+                                            <div class="form-group">
+                                                <label>Task title<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="calendar-create-task-title" name="title">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Planned start time<span class="red-star">*</span></label>
+                                                <div class='input-group date' id='date-calendar-create-task-planned-start'>
+                                                    <input type='text' class="form-control" name="planned_time"/>
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Task end time</label>
+                                                <div class='input-group date' id='date-calendar-create-task-planned-end'>
+                                                    <input type='text' class="form-control" name="planned_end_time"/>
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Client<span class="red-star">*</span></label>
+                                                        <div class="input-group">
+                                                            <select name="client" class="form-control" id="calendar-create-task-client">
+                                                                <option selected></option>
+                                                            </select>
+                                                            <span class="input-group-btn">
+                                                                <button data-toggle="modal" data-target="#modal-task-new-client" id="btn-modalcalendar-create-task-new-client" class="btnw btn btn-primary" type="button">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New client
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Location<span class="red-star">*</span></label>
+                                                        <div class="input-group">
+                                                            <select name="object" class="form-control" id="calendar-create-task-object">
+                                                                <option selected></option>
+                                                            </select>
+                                                            <span class="input-group-btn">
+                                                                <button data-toggle="modal" data-target="#modal-task-new-object" id="btn-modalcalendar-create-task-new-object" class="btnw btn btn-primary" type="button">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New location
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Assigned Worker</label>
+                                                <select name="worker" class="form-control" id="calendar-create-task-worker">
+                                                    <option selected></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Task description</label>
+                                                <textarea rows="2" name="description" class="form-control" id="calendar-create-task-description"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="modal-btn-save-calendar-create-task" type="button" class="btn btn-success">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--MODAL CALENDAR TASK EDIT-->
                         <div class="modal fade" id="modal-calendar-task" tabindex="-1" role="dialog" aria-labelledby="mm">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
