@@ -26,6 +26,29 @@ public class TaskController extends AbstractController {
 	protected TaskService taskService;
 	
 	/**
+	 * Retrieves all tasks for calendar
+	 @return if request successful   returns 200(OK) and all tasks as Json
+	 *       if request unsuccessful returns 500(Internal Server Error) and error message as Json
+	 */
+    @RequestMapping(
+            value = URL_TASKS + "/calendar",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getTasksCalendar(HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_TASKS);
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request GET /user/api/" + URL_TASKS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
+    	List<Task> tasks = taskService.findAll();
+    	if (tasks == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
+    				HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+		return new ResponseEntity<List<Task>>(tasks, HttpStatus.OK);
+    }
+	
+	/**
 	 * Retrieves all tasks
 	 @return if request successful   returns 200(OK) and all tasks as Json
 	 *       if request unsuccessful returns 500(Internal Server Error) and error message as Json

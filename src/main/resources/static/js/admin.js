@@ -239,8 +239,8 @@ $(document).ready(function() {
      * NAV DASHBOARD
      */
 
-    $('#nav-left-dashboard').on('click', function(e) {
-        setTimeout(initDashboardMap, 0);
+    $('#nav-left-dashboard').on('shown.bs.tab', function(e) {
+        initDashboardMap();
     });
 
     /**
@@ -248,8 +248,157 @@ $(document).ready(function() {
      * NAV CALENDAR
      */
     function initCalendar(){
-        $('#calendar').fullCalendar({
-            height: "auto"
+        $('#calendar').fullCalendar('removeEvents')
+        $.ajax({
+            url : "/user/api/tasks",
+            type: 'GET',
+            success: function(tasks) {
+                var events = [];
+                $.each(tasks, function(i, task) {
+                    var time = task.planned_time.split(" ").pop();
+                    var date = Date.parse(task.planned_time)
+                    events.push({
+                        title: time + ' ' + task.worker,
+                        start: date.toISOString(),
+                        id: task.id
+                    });
+                });
+                $('#calendar').fullCalendar({
+                    height: "auto",
+                    events: events,
+                    eventClick: function(event, jsEvent, view) {
+                        $.ajax({
+                            type : "GET",
+                            url : "/user/api/tasks/" + event.id,
+                            success : function(jsonTask) {
+                                $('#modal-calendar-task').modal();
+                                $('#calendar-task-title').val(jsonTask.title);
+                                $('#calendar-task-description').val(jsonTask.description);
+                                $('#date-calendar-task-planned-start').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
+                                $('#date-calendar-task-planned-start').data("DateTimePicker").date(jsonTask.planned_time);
+                                $('#date-calendar-task-planned-end').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
+                                $('#date-calendar-task-planned-end').data("DateTimePicker").date(jsonTask.planned_end_time);
+                                $.ajax({
+                                    type : "GET",
+                                    url : "/user/api/clients",
+                                    success : function(jsonClients) {
+                                        $('#calendar-task-client').empty();
+                                        $('#calendar-task-client').append('<option></option>');
+                                        $.each(jsonClients, function(i, client) {
+                                            if (client.name == jsonTask.client) {
+                                                $('#calendar-task-client').append('<option selected value="' + client.name + '">' + client.name + '</option>');
+                                            } else {
+                                                $('#calendar-task-client').append('<option value="' + client.name + '">' + client.name + '</option>');
+                                            }
+                                        });
+                                    },
+                                    error : function(e) {
+                                        console.log("ERROR: ", e);
+                                    },
+                                    done : function(e) {
+                                        console.log("DONE");
+                                    }
+                                });
+                                $.ajax({
+                                    type : "GET",
+                                    url : "/user/api/objects",
+                                    success : function(jsonObjects) {
+                                        $('#calendar-task-object').empty();
+                                        $('#calendar-task-object').append('<option></option>');
+                                        $.each(jsonObjects, function(i, object) {
+                                            if (object.name == jsonTask.object) {
+                                                $('#calendar-task-object').append('<option selected value="' + object.name + '">' + object.name + '</option>');
+                                            } else {
+                                                $('#calendar-task-object').append('<option value="' + object.name + '">' + object.name + '</option>');
+                                            }
+                                        });
+                                    },
+                                    error : function(e) {
+                                        console.log("ERROR: ", e);
+                                    },
+                                    done : function(e) {
+                                        console.log("DONE");
+                                    }
+                                });
+                                $.ajax({
+                                    type : "GET",
+                                    url : "/user/api/workers",
+                                    success : function(jsonWorkers) {
+                                        $('#calendar-task-worker').empty();
+                                        $('#calendar-task-worker').append('<option></option>');
+                                        $.each(jsonWorkers, function(i, worker) {
+                                            if (worker.name == jsonTask.worker) {
+                                                $('#calendar-task-worker').append('<option selected value="' + worker.name + '">' + worker.name + '</option>');
+                                            } else {
+                                                $('#calendar-task-worker').append('<option value="' + worker.name + '">' + worker.name + '</option>');
+                                            }
+                                        });
+                                    },
+                                    error : function(e) {
+                                        console.log("ERROR: ", e);
+                                    },
+                                    done : function(e) {
+                                        console.log("DONE");
+                                    }
+                                });
+                                $('#modal-btn-edit-calendar-task').off('click');
+                                $('#modal-btn-edit-calendar-task').on('click', function (e) {
+                                    e.preventDefault();
+                                    $.ajax({
+                                        type : "PUT",
+                                        url : "/user/api/tasks/" + event.id,
+                                        data : $("#form-calendar-task").serialize(),
+                                        success : function(json) {
+                                            $('#modal-calendar-task').modal('toggle');
+                                            //$('#alert-tab-task').html('Task updated');
+                                            //hideAlert();
+                                            //$('#alert-task').show();
+                                            initCalendar()
+                                        },
+                                        error : function(e) {
+                                            console.log("ERROR: ", e);
+                                            //json = JSON.parse(e.responseText);
+                                            //$('#alert-task-edit-modal-text').html(json.error);
+                                            //$('#alert-task-edit-modal').show();
+                                           // hideAlert();
+                                        },
+                                        done : function(e) {
+                                            console.log("DONE");
+                                        }
+                                    })
+                                })
+                                $('#modal-btn-delete-calendar-task').off('click');
+                                $('#modal-btn-delete-calendar-task').on('click', function (e) {
+                                    e.preventDefault();
+                                    $.ajax({
+                                        type : "DELETE",
+                                        url : "/user/api/tasks/" + event.id,
+                                        success : function(json) {
+                                            $('#modal-calendar-task').modal('toggle');
+                                            //$('#alert-tab-task').html('Task deleted');
+                                            //$('#alert-task').show();
+                                            //hideAlert();
+                                            initCalendar()
+                                        },
+                                        error : function(e) {
+                                            console.log("ERROR: ", e);
+                                        },
+                                        done : function(e) {
+                                            console.log("DONE");
+                                        }
+                                    })
+                                })
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            },
+                            done : function(e) {
+                                console.log("DONE");
+                            }
+                        });
+                    }
+                });
+            }
         });
     }
     $('#nav-left-calendar').on('click', function(e) {
@@ -260,12 +409,13 @@ $(document).ready(function() {
      * NAV TASKS
      */
 
-    $('#date-task-planned-start').datetimepicker();
-    $('#date-task-planned-end').datetimepicker();
+    $('#date-task-planned-start').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
+    $('#date-task-planned-end').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
 
-    $('.nav-tabs a[href="#tab-planning"]').on('click', function(e) {
-        setTimeout(initPlanningMap, 300);
-        setTimeout(addMarker, 300);
+    $('.nav-tabs a[href="#tab-planning"]').on('shown.bs.tab', function(e) {
+        initPlanningMap()
+        addMarker()
+        google.maps.event.trigger(mapPlanning, 'resize');
         function drawMarker(objTask) {
             $.ajax({
                 type: "GET",
@@ -512,6 +662,8 @@ $(document).ready(function() {
 
     //NAV LEFT TASK LISTENER
     $('#nav-left-tasks').on('click', function(e) {
+        $('#ul-task li:nth-child(2)').removeClass('active');
+        $('#ul-task li:first').addClass('active');
         drawTaskTable();
     });
 
@@ -609,9 +761,9 @@ $(document).ready(function() {
                     $('#modal-edit-task').modal();
                     $('#task-title-edit').val(jsonTask.title);
                     $('#task-description-edit').val(jsonTask.description);
-                    $('#date-task-planned-start-edit').datetimepicker();
+                    $('#date-task-planned-start-edit').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
                     $('#date-task-planned-start-edit').data("DateTimePicker").date(jsonTask.planned_time);
-                    $('#date-task-planned-end-edit').datetimepicker();
+                    $('#date-task-planned-end-edit').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
                     $('#date-task-planned-end-edit').data("DateTimePicker").date(jsonTask.planned_end_time);
                     $.ajax({
                         type : "GET",

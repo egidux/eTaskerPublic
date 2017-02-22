@@ -18,6 +18,7 @@
     <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7cdlY9e-mNAzmsBZucijb7SOeOA0FS-0&libraries=places" async defer></script>
     <script src="js/fullcalendar.js"></script>
+    <script src="js/date.js"></script>
     <script src="js/admin.js"></script>
 </head>
 <body>
@@ -141,13 +142,81 @@
 
                             </div>
                         </div>
+                        <!--MODAL CALENDAR TASK-->
+                        <div class="modal fade" id="modal-calendar-task" tabindex="-1" role="dialog" aria-labelledby="mm">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="mm">Edit task</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-calendar-task-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-calendar-modal-text"></span>
+                                        </div>
+                                        <form id="form-calendar-task">
+                                            <div class="form-group">
+                                                <label>Task title<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="calendar-task-title" name="title">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Planned start time<span class="red-star">*</span></label>
+                                                <div class='input-group date'>
+                                                    <input id='date-calendar-task-planned-start' type='text' class="form-control" name="planned_time"/>
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Task end time</label>
+                                                <div class='input-group date'>
+                                                    <input id='date-calendar-task-planned-end' type='text' class="form-control" name="planned_end_time"/>
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Client<span class="red-star">*</span></label>
+                                                <select name="client" class="form-control" id="calendar-task-client">
+                                                    <option selected></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Location<span class="red-star">*</span></label>
+                                                <select name="object" class="form-control" id="calendar-task-object">
+                                                    <option selected></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Assigned Worker</label>
+                                                <select name="worker" class="form-control" id="calendar-task-worker">
+                                                    <option selected></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Task description</label>
+                                                <textarea rows="2" name="description" class="form-control" id="calendar-task-description"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="modal-btn-delete-calendar-task" type="button" class="btn btn-danger">Delete</button>
+                                        <button id="modal-btn-edit-calendar-task" type="button" class="btn btn-success">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!--TAB TASKS-->
             <div class="tab-pane active" id="nav-tasks">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs" id="ul-task">
                     <li role="presentation" class="active"><a href="#tab-task" data-toggle="tab">Tasks</a></li>
                     <li role="presentation"><a href="#tab-planning" data-toggle="tab">Planning</a></li>
                 </ul>
@@ -323,7 +392,7 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label>Object<span class="red-star">*</span></label>
+                                                <label>Location<span class="red-star">*</span></label>
                                                 <select name="object" class="form-control" id="task-object-edit">
                                                     <option selected></option>
                                                 </select>
