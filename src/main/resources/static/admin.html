@@ -10,16 +10,6 @@
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css">
     <link rel="stylesheet" href="css/admin.css">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/moment.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7cdlY9e-mNAzmsBZucijb7SOeOA0FS-0&libraries=places" async defer></script>
-    <script src="js/fullcalendar.js"></script>
-    <script src="js/date.js"></script>
-    <script src="js/admin.js"></script>
 </head>
 <body>
     <!--STARTUP MODAL-->
@@ -188,7 +178,7 @@
                                                                 <option selected></option>
                                                             </select>
                                                             <span class="input-group-btn">
-                                                                <button data-toggle="modal" data-target="#modal-task-new-client" id="btn-modalcalendar-create-task-new-client" class="btnw btn btn-primary" type="button">
+                                                                <button data-toggle="modal" data-target="#modal-calendar-task-new-client" id="btn-modal-calendar-create-task-new-client" class="btnw btn btn-primary" type="button">
                                                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New client
                                                                 </button>
                                                             </span>
@@ -205,7 +195,7 @@
                                                                 <option selected></option>
                                                             </select>
                                                             <span class="input-group-btn">
-                                                                <button data-toggle="modal" data-target="#modal-task-new-object" id="btn-modalcalendar-create-task-new-object" class="btnw btn btn-primary" type="button">
+                                                                <button data-toggle="modal" data-target="#modal-calendar-task-new-object" id="btn-modal-calendar-create-task-new-object" class="btnw btn btn-primary" type="button">
                                                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New location
                                                                 </button>
                                                             </span>
@@ -227,6 +217,142 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button id="modal-btn-save-calendar-create-task" type="button" class="btn btn-success">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--MODAL CALENDAR TASK NEW CLIENT-->
+                        <div style="overflow-y: scroll;" class="modal fade" id="modal-calendar-task-new-client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel18">New Client</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-calendar-task-client-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-calendar-task-client-modal-text"></span>
+                                        </div>
+                                        <form id="form-calendar-task-new-client">
+                                            <div class="form-group">
+                                                <label for="task-client-name">Company Name<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="calendar-task-client-name" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task-client-code">Company code</label>
+                                                <input class="form-control" id="calendar-task-client-code" name="code">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task-client-email">Email</label>
+                                                <input type="email" class="form-control" id="calendar-task-client-email" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task-client-address">Address</label>
+                                                <input type="text" onFocus="geolocate()" class="form-control" id="calendar-task-client-address" name="address" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task-client-phone">Phone</label>
+                                                <input class="form-control" id="calendar-task-client-phone" name="phone">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="modal-btn-save-calendar-task-client" type="button" class="btn btn-success">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--MODAL CALENDAR TASK NEW OBJECT-->
+                        <div class="modal fade" id="modal-calendar-task-new-object" tabindex="-1" role="dialog" aria-labelledby="myModalLabel89">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel89">New location</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-calendar-task-object-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-calendar-task-object-modal-text"></span>
+                                        </div>
+                                        <form id="form-calendar-task-new-object">
+                                            <div class="form-group">
+                                                <label>Name<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="calendar-task-object-name" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <input type="text" onFocus="geolocate()" class="form-control" id="calendar-task-object-address" name="address" placeholder="">
+                                            </div>
+                                            <input type="hidden" id="calendar-task-object-lat" name="lat"/>
+                                            <input type="hidden" id="calendar-task-object-lng" name="lng"/>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Client<span class="red-star">*</span></label>
+                                                        <div class="input-group">
+                                                            <select name="client" class="form-control" id="calendar-task-object-client">
+                                                                <option selected></option>
+                                                            </select>
+                                                            <span class="input-group-btn">
+                                                                <button data-toggle="modal" data-target="#modal-calendar-task-object-new-client" id="btn-modal-calendar-task-object-new-client" class="btnw btn btn-primary" type="button">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New client
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="modal-btn-calendar-task-save-object" type="button" class="btn btn-success">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--MODAL CALENDAR TASK OBJECT NEW CLIENT-->
+                        <div style="overflow-y: scroll;" class="modal fade" id="modal-calendar-task-object-new-client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel92">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel92">New Client</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert" id="alert-calendar-task-client-object-modal" hidden="hidden">
+                                            <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span id="alert-calendar-task-object-client-modal-text"></span>
+                                        </div>
+                                        <form id="form-calendar-task-object-new-client">
+                                            <div class="form-group">
+                                                <label for="task-client-name">Company Name<span class="red-star">*</span></label>
+                                                <input required="true" class="form-control" id="calendar-task-object-client-name" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task-client-code">Company code</label>
+                                                <input class="form-control" id="calendar-task-object-client-code" name="code">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task-client-email">Email</label>
+                                                <input type="email" class="form-control" id="calendar-task-object-client-email" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task-client-address">Address</label>
+                                                <input type="text" onFocus="geolocate()" class="form-control" id="calendar-task-object-client-address" name="address" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task-client-phone">Phone</label>
+                                                <input class="form-control" id="calendar-task-object-client-phone" name="phone">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="modal-btn-save-calendar-task-object-client" type="button" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -1261,5 +1387,15 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7cdlY9e-mNAzmsBZucijb7SOeOA0FS-0&libraries=places" async defer></script>
+    <script src="js/fullcalendar.js"></script>
+    <script src="js/date.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>

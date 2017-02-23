@@ -16,8 +16,8 @@ public class CustomerController extends AbstractController {
 	
 	private static final String URL_CUSTOMER = "customer";
 	private static final String EMAIL_SUBJECT = "eTasker confirmation";
-	private static final String EMAIL_TEXT = "http://localhost:8085/user/api/customer/";
-	//private static final String EMAIL_TEXT = "https://cpssd1-etasker.computing.dcu.ie/user/api/customer/";
+	//private static final String EMAIL_TEXT = "http://localhost:8085/user/api/customer/";
+	private static final String EMAIL_TEXT = "https://cpssd1-etasker.computing.dcu.ie/user/api/customer/";
 	private static final String VERIFIED_MESSAGE = "Thank You";
 	
 	/**

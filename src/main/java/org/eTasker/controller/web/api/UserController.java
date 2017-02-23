@@ -92,11 +92,11 @@ public class UserController extends AbstractController {
     		logger.debug("Http request POST /user/api/" + URL_LOGIN + " wrong password: " + password);
     		return new ResponseEntity<>(MapBuilder.build("error", "wrong password"), HttpStatus.BAD_REQUEST);
     	}
-    	/*if (!user.getIsver()) {
+    	if (!user.getIsver()) {
     		logger.debug("Http request POST /user/api/" + URL_LOGIN + " user email not verified: " + email);
     		return new ResponseEntity<>(MapBuilder.build("error", "please validate registration"), 
     				HttpStatus.UNAUTHORIZED);
-    	}*/
+    	}
     	session.setAttribute("Authorization", email);
     	logger.info("Http request POST /user/api/" + URL_LOGIN + " session created: Authorization:" + email);
     	return new ResponseEntity<>(JsonBuilder.build(user), HttpStatus.OK);

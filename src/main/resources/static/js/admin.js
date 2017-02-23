@@ -3,7 +3,7 @@
  */
 //autocomplete address
 var clientAddress, clientAddressEdit, objectAddress, objectAddressEdit, objectClientAddress, taskClientAddress,
-    taskObjectAddress, taskObjectClientAddress, layoutAddress;
+    taskObjectAddress, taskObjectClientAddress, layoutAddress, calendarClient, calendarObjectClient;
 function initAutocomplete() {
     clientAddress = new google.maps.places.Autocomplete(
         (document.getElementById('client-address')), {types: ['geocode']});
@@ -23,6 +23,10 @@ function initAutocomplete() {
         (document.getElementById('task-object-client-address')), {types: ['geocode']});
     layoutAddress = new google.maps.places.Autocomplete(
         (document.getElementById('layout-companyaddress')), {types: ['geocode']});
+    calendarClient = new google.maps.places.Autocomplete(
+        (document.getElementById('calendar-task-client-address')), {types: ['geocode']});
+    calendarObjectClient = new google.maps.places.Autocomplete(
+        (document.getElementById('calendar-task-object-client-address')), {types: ['geocode']});
     google.maps.event.addListener(objectAddress, 'place_changed', function () {
         var place = objectAddress.getPlace();
         document.getElementById('object-lat').value = place.geometry.location.lat();
@@ -59,6 +63,8 @@ function geolocate() {
             taskObjectAddress.setBounds(circle.getBounds());
             taskObjectClientAddress.setBounds(circle.getBounds());
             layoutAddress.setBounds(circle.getBounds());
+            calendarClient.setBounds(circle.getBounds());
+            calendarObjectClient.setBounds(circle.getBounds());
         });
     }
 }
@@ -249,31 +255,6 @@ $(document).ready(function() {
      *
      */
 
-    function getCalendarEvents() {
-        $.ajax({
-            url : "/user/api/tasks",
-            type: 'GET',
-            success: function(tasks) {
-                var events = [];
-                $.each(tasks, function(i, task) {
-                    var time = task.planned_time.split(" ").pop();
-                    var date = Date.parse(task.planned_time)
-                    events.push({
-                        title: time + ' ' + task.worker,
-                        start: date.toISOString(),
-                        id: task.id
-                    });
-                });
-                $('#calendar').fullCalendar( 'rerenderEvents' )
-            },
-            error: function (e) {
-                console.log("ERROR: ", e);
-            },
-            done: function (e) {
-                console.log("DONE");
-            }
-        });
-    }
     function initCalendar(){
         $.ajax({
             url : "/user/api/tasks",
@@ -282,7 +263,7 @@ $(document).ready(function() {
                 var events = [];
                 $.each(tasks, function(i, task) {
                     var time = task.planned_time.split(" ").pop();
-                    var date = Date.parse(task.planned_time)
+                    var date = Date.parseExact(task.planned_time, "d/M/yyyy HH:mm")
                     events.push({
                         title: time + ' ' + task.worker,
                         start: date.toISOString(),
@@ -301,6 +282,236 @@ $(document).ready(function() {
                         $('#date-calendar-create-task-planned-start').data("DateTimePicker").date(date.get('date') + '/' + (date.get('month')+1) + '/' + date.get('year') + ' ' + tmpDate.getHours() +
                             ':' + tmpDate.getMinutes());
                         $('#date-calendar-create-task-planned-end').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
+                        //FILL CLIENTS OBJECTS WORKERS
+                        $.ajax({
+                            type : "GET",
+                            url : "/user/api/clients",
+                            success : function(json) {
+                                $('#calendar-create-task-client').empty();
+                                $('#calendar-create-task-client').append('<option selected></option>');
+                                $.each(json, function(i, obj) {
+                                    $('#calendar-create-task-client').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                                });
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            },
+                            done : function(e) {
+                                console.log("DONE");
+                            }
+                        });
+                        $.ajax({
+                            type : "GET",
+                            url : "/user/api/objects",
+                            success : function(json) {
+                                $('#calendar-create-task-object').empty();
+                                $('#calendar-create-task-object').append('<option selected></option>');
+                                $.each(json, function(i, obj) {
+                                    $('#calendar-create-task-object').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                                });
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            },
+                            done : function(e) {
+                                console.log("DONE");
+                            }
+                        });
+                        $.ajax({
+                            type : "GET",
+                            url : "/user/api/workers",
+                            success : function(json) {
+                                $('#calendar-create-task-worker').empty();
+                                $('#calendar-create-task-worker').append('<option selected></option>');
+                                $.each(json, function(i, obj) {
+                                    $('#calendar-create-task-worker').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                                });
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            },
+                            done : function(e) {
+                                console.log("DONE");
+                            }
+                        });
+                        // BTN CALENDAR TASK MODAL NEW CLIENT SAVE LISTENER
+                        $('#modal-btn-save-calendar-task-client').on('click', function(e) {
+                            var clientName = $('#calendar-task-client-name').val();
+                            e.preventDefault();
+                            $.ajax({
+                                type : "POST",
+                                url : "/user/api/clients",
+                                data : $("#form-calendar-task-new-client").serialize(),
+                                success : function(data) {
+                                    $('#modal-calendar-task-new-client').modal('toggle');
+                                    $.ajax({
+                                        type : "GET",
+                                        url : "/user/api/clients",
+                                        success : function(json) {
+                                            $('#calendar-create-task-client').empty();
+                                            $.each(json, function(i, obj) {
+                                                if (obj.name === clientName) {
+                                                    $('#calendar-create-task-client').append('<option selected value="' + obj.name + '">' + obj.name + '</option>');
+                                                } else {
+                                                    $('#calendar-create-task-client').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                                                }
+                                            });
+                                        },
+                                        error : function(e) {
+                                            console.log("ERROR: ", e);
+                                        },
+                                        done : function(e) {
+                                            console.log("DONE");
+                                        }
+                                    });
+                                },
+                                error : function(e) {
+                                    console.log("ERROR: ", e);
+                                    json = JSON.parse(e.responseText);
+                                    $('#alert-calendar-task-client-modal-text').html(json.error);
+                                    $('#alert-calendar-task-client-modal').show();
+                                    hideAlert();
+                                },
+                                done : function(e) {
+                                    console.log("DONE");
+                                }
+                            });
+                        })
+
+                        // BTN CALENDAR TASK MODAL NEW OBJECT SAVE LISTENER
+                        $('#modal-btn-calendar-task-save-object').on('click', function(e) {
+                            var objectName = $('#calendar-task-object-name').val();
+                            e.preventDefault();
+                            $.ajax({
+                                type : "POST",
+                                url : "/user/api/objects",
+                                data : $("#form-calendar-task-new-object").serialize(),
+                                success : function(data) {
+                                    $('#modal-calendar-task-new-object').modal('toggle');
+                                    $.ajax({
+                                        type : "GET",
+                                        url : "/user/api/objects",
+                                        success : function(json) {
+                                            $('#calendar-create-task-object').empty();
+                                            $.each(json, function(i, obj) {
+                                                if (obj.name === objectName) {
+                                                    $('#calendar-create-task-object').append('<option selected value="' + obj.name + '">' + obj.name + '</option>');
+                                                } else {
+                                                    $('#calendar-create-task-object').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                                                }
+                                            });
+                                        },
+                                        error : function(e) {
+                                            console.log("ERROR: ", e);
+                                        },
+                                        done : function(e) {
+                                            console.log("DONE");
+                                        }
+                                    });
+                                },
+                                error : function(e) {
+                                    console.log("ERROR: ", e);
+                                    json = JSON.parse(e.responseText);
+                                    $('#alert-calendar-task-object-modal-text').html(json.error);
+                                    $('#alert-calendar-task-object-modal').show();
+                                    hideAlert();
+                                },
+                                done : function(e) {
+                                    console.log("DONE");
+                                }
+                            });
+                        })
+
+                        // BTN CALENDAR TASK MODAL OBJECT CLIENT SAVE LISTENER
+                        $('#modal-btn-save-calendar-task-object-client').on('click', function(e) {
+                            var clientName = $('#calendar-task-object-client-name').val();
+                            e.preventDefault();
+                            $.ajax({
+                                type : "POST",
+                                url : "/user/api/clients",
+                                data : $("#form-calendar-task-object-new-client").serialize(),
+                                success : function(data) {
+                                    $('#modal-calendar-task-object-new-client').modal('toggle');
+                                    $.ajax({
+                                        type : "GET",
+                                        url : "/user/api/clients",
+                                        success : function(json) {
+                                            $('#calendar-task-object-client').empty();
+                                            $.each(json, function(i, obj) {
+                                                if (obj.name === clientName) {
+                                                    $('#calendar-task-object-client').append('<option selected value="' + obj.name + '">' + obj.name + '</option>');
+                                                } else {
+                                                    $('#calendar-task-object-client').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                                                }
+                                            });
+                                        },
+                                        error : function(e) {
+                                            console.log("ERROR: ", e);
+                                        },
+                                        done : function(e) {
+                                            console.log("DONE");
+                                        }
+                                    });
+                                },
+                                error : function(e) {
+                                    console.log("ERROR: ", e);
+                                    json = JSON.parse(e.responseText);
+                                    $('#alert-calendar-task-object-modal-text').html(json.error);
+                                    $('#alert-calendar-task-object-modal').show();
+                                    hideAlert();
+                                },
+                                done : function(e) {
+                                    console.log("DONE");
+                                }
+                            });
+                        })
+
+                        //BTN CALENDAR NEW OBJECT LISTENER
+                        $('#btn-modal-calendar-create-task-new-object').on('click', function(e) {
+                            e.preventDefault();
+                            $.ajax({
+                                type : "GET",
+                                url : "/user/api/clients",
+                                success : function(json) {
+                                    $('#calendar-task-object-client').empty();
+                                    $('#calendar-task-object-client').append('<option selected></option>');
+                                    $.each(json, function(i, obj) {
+                                        $('#calendar-task-object-client').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                                    });
+                                },
+                                error : function(e) {
+                                    console.log("ERROR: ", e);
+                                },
+                                done : function(e) {
+                                    console.log("DONE");
+                                }
+                            });
+                        })
+
+                        // BTN CALENDAR NEW TASK SAVE LISTENER
+                        $('#modal-btn-save-calendar-create-task').off('click');
+                        $('#modal-btn-save-calendar-create-task').on('click', function(e) {
+                            e.preventDefault();
+                            $.ajax({
+                                type : "POST",
+                                url : "/user/api/tasks",
+                                data : $("#form-calendar-create-task").serialize(),
+                                success : function(data) {
+                                    $('#modal-calendar-create-task').modal('toggle');
+                                    initCalendar()
+                                },
+                                error : function(e) {
+                                    console.log("ERROR: ", e);
+                                    json = JSON.parse(e.responseText);
+                                    $('#alert-calendar-create-task-modal-text').html(json.error);
+                                    $('#alert-calendar-create-task-modal').show();
+                                    hideAlert();
+                                },
+                                done : function(e) {
+                                    console.log("DONE");
+                                }
+                            });
+                        })
 
                     },
                     eventClick: function(event, jsEvent, view) {
