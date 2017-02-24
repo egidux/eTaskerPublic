@@ -1530,6 +1530,155 @@ $(document).ready(function() {
         } );
     }
 
+
+    /**
+     * NAV MATERIALS
+     */
+
+    //Draw Material table
+    function drawMaterialTable() {
+        $.ajax({
+            type : "GET",
+            url : "/user/api/materials",
+            success : function(json) {
+                var dataSet = [];
+                $.each(json, function(i, obj) {
+                    var temp = [];
+                    temp.push(obj.id);
+                    temp.push(obj.name);
+                    temp.push(obj.unit);
+                    temp.push(obj.price + ' EUR');
+                    dataSet.push(temp);
+                });
+                var table = $('#table-material').DataTable( {
+                    destroy: true,
+                    data: dataSet,
+                    columns: [
+                        { title: "ID" },
+                        { title: "Name" },
+                        { title: "Unit" },
+                        { title: "Price" }
+                    ]
+                } );
+                setMaterialTableListener(table);
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    }
+
+    //NAV LEFT MATERIALS LISTENER
+    $('#nav-left-materials').on('click', function(e) {
+        drawMaterialTable();
+    });
+
+    // BTN NEW MATERIAL SAVE LISTENER
+    $('#modal-btn-save-material').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : "POST",
+            url : "/user/api/materials",
+            data : $("#form-new-material").serialize(),
+            success : function(data) {
+                drawMaterialTable();
+                $('#modal-material').modal('toggle');
+                $('#alert-tab-material').html('New material created')
+                $('#alert-material').show();
+                hideAlert();
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+                json = JSON.parse(e.responseText);
+                $('#alert-material-modal-text').html(json.error);
+                $('#alert-material-modal').show();
+                hideAlert();
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    })
+
+    function setMaterialTableListener(table) {
+        $('#table-material tbody').off('click');
+        $('#table-material tbody').on('click', 'tr', function () {
+            var data = table.row( this ).data();
+            $.ajax({
+                type : "GET",
+                url : "/user/api/materials/" + data[0],
+                success : function(json) {
+                    $('#modal-edit-material').modal();
+                    $('#material-name-edit').val(json.name);
+                    $('#material-unit-edit').val(json.unit);
+                    $('#material-price-edit').val(json.price);
+
+                    $('#modal-btn-edit-material').off('click');
+                    $('#modal-btn-edit-material').on('click', function (e) {
+                        e.preventDefault();
+                        $.ajax({
+                            type : "PUT",
+                            url : "/user/api/materials/" + data[0],
+                            data : $("#form-edit-material").serialize(),
+                            success : function(json) {
+                                $('#modal-edit-material').modal('toggle');
+                                $('#alert-tab-material').html('Material updated');
+                                hideAlert();
+                                $('#alert-material').show();
+                                drawMaterialTable();
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                                json = JSON.parse(e.responseText);
+                                $('#alert-material-edit-modal-text').html(json.error);
+                                $('#alert-material-edit-modal').show();
+                                hideAlert();
+                            },
+                            done : function(e) {
+                                console.log("DONE");
+                            }
+                        })
+                    })
+                    $('#modal-btn-delete-material').off('click');
+                    $('#modal-btn-delete-material').on('click', function (e) {
+                        e.preventDefault();
+                        $.ajax({
+                            type : "DELETE",
+                            url : "/user/api/materials/" + data[0],
+                            success : function(json) {
+                                $('#modal-edit-material').modal('toggle');
+                                $('#alert-tab-material').html('Material deleted');
+                                $('#alert-material').show();
+                                hideAlert();
+                                drawMaterialTable();
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                                json = JSON.parse(e.responseText);
+                                $('#alert-material-edit-modal-text').html(json.error);
+                                $('#alert-material-edit-modal').show();
+                                hideAlert();
+                            },
+                            done : function(e) {
+                                console.log("DONE");
+                            }
+                        })
+                    })
+                },
+                error : function(e) {
+                    console.log("ERROR: ", e);
+                },
+                done : function(e) {
+                    console.log("DONE");
+                }
+            });
+        } );
+    }
+
+
     /**
      * NAV WORKERS
      */

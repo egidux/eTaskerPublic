@@ -97,6 +97,17 @@ th {
     margin-top: 30px;
 }
 
+/*MATERIAL*/
+#row-btn-new-material {
+    margin-top: 30px;
+}
+#alert-material {
+    margin-top: 30px;
+}
+#row-table-material {
+    margin-top: 30px;
+}
+
 /*CLIENT*/
 #alert-client {
     margin-top: 30px;

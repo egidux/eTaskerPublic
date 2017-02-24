@@ -10,10 +10,9 @@ public class Material {
 	@Id
     @GeneratedValue
     private long id;
-	private String title;
-	private String serial_number;
-	private String created;
-	private String updated;
+	private String name;
+	private String unit;
+	private Double price;
 	
 	public long getId() {
 		return id;
@@ -21,28 +20,22 @@ public class Material {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getSerial_number() {
-		return serial_number;
+	public String getUnit() {
+		return unit;
 	}
-	public void setSerial_number(String serial_number) {
-		this.serial_number = serial_number;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
-	public String getCreated() {
-		return created;
+	public Double getPrice() {
+		return price;
 	}
-	public void setCreated(String created) {
-		this.created = created;
-	}
-	public String getUpdated() {
-		return updated;
-	}
-	public void setUpdated(String updated) {
-		this.updated = updated;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 }

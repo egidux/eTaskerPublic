@@ -92,8 +92,8 @@ public class MaterialController extends AbstractController {
 			logger.info("Http request POST /user/api/" + URL_MATERIALS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	if (material.getSerial_number() == null || material.getSerial_number().isEmpty() ||
-    			material.getTitle() == null || material.getTitle().isEmpty()) {
+    	if (material.getName() == null || material.getName().isEmpty() ||
+    			material.getUnit() == null || material.getUnit().isEmpty() || material.getPrice() == null) {
     		logger.debug("Http request POST /user/api/" + URL_MATERIALS + " missing parameters: " + 
     					JsonBuilder.build(material));
     		return new ResponseEntity<>(MapBuilder.build("error", "missing parameters"),
@@ -130,6 +130,28 @@ public class MaterialController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "not found material with id=" + id), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
+    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+	/**
+	 * Deletes material
+	 * @param material
+	 * @param session
+	 * @return if request successful returns 204(No Content)
+	 * 		   if Unauthorized returns       401(Unauthorized) and error message as Json
+	 * 		   if delete fail return         500(Internal Server Error) and error message as Json
+	 */
+    @RequestMapping(
+            value = URL_MATERIALS +"/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteMaterial(Material material, HttpSession session, @PathVariable("id") Long id) {
+    	logger.info("Http request DELETE /user/api/" + URL_MATERIALS + " with material: " + JsonBuilder.build(material));
+    	if (getSessionAuthorization(session) == null) {
+    		logger.debug("Http request PUT /user/api/" + URL_MATERIALS + " failed, not logged in");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
+    	materialService.delete(material);
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

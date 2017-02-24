@@ -1,7 +1,5 @@
 package org.eTasker.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.eTasker.model.Material;
@@ -26,7 +24,7 @@ public class MateriaImpl implements MaterialService {
 		if (materials == null) {
 			LOGGER.debug("Failed to retrieve all materials");
 		}
-		LOGGER.info("Materials: " + materials);
+		LOGGER.info("Materials: " + JsonBuilder.build(materials));
 		return materials;
 	}
 	
@@ -42,7 +40,6 @@ public class MateriaImpl implements MaterialService {
 
 	@Override
 	public Material create(Material material) {
-		material.setCreated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
 		Material newMaterial = materialRepository.save(material);
 		if (newMaterial == null) {
 			LOGGER.debug("Failed create new material: " + JsonBuilder.build(material));
@@ -58,15 +55,18 @@ public class MateriaImpl implements MaterialService {
 			LOGGER.info("Failed update, material with id=" + id + " not exists");
 			return null;
 		}
-		if (material.getSerial_number()!= null && !material.getSerial_number().isEmpty()) {
-			materialUpdate.setSerial_number(material.getSerial_number());
-			LOGGER.info("Material with id=" + id + " updated serial number= " + material.getSerial_number());
+		if (material.getName()!= null && !material.getName().isEmpty()) {
+			materialUpdate.setName(material.getName());
+			LOGGER.info("Material with id=" + id + " updated name= " + material.getName());
 		}
-		if (material.getTitle() != null && !material.getTitle().isEmpty()) {
-			materialUpdate.setTitle(material.getTitle());
-			LOGGER.info("Material with id=" + id + " updated title= " + material.getTitle());
+		if (material.getPrice() != null) {
+			materialUpdate.setPrice(material.getPrice());
+			LOGGER.info("Material with id=" + id + " updated price= " + material.getPrice());
 		}
-		materialUpdate.setUpdated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
+		if (material.getUnit()!= null && !material.getUnit().isEmpty()) {
+			materialUpdate.setUnit(material.getUnit());
+			LOGGER.info("Material with id=" + id + " updated unit= " + material.getUnit());
+		}
 		LOGGER.info("Material with id=" + id + " updated");
 		return materialRepository.save(materialUpdate);
 	}
