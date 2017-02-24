@@ -3,7 +3,7 @@
  */
 //autocomplete address
 var clientAddress, clientAddressEdit, objectAddress, objectAddressEdit, objectClientAddress, taskClientAddress,
-    taskObjectAddress, taskObjectClientAddress, layoutAddress, calendarClient, calendarObjectClient;
+    taskObjectAddress, taskObjectClientAddress, layoutAddress, calendarClient, calendarObjectClient, calendarObject;
 function initAutocomplete() {
     clientAddress = new google.maps.places.Autocomplete(
         (document.getElementById('client-address')), {types: ['geocode']});
@@ -27,6 +27,8 @@ function initAutocomplete() {
         (document.getElementById('calendar-task-client-address')), {types: ['geocode']});
     calendarObjectClient = new google.maps.places.Autocomplete(
         (document.getElementById('calendar-task-object-client-address')), {types: ['geocode']});
+    calendarObject = new google.maps.places.Autocomplete(
+        (document.getElementById('calendar-task-object-address')), {types: ['geocode']});
     google.maps.event.addListener(objectAddress, 'place_changed', function () {
         var place = objectAddress.getPlace();
         document.getElementById('object-lat').value = place.geometry.location.lat();
@@ -42,6 +44,12 @@ function initAutocomplete() {
         document.getElementById('task-object-lat').value = place.geometry.location.lat();
         document.getElementById('task-object-lng').value = place.geometry.location.lng();
     });
+    google.maps.event.addListener(calendarObject, 'place_changed', function () {
+        var place = calendarObject.getPlace();
+        document.getElementById('calendar-task-object-lat').value = place.geometry.location.lat();
+        document.getElementById('calendar-task-object-lng').value = place.geometry.location.lng();
+    });
+
 }
 function geolocate() {
     if (navigator.geolocation) {
@@ -65,6 +73,7 @@ function geolocate() {
             layoutAddress.setBounds(circle.getBounds());
             calendarClient.setBounds(circle.getBounds());
             calendarObjectClient.setBounds(circle.getBounds());
+            calendarObject.setBounds(circle.getBounds());
         });
     }
 }
