@@ -107,6 +107,10 @@ th {
 #row-table-material {
     margin-top: 30px;
 }
+#row-table-used-material {
+    margin-top: 30px;
+}
+
 
 /*CLIENT*/
 #alert-client {
