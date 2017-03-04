@@ -19,7 +19,7 @@ public class User {
 	private String companyname;
 	@JsonIgnore
 	private boolean isver;
-	
+
 	public String getName() {
 		return name;
 	}

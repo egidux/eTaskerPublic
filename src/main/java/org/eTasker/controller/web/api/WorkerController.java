@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.eTasker.model.User;
 import org.eTasker.model.Worker;
 import org.eTasker.service.WorkerService;
 import org.eTasker.tool.JsonBuilder;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -70,6 +72,34 @@ public class WorkerController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "No worker found with id=" + id), 
     				HttpStatus.BAD_REQUEST);
     	}
+    	return new ResponseEntity<>(JsonBuilder.build(worker), HttpStatus.OK);
+    }
+    
+    /**
+     * Log in and create session
+     * @param email
+     * @param password
+     * @param session
+     * @return if request successful   returns 204(No Content)
+     *         if wrong email/password returns 400(Bad Requests) and error message as Json
+     */
+	@RequestMapping(
+    		value = URL_WORKERS + "/login",
+    		method = RequestMethod.POST,
+    		produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> login(@RequestParam(value="email") String email, 
+    		@RequestParam(value="password") String password, HttpSession session) {
+		logger.info("Http request POST /user/api/" + URL_WORKERS + "/login");
+    	Worker worker = workerService.findByEmail(email);
+    	if (worker == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "worker not exist"), HttpStatus.BAD_REQUEST);
+    	}
+    	if (!worker.getPassword().equals(password)) {
+    		logger.debug("Http request POST /user/api/" + URL_WORKERS + " wrong password: " + password);
+    		return new ResponseEntity<>(MapBuilder.build("error", "wrong password"), HttpStatus.BAD_REQUEST);
+    	}
+    	session.setAttribute("Authorization", email);
+    	logger.info("Http request POST /user/api/" + URL_WORKERS + "/login session created: Authorization:" + email);
     	return new ResponseEntity<>(JsonBuilder.build(worker), HttpStatus.OK);
     }
     
