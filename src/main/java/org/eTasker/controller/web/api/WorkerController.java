@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.eTasker.model.User;
 import org.eTasker.model.Worker;
 import org.eTasker.service.WorkerService;
 import org.eTasker.tool.JsonBuilder;

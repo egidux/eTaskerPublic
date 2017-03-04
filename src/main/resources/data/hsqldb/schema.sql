@@ -26,6 +26,8 @@ CREATE TABLE Worker (
   password VARCHAR(200),
   created VARCHAR(200),
   updated VARCHAR(200),
+  lat DOUBLE,
+  lng DOUBLE,
   PRIMARY KEY(id)
 );
 
