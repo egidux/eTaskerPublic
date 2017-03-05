@@ -25,7 +25,7 @@ public class WorkerImpl implements WorkerService {
 		if (workers == null) {
 			LOGGER.debug("Failed to retrieve all workers");
 		}
-		LOGGER.info("Workers: " + workers);
+		LOGGER.info("Workers: " + JsonBuilder.build(workers));
 		return workers;
 	}
 	
@@ -68,6 +68,18 @@ public class WorkerImpl implements WorkerService {
 		if (worker.getPassword() != null && !worker.getPassword().isEmpty()) {
 			workerUpdate.setPassword(worker.getPassword());
 			LOGGER.info("Worker with id=" + id + " updated password= " + worker.getPassword());
+		}
+		if (worker.getLat() != null) {
+			workerUpdate.setLat(worker.getLat());
+			LOGGER.info("Worker with id=" + id + " updated lat= " + worker.getLat());
+		}
+		if (worker.getLng() != null) {
+			workerUpdate.setLng(worker.getLng());
+			LOGGER.info("Worker with id=" + id + " updated lng= " + worker.getLng());
+		}
+		if (worker.getIsactive() != null) {
+			workerUpdate.setIsactive(worker.getIsactive());
+			LOGGER.info("Worker with id=" + id + " updated isActive= " + worker.getIsactive());
 		}
 		workerUpdate.setUpdated(new SimpleDateFormat("dd.MM.yyyy:HH.mm.ss").format(new Date()));
 		LOGGER.info("Worker with id=" + id + " updated");

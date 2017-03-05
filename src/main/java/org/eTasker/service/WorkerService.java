@@ -10,11 +10,11 @@ public interface WorkerService {
 
     Worker findOne(Long id);
 
-    Worker create(Worker user);
+    Worker create(Worker worker);
 
-    Worker update(Worker user, Long id);
+    Worker update(Worker worker, Long id);
 
-    void delete(Worker user);
+    void delete(Worker worker);
     
     Worker findByEmail(String email);
 }

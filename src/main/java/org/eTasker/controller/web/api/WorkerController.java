@@ -101,6 +101,31 @@ public class WorkerController extends AbstractController {
     	logger.info("Http request POST /user/api/" + URL_WORKERS + "/login session created: Authorization:" + email);
     	return new ResponseEntity<>(JsonBuilder.build(worker), HttpStatus.OK);
     }
+	
+	/**
+	 * Logout user/owner
+	 * @param session
+	 * @return if request successful returns 204(No Content)
+	 *         if not logged in      returns 401(Unauthorized) and error message as Json
+	 */
+	@RequestMapping(
+			value = URL_WORKERS + "/logout",
+    		method = RequestMethod.POST,
+    		produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> logout(HttpSession session) {
+		String email = getSessionAuthorization(session);
+		if (email == null) {
+			logger.debug("Http request POST /user/api/" + URL_WORKERS + "/logout" + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
+		session.invalidate();
+		logger.info("Http request POST /user/api/" + URL_WORKERS + "/logout" + " session invalidated for worker: " + 
+				email);
+		Worker worker = workerService.findByEmail(email);
+		worker.setIsactive(Boolean.FALSE);
+		workerService.update(worker, worker.getId());
+		return new ResponseEntity<>(worker, HttpStatus.OK);
+	}
     
     /**
      * Creates new worker

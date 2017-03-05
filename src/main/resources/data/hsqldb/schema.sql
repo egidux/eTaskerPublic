@@ -28,6 +28,7 @@ CREATE TABLE Worker (
   updated VARCHAR(200),
   lat DOUBLE,
   lng DOUBLE,
+  isactive boolean,
   PRIMARY KEY(id)
 );
 

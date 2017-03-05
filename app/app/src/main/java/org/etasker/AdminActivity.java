@@ -32,8 +32,8 @@ public class AdminActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 1;
-    private static final String URL_LOGOUT = Constant.URL + "/user/api/logout";
-    private static final String URL_TASKS = Constant.URL + "/user/api/tasks";
+    private static final String URL_LOGOUT = Constant.URL + "/user/api/workers/logout";
+    private static final String URL_WORKERS = Constant.URL + "/user/api/workers";
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -64,8 +64,6 @@ public class AdminActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                final Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
                 AndroidNetworking.post(URL_LOGOUT)
                         .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                         .build()
@@ -75,7 +73,6 @@ public class AdminActivity extends AppCompatActivity implements
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 startActivity(intent);
                             }
-
                             @Override
                             public void onError(ANError error) {
                                 try {
@@ -123,15 +120,54 @@ public class AdminActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AndroidNetworking.post(URL_LOGOUT)
+                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                    }
+                });
+    }
+
+    private void updateLocationServer() {
+        String lat = String.valueOf(mLastLocation.getLatitude());
+        String lng = String.valueOf(mLastLocation.getLongitude());
+        AndroidNetworking.put(URL_WORKERS + "/" + LoginActivity.ID)
+                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                .addQueryParameter("lat", lat)
+                .addQueryParameter("lng", lng)
+                .addQueryParameter("isactive", Boolean.TRUE.toString())
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        try {
+                            JSONObject errorJson = new JSONObject(error.getErrorBody());
+                            Toast.makeText(getApplicationContext(), errorJson.getString("error"), Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {}
+                    }
+                });
+    }
+
     private void getLocation() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck == android.content.pm.PackageManager.PERMISSION_GRANTED) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
             if (mLastLocation != null) {
-                String lat = String.valueOf(mLastLocation.getLatitude());
-                String ltng = String.valueOf(mLastLocation.getLongitude());
-                Toast.makeText(this, lat + " " + ltng, Toast.LENGTH_LONG).show();
+                updateLocationServer();
             }
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
@@ -139,9 +175,6 @@ public class AdminActivity extends AppCompatActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        String lat = String.valueOf(location.getLatitude());
-        String ltng = String.valueOf(location.getLongitude());
-        Toast.makeText(this, "location changed " + lat + " " + ltng, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -114,7 +114,6 @@ public class UserController extends AbstractController {
     		produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> logout(HttpSession session) {
 		String email = getSessionAuthorization(session);
-		
 		if (email == null) {
 			logger.debug("Http request POST /user/api/" + URL_LOGOUT + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
@@ -122,7 +121,7 @@ public class UserController extends AbstractController {
 		session.invalidate();
 		logger.info("Http request POST /user/api/" + URL_LOGOUT + " session invalidated for user: " + 
 				email);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>("{}", HttpStatus.OK);
 	}
     
 	/**

@@ -254,9 +254,51 @@ $(document).ready(function() {
      * NAV DASHBOARD
      */
 
+    var doPollWorkersBoolean = false;
+    var markers = [];
     $('#nav-left-dashboard').on('shown.bs.tab', function(e) {
         initDashboardMap();
+        doPollWorkersBoolean = true;
+        doPollWorkers();
     });
+
+    function doPollWorkers(){
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = [];
+        $.ajax({
+            type : "GET",
+            url : "/user/api/workers",
+            success : function(jsonWorkers) {
+                $.each(jsonWorkers, function(i, jsonWorker) {
+                    if (jsonWorker.isactive == true) {
+                        var myLatlng = new google.maps.LatLng(jsonWorker.lat, jsonWorker.lng);
+                        var marker = new google.maps.Marker({
+                            position: myLatlng,
+                            map: mapDashboard
+                        });
+                        var infowindow = new google.maps.InfoWindow({
+                            content: jsonWorker.name + '</br>ID:' + jsonWorker.id
+                        });
+                        marker.addListener('click', function() {
+                            infowindow.open(mapDashboard, marker);
+                        });
+                        markers.push(marker);
+                    }
+                });
+                if (doPollWorkersBoolean == true) {
+                    setTimeout(doPollWorkers, 5000)
+                }
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    }
 
     /**
      *
@@ -660,6 +702,7 @@ $(document).ready(function() {
     }
     $('#nav-left-calendar').on('click', function(e) {
         setTimeout(initCalendar, 10);
+        doPollWorkersBoolean = false;
     });
 
     /**
@@ -921,6 +964,7 @@ $(document).ready(function() {
     $('#nav-left-tasks').on('click', function(e) {
         $('#ul-task li:first').find('a[data-toggle="tab"]').tab('show');
         drawTaskTable();
+        doPollWorkersBoolean = false;
     });
 
     //BTN NEW TASK LISTENER
@@ -1192,6 +1236,7 @@ $(document).ready(function() {
     //NAV LEFT Client LISTENER
     $('#nav-left-clients').on('click', function(e) {
         drawClientTable();
+        doPollWorkersBoolean = false;
     });
 
     // BTN NEW CLIENT SAVE LISTENER
@@ -1342,6 +1387,7 @@ $(document).ready(function() {
     //NAV LEFT OBJECTS LISTENER
     $('#nav-left-objects').on('click', function(e) {
         drawObjectTable();
+        doPollWorkersBoolean = false;
     });
 
     // BTN OBJECT MODAL NEW CLIENT SAVE LISTENER
@@ -1574,6 +1620,7 @@ $(document).ready(function() {
     //NAV LEFT MATERIALS LISTENER
     $('#nav-left-materials').on('click', function(e) {
         drawMaterialTable();
+        doPollWorkersBoolean = false;
     });
 
     // BTN NEW MATERIAL SAVE LISTENER
@@ -1724,6 +1771,7 @@ $(document).ready(function() {
     //NAV LEFT WORKERS LISTENER
     $('#nav-left-workers').on('click', function(e) {
         drawWorkerTable();
+        doPollWorkersBoolean = false;
     });
 
     // BTN NEW WORKER SAVE LISTENER
@@ -1836,6 +1884,7 @@ $(document).ready(function() {
     //nav settings listener
     $('#nav-left-settings').on('click', function(e) {
         e.preventDefault();
+        doPollWorkersBoolean = false;
         $('#profile-email').val(sessionStorage.getItem('email'));
         $('#profile-name').val(sessionStorage.getItem('name'));
         $('#layout-companyname').val(sessionStorage.getItem('companyname'));
