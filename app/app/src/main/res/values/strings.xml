@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">eTΛSKER</string>
-    <string name="email_login_hint">Email</string>
-    <string name="password_login_hint">Password</string>
-    <string name="btn_login">Login</string>
-    <string name="title_activity_admin">AdminActivity</string>
-    <string name="menu_logout">Logout</string>
-</resources>
