@@ -8,9 +8,11 @@ import javax.persistence.Id;
 public class Task {
 	/* Task status  
 		0	Unassigned
-		1   In progress
-		2	Done
-		3	Aborted
+		1   Assigned
+		2   In progress
+		3	Done
+		4	Aborted
+		5   Stopped
     */
 	@Id
     @GeneratedValue
@@ -27,7 +29,7 @@ public class Task {
     private Integer work_price = 0; //in cents
     private Integer material_price = 0;
     private Integer final_price; //work price + matterial price
-    private Integer status;
+    private Integer status = 0;
     private String planned_time;
     private String planned_end_time;
     private Boolean fetched = false; //true if Task was fetched by worker

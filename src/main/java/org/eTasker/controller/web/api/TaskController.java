@@ -135,7 +135,7 @@ public class TaskController extends AbstractController {
 	 * Updates task
 	 * @param task
 	 * @param session
-	 * @return if request successful returns 204(No Content)
+	 * @return if request successful returns 200(OK)
 	 * 		   if Unauthorized returns       401(Unauthorized) and error message as Json
 	 * 		   if update fail return         500(Internal Server Error) and error message as Json
 	 */
@@ -154,7 +154,7 @@ public class TaskController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "not found task with id=" + id), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    	return new ResponseEntity<>(taskService.findOne(id), HttpStatus.OK);
     }
     
 	/**

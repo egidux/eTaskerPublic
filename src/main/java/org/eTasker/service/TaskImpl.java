@@ -43,7 +43,7 @@ public class TaskImpl implements TaskService {
 
 	@Override
 	public Task create(Task task) {
-		task.setStatus(0);
+		task.setStatus(1);
 		task.setCreated(TimeStamp.get());
 		Task newTask = taskRepository.save(task);
 		if (newTask == null) {
@@ -142,7 +142,7 @@ public class TaskImpl implements TaskService {
 			LOGGER.info("Task with id=" + id + " updated status= " + status);
 			String time = TimeStamp.get();
 			String[] current = time.split("\\.");
-			if (status == 1) {
+			if (status == 2) {
 				taskUpdate.setStart_time(time);
 				taskUpdate.setFetched(true);
 				String[] planned = taskUpdate.getPlanned_time().split("\\.");
@@ -154,7 +154,7 @@ public class TaskImpl implements TaskService {
 						break;
 					}
 				}
-			} else if (status == 2 || status == 3) {
+			} else if (status == 3 || status == 4) {
 				taskUpdate.setEnd_time(TimeStamp.get());
 				String[] start = taskUpdate.getStart_time().split("\\.");
 				String[] end = taskUpdate.getEnd_time().split("\\.");
@@ -182,6 +182,7 @@ public class TaskImpl implements TaskService {
 		}
 		if (task.getWorker() != null) {
 			taskUpdate.setWorker(task.getWorker());
+			taskUpdate.setStatus(1);
 			LOGGER.info("Task with id=" + id + " updated worker= " + task.getWorker());
 		}
 		if (task.getTask_type() != null) {

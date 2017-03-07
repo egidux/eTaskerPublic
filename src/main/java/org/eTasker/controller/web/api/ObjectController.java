@@ -73,7 +73,7 @@ public class ObjectController extends AbstractController {
     }
     
     /**
-     * Retrives specific object by name
+     * Retrieves specific object by name
      * @param name
      * @return if request successful returns   200(OK) and object as Json
      *         if request unsuccessful returns 400(Bad Request) and error message as Json
@@ -88,7 +88,7 @@ public class ObjectController extends AbstractController {
 			logger.info("Http request GET /user/api/" + URL_OBJECTS + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	Object object = objectService.findByName	(name);
+    	Object object = objectService.findByName(name);
     	if (object == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "No object found with name=" + name), 
     				HttpStatus.BAD_REQUEST);

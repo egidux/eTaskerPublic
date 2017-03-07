@@ -48,6 +48,31 @@ public class ClientController extends AbstractController {
     }
     
     /**
+     * Retrives specific client by name
+     * @param id
+     * @return if request successful returns   200(OK) and worker as Json
+     *         if request unsuccessful returns 400(Bad Request) and error message as Json
+     */
+    @RequestMapping(
+            value = URL_CLIENTS + "/name/{name}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getClientByName(@PathVariable("name") String name, HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_CLIENTS + "/{name} with name:" + name);
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request GET /user/api/" + URL_CLIENTS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
+    	Client client = clientService.findByName(name);
+    	if (client == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "No client found with name=" + name), 
+    				HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<>(JsonBuilder.build(client), HttpStatus.OK);
+    }
+    
+    
+    /**
      * Retrives specific client
      * @param id
      * @return if request successful returns   200(OK) and worker as Json
