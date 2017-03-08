@@ -43,7 +43,12 @@ public class TaskImpl implements TaskService {
 
 	@Override
 	public Task create(Task task) {
-		task.setStatus(1);
+		if (task.getWorker() == null || task.getWorker().isEmpty()) {
+			task.setStatus(0);
+		} else {
+			task.setStatus(1);
+		}
+		
 		task.setCreated(TimeStamp.get());
 		Task newTask = taskRepository.save(task);
 		if (newTask == null) {
@@ -182,7 +187,11 @@ public class TaskImpl implements TaskService {
 		}
 		if (task.getWorker() != null) {
 			taskUpdate.setWorker(task.getWorker());
-			taskUpdate.setStatus(1);
+			if (task.getWorker().isEmpty()) {
+				taskUpdate.setStatus(0);
+			} else {
+			 taskUpdate.setStatus(1);
+			}
 			LOGGER.info("Task with id=" + id + " updated worker= " + task.getWorker());
 		}
 		if (task.getTask_type() != null) {

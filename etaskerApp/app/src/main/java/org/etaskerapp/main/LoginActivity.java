@@ -2,11 +2,15 @@ package org.etaskerapp.main;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.*;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -50,6 +54,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        SpannableString s = new SpannableString(getResources().getString(R.string.app_name));
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green)), 2, 3, 1);
+        TextView tv= (TextView) findViewById(R.id.loginLogo);
+        tv.setText(s);
         AndroidNetworking.initialize(getApplicationContext());
     }
 

@@ -6,6 +6,8 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +48,9 @@ public class TaskStartActivity extends AppCompatActivity {
         Toolbar topBar = (Toolbar) findViewById(R.id.taskStartActivityTopBar);
         topBar.setTitleTextAppearance(this, R.style.ToolBar);
         setSupportActionBar(topBar);
+        SpannableString s = new SpannableString(getResources().getString(R.string.app_name));
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green)), 2, 3, 1);
+        getSupportActionBar().setTitle(s);
 
         Intent intent = getIntent();
         task = (Task)intent.getSerializableExtra(AdminActivity.TASK);

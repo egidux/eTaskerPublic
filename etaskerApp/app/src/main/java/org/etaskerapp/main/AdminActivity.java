@@ -12,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,6 +86,9 @@ public class AdminActivity extends AppCompatActivity implements
         Toolbar topBar = (Toolbar) findViewById(R.id.adminActivityTopBar);
         topBar.setTitleTextAppearance(this, R.style.ToolBar);
         setSupportActionBar(topBar);
+        SpannableString s = new SpannableString(getResources().getString(R.string.app_name));
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green)), 2, 3, 1);
+        getSupportActionBar().setTitle(s);
 
         mySwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         mySwipeRefreshLayout.setOnRefreshListener(
@@ -133,7 +138,7 @@ public class AdminActivity extends AppCompatActivity implements
                                 List<Task> l = params[0];
                                 for (int i = 0; i < l.size(); i++) {
                                     Task t = l.get(i);
-                                    if (t.getStatus() != 0 && !t.getWorker().equals(LoginActivity.name)) {
+                                    if (t.getStatus() == 1 && !t.getWorker().equals(LoginActivity.name)) {
                                        l.remove(i);
                                     }
                                     ANRequest request = AndroidNetworking.get(Constant.URL_OBJECTS + "/name/" + t.getObject())

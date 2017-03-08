@@ -6,9 +6,11 @@ import java.io.Serializable;
 public class Task implements Serializable {
     /* Task status
             0	Unassigned
-            1   In progress
-            2	Done
-            3	Aborted
+            1   Assigned
+            2   In progress
+            3	Done
+            4	Aborted
+            5   Stopped
         */
     private Long id;
     private String title;
