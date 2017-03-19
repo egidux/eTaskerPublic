@@ -177,6 +177,18 @@ $(document).ready(function() {
     initAutocomplete()
 
 
+    function getStatus(i) {
+        switch (i) {
+            case 0: return 'Unassigned';
+            case 1: return 'Assigned';
+            case 2: return 'In progress';
+            case 3: return 'Done';
+            case 4: return 'Aborted';
+            case 5: return 'Stopped';
+        }
+    }
+
+
     /**
      * START MODAL
      */
@@ -779,7 +791,7 @@ $(document).ready(function() {
                     temp.push(obj.worker);
                     temp.push(obj.client);
                     temp.push(obj.object);
-                    temp.push(obj.status);
+                    temp.push(getStatus(obj.status));
                     dataSet.push(temp);
                 });
                 var table = $('#table-task').DataTable( {
