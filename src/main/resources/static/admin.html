@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css">
@@ -109,9 +110,37 @@
                 <div class="tab-content col-md-10">
                     <div class="tab-pane fade in active" id="tab-dashboard">
                         <div class="row">
+                            <div id="dashBoardRowFilterLabel">Task filter</div>
+                        </div>
+                        <div class="row" id="dashBoardRowFilter">
+                            <div class="map col-md-4">
+                                <div class="form-group">
+                                    <select class="selectpicker form-control" title="Status" multiple id="dashboardSelectStatus">
+                                        <option>Unassigned</option>
+                                        <option>Assigned</option>
+                                        <option>In progress</option>
+                                        <option>Done</option>
+                                        <option>Stopped</option>
+                                        <option>Aborted</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="map col-md-4">
+                                <div class="form-group">
+                                    <select class="selectpicker form-control" id="dashboardSelectClient" multiple title="Client">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="map col-md-4">
+                                <div class="form-group">
+                                    <select class="selectpicker form-control" id="dashboardSelectWorker" multiple title="Worker">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="map col-md-12">
                                 <div class="panel panel-default" id="map-wrapper-dashboard">
-                                    <div class="panel-heading">Worker locations</div>
                                     <div class="panel-body" id="map-container-dashboard"></div>
                                 </div>
                             </div>
@@ -433,7 +462,7 @@
             <div class="tab-pane active" id="nav-tasks">
                 <ul class="nav nav-tabs" id="ul-task">
                     <li role="presentation" class="active"><a href="#tab-task" data-toggle="tab">Tasks</a></li>
-                    <li role="presentation"><a href="#tab-planning" data-toggle="tab">Planning</a></li>
+                    <li role="presentation"><a href="#tab-planning" data-toggle="tab">Locations</a></li>
                 </ul>
                 <div class="tab-content col-md-10">
                     <div class="tab-pane fade in" id="tab-planning">
@@ -1516,6 +1545,7 @@
     <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7cdlY9e-mNAzmsBZucijb7SOeOA0FS-0&libraries=places" async defer></script>
     <script src="js/fullcalendar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     <script src="js/date.js"></script>
     <script src="js/admin.js"></script>
 </body>

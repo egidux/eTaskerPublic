@@ -57,12 +57,12 @@ th {
 }
 
 #map-wrapper-dashboard {
-    margin-top: 30px;
+    margin-top: 10px;
     height: 65vh;
 }
 
 #map-wrapper-planning {
-    margin-top: 30px;
+    margin-top: 10px;
     height: 65vh;
 }
 
@@ -84,6 +84,18 @@ th {
 
 .fc-time{
     display : none;
+}
+
+/*Dashboard*/
+#dashBoardRowFilterLabel {
+    margin-top: 30px;
+    margin-left: 15px;
+    color: #9f9f9f;
+    font-weight: bold;
+    font-size: 17px;
+}
+#dashBoardRowFilter {
+    margin-top: 10px;
 }
 
 /*WORKER*/

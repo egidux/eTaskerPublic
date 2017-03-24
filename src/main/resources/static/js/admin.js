@@ -268,17 +268,164 @@ $(document).ready(function() {
 
     var doPollWorkersBoolean = false;
     var markers = [];
+    var markersTask = [];
+    var selectedStatus = [];
+    var selectedClient = [];
+    var selectedWorker = [];
+
     $('#nav-left-dashboard').on('shown.bs.tab', function(e) {
         initDashboardMap();
         doPollWorkersBoolean = true;
-        doPollWorkers();
+        $('.selectpicker').selectpicker('deselectAll');
+        selectedStatus = []
+        fillSelect()
+        drawPinTask();
+        doPollDasboardMap();
     });
 
-    function doPollWorkers(){
+    function fillSelect() {
+        $('#dashboardSelectClient')
+            .find('option')
+            .remove()
+            .end();
+        $('#dashboardSelectWorker')
+            .find('option')
+            .remove()
+            .end()
+        $.ajax({
+            type: "GET",
+            url: "/user/api/tasks",
+            success: function (jsonTask) {
+                $.each(jsonTask, function (i, objTask) {
+                    $("#dashboardSelectClient").append('<option>' +  objTask.client + '</option>');
+                    $("#dashboardSelectClient").selectpicker('refresh');
+                    if (objTask.worker.toString().trim().length > 0) {
+                        $("#dashboardSelectWorker").append('<option>' +  objTask.worker + '</option>');
+                        $("#dashboardSelectWorker").selectpicker('refresh');
+                    }
+                });
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            },
+            done: function (e) {
+                console.log("DONE");
+            }
+        });
+    }
+
+
+    $('#dashboardSelectStatus').on('changed.bs.select', function (e) {
+        selectedStatus = []
+        var selected = $('#dashboardSelectStatus option:selected');
+        $(selected).each(function(index, brand){
+            selectedStatus.push($(this).val().toString());
+        });
+        drawPinTask();
+    });
+
+    $('#dashboardSelectClient').on('changed.bs.select', function (e) {
+        selectedClient = []
+        var selected = $('#dashboardSelectClient option:selected');
+        $(selected).each(function(index, brand){
+            selectedClient.push($(this).val().toString());
+        });
+        drawPinTask();
+    });
+
+    $('#dashboardSelectWorker').on('changed.bs.select', function (e) {
+        selectedWorker = []
+        var selected = $('#dashboardSelectWorker option:selected');
+        $(selected).each(function(index, brand){
+            selectedWorker.push($(this).val().toString());
+        });
+        drawPinTask();
+    });
+
+    function drawPinTask1(objTask) {
+        $.ajax({
+            type: "GET",
+            url: "/user/api/objects/name/" + objTask.object,
+            success: function (jsonObject) {
+                var myLatlng = new google.maps.LatLng(jsonObject.lat, jsonObject.lng);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    title: "Hello",
+                    map: mapDashboard,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                });
+                var contentString = '<style>#left {padding-right: 5px;}</style><table> <tr> <td id="left">Task ID</td> <td>'+objTask.id+'</td> </tr> <tr> <td id="left">Client</td>' +
+                    '<td>'+objTask.client+'</td> </tr> <tr> <td id="left">Location</td> <td>'+objTask.object+'</td> </tr> <tr> <td id="left">Task title</td>' +
+                    '<td>'+objTask.title+'</td> </tr> <tr> <td id="left">Status</td> <td>'+getStatus(objTask.status)+'</td> </tr> '+
+                    '<tr> <td id="left">Description</td> <td>'+objTask.description+'</td> </tr></table>';
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString,
+                });
+                marker.addListener('click', function() {
+                    infowindow.open(mapPlanning, marker);
+                });
+                markersTask.push(marker);
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            },
+            done: function (e) {
+                console.log("DONE");
+            }
+        });
+    }
+
+    function drawPinTask() {
+        for (var i = 0; i < markersTask.length; i++) {
+            markersTask[i].setMap(null);
+        }
+        markersTask = [];
+        $.ajax({
+            type: "GET",
+            url: "/user/api/tasks",
+            success: function (jsonTask) {
+                $.each(jsonTask, function (i, objTask) {
+                    if (selectedStatus.length > 0 || selectedWorker.length > 0 || selectedClient.length > 0) {
+                        var draw = true;
+                        if (selectedStatus.length > 0 ) {
+                            if (selectedStatus.indexOf(getStatus(objTask.status)) < 0) {
+                                draw = false;
+                            }
+                        }
+                        if (selectedClient.length > 0 ) {
+                            if (selectedClient.indexOf(objTask.client) < 0) {
+                                draw = false;
+                            }
+                        }
+                        if (selectedWorker.length > 0 ) {
+                            if (selectedWorker.indexOf(objTask.worker) < 0) {
+                                draw = false;
+                            }
+                        }
+                        if (draw) {
+                            drawPinTask1(objTask);
+                        }
+                    } else {
+                        drawPinTask1(objTask);
+                    }
+                });
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            },
+            done: function (e) {
+                console.log("DONE");
+            }
+        });
+
+    }
+
+    function doPollDasboardMap(){
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
         }
         markers = [];
+
         $.ajax({
             type : "GET",
             url : "/user/api/workers",
@@ -288,7 +435,8 @@ $(document).ready(function() {
                         var myLatlng = new google.maps.LatLng(jsonWorker.lat, jsonWorker.lng);
                         var marker = new google.maps.Marker({
                             position: myLatlng,
-                            map: mapDashboard
+                            map: mapDashboard,
+                            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
                         });
                         var infowindow = new google.maps.InfoWindow({
                             content: jsonWorker.name + '</br>ID:' + jsonWorker.id
@@ -300,7 +448,7 @@ $(document).ready(function() {
                     }
                 });
                 if (doPollWorkersBoolean == true) {
-                    setTimeout(doPollWorkers, 5000)
+                    setTimeout(doPollDasboardMap, 10000)
                 }
             },
             error : function(e) {
@@ -741,7 +889,7 @@ $(document).ready(function() {
                     });
                     var contentString = '<style>#left {padding-right: 5px;}</style><table> <tr> <td id="left">Task ID</td> <td>'+objTask.id+'</td> </tr> <tr> <td id="left">Client</td>' +
                         '<td>'+objTask.client+'</td> </tr> <tr> <td id="left">Location</td> <td>'+objTask.object+'</td> </tr> <tr> <td id="left">Task title</td>' +
-                        '<td>'+objTask.title+'</td> </tr> <tr> <td id="left">Status</td> <td>'+objTask.status+'</td> </tr> '+
+                        '<td>'+objTask.title+'</td> </tr> <tr> <td id="left">Status</td> <td>'+getStatus(objTask.status)+'</td> </tr> '+
                         '<tr> <td id="left">Description</td> <td>'+objTask.description+'</td> </tr></table>';
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString,
