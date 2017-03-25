@@ -1209,15 +1209,26 @@ $(document).ready(function() {
         });
     })
 
+    var taskId;
+    // BTN NEW TASK SAVE LISTENER
+    $('#modal-btn-image').on('click', function(e) {
+        e.preventDefault();
+        $("#image").attr('src', "/user/api/images/" + taskId + "/download");
+        $("#modalImage").modal('show');
+    })
+
+
     function setTaskTableListener(table) {
         //Worker table click listener
         $('#table-task tbody').off('click');
         $('#table-task tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
+            taskId = data[0];
             $.ajax({
                 type : "GET",
                 url : "/user/api/tasks/" + data[0],
                 success : function(jsonTask) {
+                    $('#modal-btn-image').toggle(jsonTask.file_exists == true);
                     $('#modal-edit-task').modal();
                     $('#task-title-edit').val(jsonTask.title);
                     $('#task-description-edit').val(jsonTask.description);

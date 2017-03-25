@@ -117,7 +117,7 @@ public class ImageController extends AbstractController {
             method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<?> download(@PathVariable("id") Long id, HttpSession session, HttpServletResponse response) {
-    	logger.info("Http request POST /user/api/" + URL_IMAGES);
+    	logger.info("Http request POST /user/api/" + URL_IMAGES + "/{id}/download");
 		if (getSessionAuthorization(session) == null) {
 			logger.info("Http request POST /user/api/" + URL_IMAGES + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);

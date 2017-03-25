@@ -2,7 +2,6 @@ package org.etaskerapp.main;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.*;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -86,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                             name = response.getString("name");
                         } catch (JSONException e) {}
 
-                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), TaskListActivity.class);
                         startActivity(intent);
                     }
 

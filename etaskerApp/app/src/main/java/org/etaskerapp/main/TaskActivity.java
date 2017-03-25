@@ -43,19 +43,7 @@ public class TaskActivity extends AppCompatActivity {
         lineColorCode.setColorFilter(color);
 
         Intent intent = getIntent();
-        task = (Task)intent.getSerializableExtra(AdminActivity.TASK);
-
-        TextView startButtonText = (TextView)findViewById(R.id.taskBottomRightButtonText);
-        if (task.getStatus() == 0 || task.getStatus() == 1) {
-            startButtonText.setText("Start ");
-        } else if (task.getStatus() == 3 || task.getStatus() == 4){
-            findViewById(R.id.taskFooter).setVisibility(View.GONE);
-        } else if (task.getStatus() == 5){
-            startButtonText.setText("Resume ");
-        } else {
-            startButtonText.setText("Next");
-            ((ImageView)findViewById(R.id.taskBottomRightButtonImage)).setImageResource(R.drawable.ic_navigate_next_white_24dp);
-        }
+        task = (Task)intent.getSerializableExtra(TaskListActivity.TASK);
 
         Toolbar topBar = (Toolbar) findViewById(R.id.taskActivityTopBar);
         topBar.setTitleTextAppearance(this, R.style.ToolBar);
@@ -64,7 +52,31 @@ public class TaskActivity extends AppCompatActivity {
         s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green)), 2, 3, 1);
         getSupportActionBar().setTitle(s);
 
+        setBottomRightButton();
         fillTaskDetails();
+    }
+
+    private void setBottomRightButton() {
+        TextView startButtonText = (TextView)findViewById(R.id.taskBottomRightButtonText);
+        if (task.getStatus() == 0 || task.getStatus() == 1) {
+            startButtonText.setText("Start ");
+            TaskStartedActivity.timeElapsed = 0;
+            TaskStartedActivity.timeStarted = System.currentTimeMillis();
+        } else if (task.getStatus() == 3 || task.getStatus() == 4){
+            //findViewById(R.id.taskFooter).setVisibility(View.GONE);
+        } else if (task.getStatus() == 5){
+            startButtonText.setText("Resume ");
+        } else if (task.getStatus() == 2){
+            startButtonText.setText("Next");
+            ((ImageView)findViewById(R.id.taskBottomRightButtonImage)).setImageResource(R.drawable.ic_navigate_next_white_24dp);
+            TaskStartedActivity.timeElapsed = System.currentTimeMillis() - TaskStartedActivity.timeStarted;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setBottomRightButton();
     }
 
     private void setClickListeners(final Object object) {
@@ -92,8 +104,8 @@ public class TaskActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Task t) {
                                 task = t;
-                                Intent intent = new Intent(getApplicationContext(), TaskStartActivity.class);
-                                intent.putExtra(AdminActivity.TASK, t);
+                                Intent intent = new Intent(getApplicationContext(), TaskStartedActivity.class);
+                                intent.putExtra(TaskListActivity.TASK, t);
                                 startActivity(intent);
                             }
                             @Override

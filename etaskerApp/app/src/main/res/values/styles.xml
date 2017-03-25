@@ -5,6 +5,12 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="AlertStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">#189c21</item>
+        <item name="android:textSize">25dp</item>
+    </style>
+
+
     <style name="ToolBar">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">25dp</item>
