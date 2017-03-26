@@ -1210,14 +1210,19 @@ $(document).ready(function() {
     })
 
     var taskId;
-    // BTN NEW TASK SAVE LISTENER
     $('#modal-btn-image').on('click', function(e) {
         e.preventDefault();
         $("#image").attr('src', "/user/api/images/" + taskId + "/download");
         $("#modalImage").modal('show');
     })
 
+    $('#modal-btn-signature').on('click', function(e) {
+        e.preventDefault();
+        $("#signature").attr('src', "/user/api/signatures/" + taskId + "/download");
+        $("#modalSignature").modal('show');
+    })
 
+// BTN NEW TASK SAVE LISTENER
     function setTaskTableListener(table) {
         //Worker table click listener
         $('#table-task tbody').off('click');
@@ -1228,7 +1233,32 @@ $(document).ready(function() {
                 type : "GET",
                 url : "/user/api/tasks/" + data[0],
                 success : function(jsonTask) {
+                    if (jsonTask.status == 3 || jsonTask.status == 4) {
+                        $('#mymodallabeltaskedit').text('Task details');
+                    } else {
+                        $('#mymodallabeltaskedit').text('Edit task');
+                    }
+                    $('#task-title-edit').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                    $('#date-task-planned-start-edit').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                    $('#date-task-planned-end-edit').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                    $('#task-client-edit').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                    $('#task-object-edit').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                    $('#task-description-edit').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                    $('#task-worker-edit').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                    $('#modal-btn-delete-task').toggle(!(jsonTask.status == 3 || jsonTask.status == 4));
+                    $('#modal-btn-edit-task').toggle(!(jsonTask.status == 3 || jsonTask.status == 4));
+
+                    $('#task-end-time-edit-div').toggle((jsonTask.status == 3 || jsonTask.status == 4));
+                    $('#task-end-time-edit').val(jsonTask.end_time);
+                    $('#task-signed-by-edit-div').toggle((jsonTask.status == 3 || jsonTask.status == 4));
+                    $('#task-signed-by-edit').val(jsonTask.signed_by);
+                    $('#task-rating-edit-div').toggle((jsonTask.status == 3 || jsonTask.status == 4));
+                    $('#task-rating-edit').val(jsonTask.rating);
+                    $('#task-agree-edit-div').toggle((jsonTask.status == 3 || jsonTask.status == 4));
+                    $('#task-agree-edit').val(jsonTask.agreed);
+
                     $('#modal-btn-image').toggle(jsonTask.file_exists == true);
+                    $('#modal-btn-signature').toggle(jsonTask.signature_exists == true);
                     $('#modal-edit-task').modal();
                     $('#task-title-edit').val(jsonTask.title);
                     $('#task-description-edit').val(jsonTask.description);

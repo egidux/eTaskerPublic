@@ -119,11 +119,9 @@ public class ImageActivity extends AppCompatActivity {
             // Show the thumbnail on ImageView
             Uri imageUri = Uri.parse(mCurrentPhotoPath);
             final File file = new File(imageUri.getPath());
-            makeToast(file.exists() + "");
-            AndroidNetworking.upload(Constant.URL_IMAGES)
+            AndroidNetworking.upload(Constant.URL_IMAGES + "/"+ task.getId())
                     .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                     .addMultipartFile("file", file)
-                    .addMultipartParameter("task", task.getId().toString())
                     .setPriority(Priority.HIGH)
                     .build()
                     .setUploadProgressListener(new UploadProgressListener() {
@@ -135,9 +133,6 @@ public class ImageActivity extends AppCompatActivity {
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Intent intent = new Intent(getApplicationContext(), RateActivity.class);
-                            intent.putExtra(TaskListActivity.TASK, task);
-                            startActivity(intent);
                             file.delete();
                         }
                         @Override
@@ -145,6 +140,9 @@ public class ImageActivity extends AppCompatActivity {
                             makeToast(error.getCause().toString());
                         }
                     });
+            Intent intent = new Intent(getApplicationContext(), RateActivity.class);
+            intent.putExtra(TaskListActivity.TASK, task);
+            startActivity(intent);
         }
     }
 

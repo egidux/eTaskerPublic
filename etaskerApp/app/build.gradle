@@ -17,6 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    repositories {
+        mavenCentral()
+    }
 }
 
 dependencies {
@@ -29,5 +32,6 @@ dependencies {
     compile 'com.amitshekhar.android:android-networking:0.4.0'
     compile 'com.google.android.gms:play-services-maps:10.2.0'
     compile 'com.google.android.gms:play-services-location:10.2.0'
+    compile 'com.github.gcacace:signature-pad:1.2.1'
     testCompile 'junit:junit:4.12'
 }

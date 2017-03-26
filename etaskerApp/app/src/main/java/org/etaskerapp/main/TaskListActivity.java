@@ -144,7 +144,7 @@ public class TaskListActivity extends AppCompatActivity implements
                                 List<Task> l = params[0];
                                 for (int i = 0; i < l.size(); i++) {
                                     Task t = l.get(i);
-                                    if (t.getStatus() == 1 && !t.getWorker().equals(LoginActivity.name)) {
+                                    if (!t.getWorker().equals(LoginActivity.name)) {
                                        l.remove(i);
                                     }
                                     ANRequest request = AndroidNetworking.get(Constant.URL_OBJECTS + "/name/" + t.getObject())

@@ -190,7 +190,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label>Task end time</label>
+                                                <label>Planned task end time</label>
                                                 <div class='input-group date' id='date-calendar-create-task-planned-end'>
                                                     <input type='text' class="form-control" name="planned_end_time"/>
                                                     <span class="input-group-addon">
@@ -415,7 +415,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label>Task end time</label>
+                                                <label>Planned task end time</label>
                                                 <div class='input-group date'>
                                                     <input id='date-calendar-task-planned-end' type='text' class="form-control" name="planned_end_time"/>
                                                     <span class="input-group-addon">
@@ -532,7 +532,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label>Task end time</label>
+                                                <label>Planned task end time</label>
                                                 <div class='input-group date' id='date-task-planned-end'>
                                                     <input type='text' class="form-control" name="planned_end_time"/>
                                                     <span class="input-group-addon">
@@ -621,7 +621,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label>Task end time</label>
+                                                <label>Planned task end time</label>
                                                 <div class='input-group date'>
                                                     <input id='date-task-planned-end-edit' type='text' class="form-control" name="planned_end_time-edit"/>
                                                     <span class="input-group-addon">
@@ -651,10 +651,27 @@
                                                 <label>Task description</label>
                                                 <textarea rows="2" name="description" class="form-control" id="task-description-edit"></textarea>
                                             </div>
+                                            <div class="form-group" id="task-end-time-edit-div">
+                                                <label>Task end time</label>
+                                                <input disabled required="true" class="form-control" id="task-end-time-edit" name="title">
+                                            </div>
+                                            <div class="form-group" id="task-signed-by-edit-div">
+                                                <label >Task signed by</label>
+                                                <input disabled required="true" class="form-control" id="task-signed-by-edit" name="title">
+                                            </div>
+                                            <div class="form-group" id="task-rating-edit-div">
+                                                <label>Task service rating</label>
+                                                <input disabled required="true" class="form-control" id="task-rating-edit" name="title">
+                                            </div>
+                                            <div class="form-group" id="task-agree-edit-div">
+                                                <label >Agreement done</label>
+                                                <input disabled required="true" class="form-control" id="task-agree-edit" name="title">
+                                            </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="modal-btn-image" type="button" class="btn btn-default">Image</button>
+                                        <button id="modal-btn-signature" type="button" class="btn btn-default">Signature</button>
+                                        <button id="modal-btn-image" type="button" class="btn btn-default">Task image</button>
                                         <button id="modal-btn-delete-task" type="button" class="btn btn-danger">Delete</button>
                                         <button id="modal-btn-edit-task" type="button" class="btn btn-success">Save</button>
                                     </div>
@@ -670,6 +687,16 @@
                                 </div>
                             </div>
                           </div>
+                        </div>
+                        <!--MODAL IMAGE-->
+                        <div id="modalSignature" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <img id="signature" class="img-responsive" alt="Responsive image">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!--MODAL TASK NEW CLIENT-->
                         <div style="overflow-y: scroll;" class="modal fade" id="modal-task-new-client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7">

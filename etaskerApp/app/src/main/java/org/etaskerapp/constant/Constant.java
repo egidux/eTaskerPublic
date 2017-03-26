@@ -11,4 +11,5 @@ public final class Constant {
     public static final String URL_OBJECTS = Constant.URL + "/user/api/objects";
     public static final String URL_CLIENTS = Constant.URL + "/user/api/clients";
     public static final String URL_IMAGES = Constant.URL + "/user/api/images";
+    public static final String URL_SIGNATURES = Constant.URL + "/user/api/signatures";
 }

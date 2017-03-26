@@ -6,8 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.eTasker.model.Image;
-import org.eTasker.service.ImageService;
+import org.eTasker.model.Signature;
+import org.eTasker.service.SignatureService;
 import org.eTasker.tool.JsonBuilder;
 import org.eTasker.tool.MapBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,90 +23,67 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-public class ImageController extends AbstractController {
+public class SignatureController extends AbstractController {
 
-	private static final String URL_IMAGES = "images";
+	private static final String URL_SIGNATURES = "signatures";
 	
 	@Autowired
-	protected ImageService imageService;
+	protected SignatureService signatureService;
 	
 	/**
-	 * Retrieves all images
-	 @return if request successful   returns 200(OK) and all images as Json
+	 * Retrieves all signatures
+	 @return if request successful   returns 200(OK) and all signatures as Json
 	 *       if request unsuccessful returns 500(Internal Server Error) and error message as Json
 	 */
     @RequestMapping(
-            value = URL_IMAGES,
+            value = URL_SIGNATURES,
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getImage(HttpSession session) {
-    	logger.info("Http request GET /user/api/" + URL_IMAGES);
+    public ResponseEntity<?> getSignatures(HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_SIGNATURES);
 		if (getSessionAuthorization(session) == null) {
-			logger.info("Http request GET /user/api/" + URL_IMAGES + " not logged in");
+			logger.info("Http request GET /user/api/" + URL_SIGNATURES + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	List<Image> images = imageService.findAll();
-    	if (images == null) {
+    	List<Signature> signatures = signatureService.findAll();
+    	if (signatures == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-		return new ResponseEntity<List<Image>>(images, HttpStatus.OK);
+		return new ResponseEntity<List<Signature>>(signatures, HttpStatus.OK);
     }
-    
-    /**
-     * Retrives specific image
-     * @param id
-     * @return if request successful returns   200(OK) and image as Json
-     *         if request unsuccessful returns 400(Bad Request) and error message as Json
-     */
-    @RequestMapping(
-            value = URL_IMAGES + "/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getImage(@PathVariable("id") Long id, HttpSession session) {
-    	logger.info("Http request GET /user/api/" + URL_IMAGES + "/{id} with id:" + id);
-		if (getSessionAuthorization(session) == null) {
-			logger.info("Http request GET /user/api/" + URL_IMAGES + " not logged in");
-			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
-		}
-    	Image image = imageService.findOne(id);
-    	if (image == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "No image found with id=" + id), 
-    				HttpStatus.BAD_REQUEST);
-    	}
-    	return new ResponseEntity<>(JsonBuilder.build(image), HttpStatus.OK);
-    }
+   
     
 	/**
-	 * Upload image
+	 * Upload Signature
 	 * @param multFile
-	 * @param image
+	 * @param signature
 	 * @param session
 	 * @return if request successful   returns 200(OK)
 	 *         if request unsuccessful returns 400(Bad Request) and error message as Json
 	 */
     @RequestMapping(
-            value = URL_IMAGES + "/{id}",
+            value = URL_SIGNATURES + "/{id}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile multFile, Image image, @PathVariable("id") Long id,
+    public ResponseEntity<?> uploadSignature(@RequestParam("file") MultipartFile multFile, Signature signature, @PathVariable("id") Long id,
     		HttpSession session) {
-    	logger.info("Http request POST /user/api/" + URL_IMAGES + "with image: " + JsonBuilder.build(image) + " id=" + id);
+    	logger.info("Http request POST /user/api/" + URL_SIGNATURES + "with signature: " + JsonBuilder.build(signature) + " id=" + id);
 		if (getSessionAuthorization(session) == null) {
-			logger.info("Http request POST /user/api/" + URL_IMAGES + " not logged in");
+			logger.info("Http request POST /user/api/" + URL_SIGNATURES + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-		image.setTask(id);
-		Image newImage = imageService.store(multFile, image);
-		if (newImage == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "Failed upload image"), 
+		signature.setTask(id);
+		Signature newSignature = signatureService.store(multFile, signature);
+		if (newSignature == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "Failed upload signature"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-    	return new ResponseEntity<Image>(newImage, HttpStatus.OK);
+    	return new ResponseEntity<Signature>(newSignature, HttpStatus.OK);
     }
     
     /**
-     * Download image
+     * Download signature
      * @param id
      * @param session
      * @param response
@@ -114,16 +91,16 @@ public class ImageController extends AbstractController {
      *         if request unsuccessful returns 400(Bad Request) and error message as Json
      */
     @RequestMapping(
-            value = URL_IMAGES + "/{id}/download",
+            value = URL_SIGNATURES + "/{id}/download",
             method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<?> download(@PathVariable("id") Long id, HttpSession session, HttpServletResponse response) {
-    	logger.info("Http request POST /user/api/" + URL_IMAGES + "/{id}/download");
+    	logger.info("Http request POST /user/api/" + URL_SIGNATURES + "/{id}/download");
 		if (getSessionAuthorization(session) == null) {
-			logger.info("Http request POST /user/api/" + URL_IMAGES + " not logged in");
+			logger.info("Http request POST /user/api/" + URL_SIGNATURES + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-		Path path = imageService.load(id);
+		Path path = signatureService.load(id);
     	if (path == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "No file found with id=" + id), 
     				HttpStatus.BAD_REQUEST);

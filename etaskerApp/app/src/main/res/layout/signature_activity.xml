@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.etaskerapp.main.SignatureActivity">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CLIENT SIGNATURE"
+        android:textColor="@color/green"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <View
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/green"
+        android:layout_below="@id/textView4"/>
+
+    <Button
+        android:id="@+id/buttonSaveSignature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/relativeLayout"
+        android:layout_alignParentBottom="true"
+        android:background="@color/green"
+        android:textColor="@color/white"
+        android:text="Save"
+        android:layout_marginBottom="10dp"/>
+
+    <RelativeLayout
+        android:layout_below="@id/textView2"
+        android:layout_above="@id/buttonSaveSignature"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:id="@+id/relativeLayout">
+
+        <com.github.gcacace.signaturepad.views.SignaturePad
+            android:id="@+id/signature_pad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/sand"
+            app:penColor="@android:color/black" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

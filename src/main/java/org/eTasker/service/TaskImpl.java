@@ -79,6 +79,22 @@ public class TaskImpl implements TaskService {
 				LOGGER.info("Task with id=" + id + " updated bill date= " + date);
 			}
 		}
+		if (task.getAgreed() != null) {
+			taskUpdate.setAgreed(task.getAgreed());
+			LOGGER.info("Task with id=" + id + " updated agreed= " + task.getAgreed());
+		}
+		if (task.getSigned_by() != null && !task.getSigned_by().isEmpty()) {
+			taskUpdate.setSigned_by(task.getSigned_by());
+			LOGGER.info("Task with id=" + id + " updated signed by= " + task.getSigned_by());
+		}
+		if (task.getRating() != null) {
+			taskUpdate.setRating(task.getRating());
+			LOGGER.info("Task with id=" + id + " updated rating= " + task.getRating());
+		}
+		if (task.getSignature_exists()!= null) {
+			taskUpdate.setSignature_exists(task.getSignature_exists());
+			LOGGER.info("Task with id=" + id + " updated signature exists= " + task.getSignature_exists());
+		}
 		if (task.getFile_exists() != null) {
 			taskUpdate.setFile_exists(task.getFile_exists());
 			LOGGER.info("Task with id=" + id + " updated file exists= " + task.getFile_exists());

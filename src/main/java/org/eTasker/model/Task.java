@@ -40,13 +40,35 @@ public class Task {
     private Boolean bill_status = false; //true if client was billed
     private String bill_date;
     private Boolean file_exists;
+    private Boolean signature_exists;
     private String worker;
     private Long task_type;
     private String object;
     private String client;
     private String created;
     private String updated;
+    private Boolean agreed;
+    private String signed_by;
     
+    
+	public Boolean getAgreed() {
+		return agreed;
+	}
+	public void setAgreed(Boolean agreed) {
+		this.agreed = agreed;
+	}
+	public String getSigned_by() {
+		return signed_by;
+	}
+	public void setSigned_by(String signed_by) {
+		this.signed_by = signed_by;
+	}
+	public Boolean getSignature_exists() {
+		return signature_exists;
+	}
+	public void setSignature_exists(Boolean signature_exists) {
+		this.signature_exists = signature_exists;
+	}
 	public Long getId() {
 		return id;
 	}

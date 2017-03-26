@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Take picture?"
+            android:text="Upload picture?"
             android:textColor="@color/green"
             android:textSize="30dp"
             android:layout_marginBottom="30dp"/>
@@ -35,7 +35,10 @@
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:text="YES"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/green"
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/buttonTakePictureNo"
@@ -44,7 +47,10 @@
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:layout_marginRight="15dp"
-                android:text="NO" />
+                android:layout_marginLeft="2dp"
+                android:text="NO"
+                android:background="@color/red"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
     </LinearLayout>

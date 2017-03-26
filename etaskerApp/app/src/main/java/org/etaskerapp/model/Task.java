@@ -25,7 +25,7 @@ public class Task implements Serializable {
     private Integer work_price = 0; //in cents
     private Integer material_price = 0;
     private Integer final_price; //work price + matterial price
-    private Integer status;
+    private Integer status = 0;
     private String planned_time;
     private String planned_end_time;
     private Boolean fetched = false; //true if Task was fetched by worker
@@ -36,19 +36,36 @@ public class Task implements Serializable {
     private Boolean bill_status = false; //true if client was billed
     private String bill_date;
     private Boolean file_exists;
+    private Boolean signature_exists;
     private String worker;
     private Long task_type;
     private String object;
-    private String objectAddress;
     private String client;
     private String created;
     private String updated;
+    private Boolean agreed;
+    private String signed_by;
+    private String objectAddress;
 
-    public void setObjectAddress(String address) {
-        this.objectAddress = address;
+    public String getObjectAddress() {return objectAddress;}
+    public void setObjectAddress(String s) {objectAddress = s;}
+    public Boolean getAgreed() {
+        return agreed;
     }
-    public String getObjectAddress() {
-        return this.objectAddress;
+    public void setAgreed(Boolean agreed) {
+        this.agreed = agreed;
+    }
+    public String getSigned_by() {
+        return signed_by;
+    }
+    public void setSigned_by(String signed_by) {
+        this.signed_by = signed_by;
+    }
+    public Boolean getSignature_exists() {
+        return signature_exists;
+    }
+    public void setSignature_exists(Boolean signature_exists) {
+        this.signature_exists = signature_exists;
     }
     public Long getId() {
         return id;

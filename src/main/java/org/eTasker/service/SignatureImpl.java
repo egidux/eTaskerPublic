@@ -7,8 +7,9 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.eTasker.model.Image;
+import org.eTasker.model.Signature;
 import org.eTasker.model.Task;
-import org.eTasker.repository.ImageRepository;
+import org.eTasker.repository.SignatureRepository;
 import org.eTasker.repository.TaskRepository;
 import org.eTasker.tool.JsonBuilder;
 import org.eTasker.tool.TimeStamp;
@@ -19,38 +20,38 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class ImageImpl implements ImageService {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
+public class SignatureImpl implements SignatureService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SignatureService.class);
 	private final Path LOCATION = Paths.get("images");
 	
 	@Autowired
-	private ImageRepository imageRepository;
+	private SignatureRepository signatureRepository;
 	@Autowired
 	private TaskRepository taskRepository;
 	
 	@Override
-	public List<Image> findAll() {
-		List<Image> images = imageRepository.findAll();
+	public List<Signature> findAll() {
+		List<Signature> images = signatureRepository.findAll();
 		if (images == null) {
-			LOGGER.debug("Failed to retrieve all images");
+			LOGGER.debug("Failed to retrieve all signatures");
 		}
-		LOGGER.info("Images: " + images);
+		LOGGER.info("Signature: " + images);
 		return images;
 	}
 	
 	@Override
-	public Image findOne(Long id) {
-		Image image = imageRepository.findOne(id);
+	public Signature findOne(Long id) {
+		Signature image = signatureRepository.findOne(id);
 		if (image == null) {
-			LOGGER.debug("Not found image with id=" + id);
+			LOGGER.debug("Not found signature with id=" + id);
 		}
-		LOGGER.info("Found image with id=" + id);
+		LOGGER.info("Found signature with id=" + id);
 		return image;
 	}
 
 	@Override
-	public Image store(MultipartFile multFile, Image image) {
+	public Signature store(MultipartFile multFile, Signature image) {
 		if (multFile.isEmpty()) {
 			LOGGER.debug("Failed store file: " + multFile.getOriginalFilename());
             return null;
@@ -61,15 +62,15 @@ public class ImageImpl implements ImageService {
         	image.setCreated(TimeStamp.get());
         	image.setName(multFile.getOriginalFilename());
         	image.setPath(filePath.toString());
-        	imageRepository.save(image);
+        	signatureRepository.save(image);
         	LOGGER.info("File:" + multFile.getOriginalFilename() + " stored");
         	Task task = taskRepository.findOne(image.getTask());
         	if (task == null) {
         		LOGGER.debug("Failed retrieve task with id=" + image.getTask());
         	} else {
-        		task.setFile_exists(Boolean.TRUE);
+        		task.setSignature_exists(Boolean.TRUE);
         		taskRepository.save(task);
-        		LOGGER.debug("Updated task=" + image.getTask() + " has file true");
+        		LOGGER.debug("Updated task=" + image.getTask() + " has signature true");
         	}
         	return image;
         } catch (IOException e) {
@@ -79,11 +80,11 @@ public class ImageImpl implements ImageService {
 
 	@Override
 	public Path load(Long id) {
-		List<Image> list = imageRepository.findAll();
-		for (Image image: list) {
-			if (image.getTask() == id) {
-				LOGGER.info("Found file:" + JsonBuilder.build(image));
-				return Paths.get(image.getPath());
+		List<Signature> list = signatureRepository.findAll();
+		for (Signature signature: list) {
+			if (signature.getTask() == id) {
+				LOGGER.info("Found file:" + JsonBuilder.build(signature));
+				return Paths.get(signature.getPath());
 			}
 		}
 

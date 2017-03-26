@@ -42,6 +42,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 public class TaskStartedActivity extends AppCompatActivity {
 
@@ -132,6 +133,7 @@ public class TaskStartedActivity extends AppCompatActivity {
                                 AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
                                         .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                                         .addBodyParameter("status", "3")
+                                        .addBodyParameter("end_time", new Date().toString())
                                         .build()
                                         .getAsObject(Task.class, new ParsedRequestListener<Task>() {
                                             @Override
