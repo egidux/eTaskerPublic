@@ -33,7 +33,6 @@ public class MaterialActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     static Map<Long, Material> materials = new HashMap<>();
     private Task task;
-    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +88,6 @@ public class MaterialActivity extends AppCompatActivity {
                 });
     }
 
-    private synchronized void increaseI() {
-        i++;
-    }
-
     private void fillMaterialListView(List<Material> list) {
         MaterialAdapter listAdapter = new MaterialAdapter(getApplicationContext(), list);
         listViewMaterials.setAdapter(listAdapter);
@@ -106,7 +101,7 @@ public class MaterialActivity extends AppCompatActivity {
                 final Set<Long> keys = materials.keySet();
                 for (Long key: keys) {
                     Material material = materials.get(key);
-                    if (material.getQuantity() > 0) {
+                    if (material.getQuantity() != null && material.getQuantity() > 0) {
                         AndroidNetworking.put(Constant.URL_MATERIALS + "/" + key)
                                 .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                                 .addBodyParameter("quantity", material.getQuantity() + "")
@@ -115,10 +110,7 @@ public class MaterialActivity extends AppCompatActivity {
                                 .getAsObject(Material.class, new ParsedRequestListener() {
                                     @Override
                                     public void onResponse(Object response) {
-
-                                            finish();
-                                        
-
+                                        finish();
                                     }
 
                                     @Override
@@ -128,6 +120,10 @@ public class MaterialActivity extends AppCompatActivity {
                                 });
                     }
                 }
+                TaskStartedActivity.timeTotal = System.currentTimeMillis() -
+                        TaskStartedActivity.timeStarted +
+                        TaskStartedActivity.timeTotal;
+                TaskStartedActivity.timeStarted = System.currentTimeMillis();
             }
         });
     }
