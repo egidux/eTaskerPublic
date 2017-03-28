@@ -130,7 +130,8 @@ public class MaterialController extends AbstractController {
     		return new ResponseEntity<>(MapBuilder.build("error", "not found material with id=" + id), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    	
+    	return new ResponseEntity<>(updatedMaterial, HttpStatus.OK);
     }
     
 	/**

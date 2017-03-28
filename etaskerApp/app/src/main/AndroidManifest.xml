@@ -41,7 +41,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".main.SignatureActivity"></activity>
+        <activity android:name=".main.SignatureActivity" />
+        <activity android:name=".main.MaterialActivity"></activity>
     </application>
 
 </manifest>

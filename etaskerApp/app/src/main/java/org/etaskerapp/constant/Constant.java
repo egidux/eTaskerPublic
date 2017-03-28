@@ -12,4 +12,5 @@ public final class Constant {
     public static final String URL_CLIENTS = Constant.URL + "/user/api/clients";
     public static final String URL_IMAGES = Constant.URL + "/user/api/images";
     public static final String URL_SIGNATURES = Constant.URL + "/user/api/signatures";
+    public static final String URL_MATERIALS = Constant.URL + "/user/api/materials";
 }

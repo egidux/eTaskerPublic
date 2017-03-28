@@ -1818,8 +1818,53 @@ $(document).ready(function() {
         });
     }
 
+    //Draw Used Material table
+    function drawUsedMaterialTable() {
+        $.ajax({
+            type : "GET",
+            url : "/user/api/materials",
+            success : function(json) {
+                var dataSet = [];
+                $.each(json, function(i, obj) {
+                    if (obj.used) {
+                        var temp = [];
+                        temp.push(obj.name);
+                        temp.push(obj.location);
+                        temp.push(obj.unit);
+                        temp.push(obj.quantity);
+                        temp.push(obj.price);
+                        temp.push(obj.time_used);
+                        dataSet.push(temp);
+                    }
+                });
+                var table = $('#table-used-material').DataTable( {
+                    destroy: true,
+                    data: dataSet,
+                    columns: [
+                        { title: "Material" },
+                        { title: "Location" },
+                        { title: "Unit" },
+                        { title: "Quantity" },
+                        { title: "Price" },
+                        { title: "Created" }
+                    ]
+                } );
+                //setMaterialTableListener(table);
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    }
+
+
     //NAV LEFT MATERIALS LISTENER
     $('#nav-left-materials').on('click', function(e) {
+        $('#ulMaterials li:first').find('a[data-toggle="tab"]').tab('show');
+        drawUsedMaterialTable();
         drawMaterialTable();
         doPollWorkersBoolean = false;
     });

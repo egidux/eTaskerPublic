@@ -5,6 +5,7 @@ import java.util.List;
 import org.eTasker.model.Material;
 import org.eTasker.repository.MaterialRepository;
 import org.eTasker.tool.JsonBuilder;
+import org.eTasker.tool.TimeStamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class MateriaImpl implements MaterialService {
 			LOGGER.info("Failed update, material with id=" + id + " not exists");
 			return null;
 		}
-		if (material.getName()!= null && !material.getName().isEmpty()) {
+		if (material.getName() != null && !material.getName().isEmpty()) {
 			materialUpdate.setName(material.getName());
 			LOGGER.info("Material with id=" + id + " updated name= " + material.getName());
 		}
@@ -63,10 +64,30 @@ public class MateriaImpl implements MaterialService {
 			materialUpdate.setPrice(material.getPrice());
 			LOGGER.info("Material with id=" + id + " updated price= " + material.getPrice());
 		}
-		if (material.getUnit()!= null && !material.getUnit().isEmpty()) {
+		if (material.getUnit() != null && !material.getUnit().isEmpty()) {
 			materialUpdate.setUnit(material.getUnit());
 			LOGGER.info("Material with id=" + id + " updated unit= " + material.getUnit());
 		}
+		if (material.getQuantity() != null) {
+			materialUpdate.setQuantity(material.getQuantity());
+			if (material.getQuantity() > 0) {
+				materialUpdate.setUsed(Boolean.TRUE);
+				materialUpdate.setTime_used(TimeStamp.get());
+			} else {
+				materialUpdate.setUsed(Boolean.FALSE);
+				materialUpdate.setTime_used(null);
+			}
+			LOGGER.info("Material with id=" + id + " updated quantity= " + material.getQuantity());
+		}
+		if (material.getLocation() != null && !material.getLocation().isEmpty()) {
+			materialUpdate.setLocation(material.getLocation());
+			LOGGER.info("Material with id=" + id + " updated location= " + material.getLocation());
+		}
+		if (material.getLocation() != null && !material.getLocation().isEmpty()) {
+			materialUpdate.setLocation(material.getLocation());
+			LOGGER.info("Material with id=" + id + " updated location= " + material.getLocation());
+		}
+		
 		LOGGER.info("Material with id=" + id + " updated");
 		return materialRepository.save(materialUpdate);
 	}

@@ -35,6 +35,7 @@ import com.androidnetworking.interfaces.UploadProgressListener;
 import org.etaskerapp.R;
 import org.etaskerapp.constant.Constant;
 import org.etaskerapp.dialog.StopDialog;
+import org.etaskerapp.model.Material;
 import org.etaskerapp.model.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +43,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TaskStartedActivity extends AppCompatActivity {
 
@@ -50,8 +53,9 @@ public class TaskStartedActivity extends AppCompatActivity {
     static long timeTotal;
     static long timeStarted;
     static boolean stopped;
+    private ListView listViewUsedMaterials;
+    private LinearLayout linearLayoutUsedMaterials;
 
-    private static final int REQUEST_IMAGE_CAPTURE = 0;
     private Chronometer chronometer;
 
     @Override
@@ -76,8 +80,12 @@ public class TaskStartedActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         task = (Task)intent.getSerializableExtra(TaskListActivity.TASK);
+        listViewUsedMaterials = (ListView)findViewById(R.id.listViewUsedMaterial);
+        linearLayoutUsedMaterials = (LinearLayout)findViewById(R.id.linearLayoutUsedMaterials);
+        linearLayoutUsedMaterials.setVisibility(LinearLayout.GONE);
         startChronometer();
         setButtonListeners();
+        listUsedMaterials();
     }
 
     private void startChronometer() {
@@ -90,6 +98,7 @@ public class TaskStartedActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startChronometer();
+        listUsedMaterials();
     }
 
     private void showStopDialog() {
@@ -162,13 +171,59 @@ public class TaskStartedActivity extends AppCompatActivity {
     }
 
     private void setButtonListeners() {
-        LinearLayout leftBottomButton = (LinearLayout)findViewById(R.id.taskSTartBottomRightButton);
-        leftBottomButton.setOnClickListener(new View.OnClickListener() {
+        LinearLayout rightBottomButton = (LinearLayout)findViewById(R.id.taskSTartBottomRightButton);
+        rightBottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showStopDialog();
             }
         });
+
+        LinearLayout leftBottomButton = (LinearLayout)findViewById(R.id.taskStartBottomLeftButton);
+        leftBottomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MaterialActivity.class);
+                intent.putExtra(TaskListActivity.TASK, task);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    void listUsedMaterials() {
+        AndroidNetworking.get(Constant.URL_MATERIALS)
+                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                .build()
+                .getAsObjectList(Material.class, new ParsedRequestListener<List<Material>>() {
+                    @Override
+                    public void onResponse(List<Material> materials) {
+                        fillUsedMaterials(materials);
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        makeToast(anError.getMessage());
+                    }
+                });
+    }
+
+    void fillUsedMaterials(List<Material> list) {
+        List<Material> tempList = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getQuantity() != null && list.get(i).getQuantity() > 0) {
+                tempList.add(list.get(i));
+            }
+        }
+
+        if (tempList.size() > 0) {
+            linearLayoutUsedMaterials.setVisibility(LinearLayout.VISIBLE);
+            UsedMaterialAdapter listAdapter = new UsedMaterialAdapter(getApplicationContext(), tempList, this);
+            listViewUsedMaterials.setAdapter(listAdapter);
+        } else {
+            linearLayoutUsedMaterials.setVisibility(LinearLayout.GONE);
+        }
+
 
     }
 

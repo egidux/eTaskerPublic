@@ -13,7 +13,35 @@ public class Material {
 	private String name;
 	private String unit;
 	private Double price;
+	private Long quantity;
+	private String location;
+	private String time_used;
+	private Boolean used;
 	
+	public Long getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public String getTime_used() {
+		return time_used;
+	}
+	public void setTime_used(String time_used) {
+		this.time_used = time_used;
+	}
+	public Boolean getUsed() {
+		return used;
+	}
+	public void setUsed(Boolean used) {
+		this.used = used;
+	}
 	public long getId() {
 		return id;
 	}
