@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.eTasker.model.Image;
 import org.eTasker.model.Signature;
 import org.eTasker.model.Task;
 import org.eTasker.repository.SignatureRepository;

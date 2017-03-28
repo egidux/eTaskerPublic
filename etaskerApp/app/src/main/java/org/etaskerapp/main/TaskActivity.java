@@ -60,16 +60,13 @@ public class TaskActivity extends AppCompatActivity {
         TextView startButtonText = (TextView)findViewById(R.id.taskBottomRightButtonText);
         if (task.getStatus() == 0 || task.getStatus() == 1) {
             startButtonText.setText("Start ");
-            TaskStartedActivity.timeElapsed = 0;
-            TaskStartedActivity.timeStarted = System.currentTimeMillis();
         } else if (task.getStatus() == 3 || task.getStatus() == 4){
-            //findViewById(R.id.taskFooter).setVisibility(View.GONE);
+            findViewById(R.id.taskFooter).setVisibility(View.GONE);
         } else if (task.getStatus() == 5){
             startButtonText.setText("Resume ");
         } else if (task.getStatus() == 2){
             startButtonText.setText("Next");
             ((ImageView)findViewById(R.id.taskBottomRightButtonImage)).setImageResource(R.drawable.ic_navigate_next_white_24dp);
-            TaskStartedActivity.timeElapsed = System.currentTimeMillis() - TaskStartedActivity.timeStarted;
         }
     }
 
@@ -103,6 +100,22 @@ public class TaskActivity extends AppCompatActivity {
                         .getAsObject(Task.class, new ParsedRequestListener<Task>() {
                             @Override
                             public void onResponse(Task t) {
+                                TextView startButtonText = (TextView)findViewById(R.id.taskBottomRightButtonText);
+                                switch(startButtonText.getText().toString().trim()) {
+                                    case "Start":
+                                        TaskStartedActivity.timeStarted = System.currentTimeMillis();
+                                        TaskStartedActivity.timeTotal = 0;
+                                        break;
+                                    case "Resume":
+                                        TaskStartedActivity.timeStarted = System.currentTimeMillis();
+                                        break;
+                                    case "Next":
+                                            TaskStartedActivity.timeTotal = System.currentTimeMillis() -
+                                                    TaskStartedActivity.timeStarted +
+                                                    TaskStartedActivity.timeTotal;
+                                            TaskStartedActivity.timeStarted = System.currentTimeMillis();
+
+                                }
                                 task = t;
                                 Intent intent = new Intent(getApplicationContext(), TaskStartedActivity.class);
                                 intent.putExtra(TaskListActivity.TASK, t);

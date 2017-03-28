@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -45,6 +46,8 @@ public class RateActivity extends AppCompatActivity {
         SpannableString s = new SpannableString(getResources().getString(R.string.app_name));
         s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green)), 2, 3, 1);
         getSupportActionBar().setTitle(s);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         Intent intent = getIntent();
         task = (Task)intent.getSerializableExtra(TaskListActivity.TASK);

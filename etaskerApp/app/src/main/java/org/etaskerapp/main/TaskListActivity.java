@@ -116,9 +116,23 @@ public class TaskListActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Task task = (Task)parent.getItemAtPosition(position);
-                Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
-                intent.putExtra(TASK, task);
-                startActivity(intent);
+                if (task.getStatus() == 1 || task.getStatus() == 2 ||
+                        task.getStatus() == 5) {
+                    Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
+                    intent.putExtra(TASK, task);
+                    startActivity(intent);
+                } else if(task.getStatus() == 3) {
+                    if (task.getFile_exists() == null || !task.getFile_exists()) {
+                        Intent intent = new Intent(getApplicationContext(), ImageActivity.class);
+                        intent.putExtra(TASK, task);
+                        startActivity(intent);
+                    } else if (task.getSignature_exists() == null || !task.getSignature_exists()) {
+                        Intent intent = new Intent(getApplicationContext(), RateActivity.class);
+                        intent.putExtra(TASK, task);
+                        startActivity(intent);
+                    }
+                }
+
             }
         });
     }

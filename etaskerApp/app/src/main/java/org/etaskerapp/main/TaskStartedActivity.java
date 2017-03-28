@@ -47,9 +47,9 @@ import java.util.Date;
 public class TaskStartedActivity extends AppCompatActivity {
 
     private Task task;
-    static long timeElapsed;
+    static long timeTotal;
     static long timeStarted;
-    static long timeStopped;
+    static boolean stopped;
 
     private static final int REQUEST_IMAGE_CAPTURE = 0;
     private Chronometer chronometer;
@@ -82,7 +82,7 @@ public class TaskStartedActivity extends AppCompatActivity {
 
     private void startChronometer() {
         chronometer = (Chronometer) findViewById(R.id.chronometer);
-        chronometer.setBase(SystemClock.elapsedRealtime() - timeElapsed);
+        chronometer.setBase(SystemClock.elapsedRealtime() - timeTotal);
         chronometer.start();
     }
 
@@ -118,6 +118,8 @@ public class TaskStartedActivity extends AppCompatActivity {
                                         .getAsObject(Task.class, new ParsedRequestListener<Task>() {
                                             @Override
                                             public void onResponse(Task t) {
+                                                timeTotal += System.currentTimeMillis() - timeStarted;
+                                                stopped = true;
                                                 task = t;
                                                 Intent intent = new Intent(getApplicationContext(), TaskListActivity.class);
                                                 intent.putExtra(TaskListActivity.TASK, t);
@@ -176,6 +178,7 @@ public class TaskStartedActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         super.onBackPressed();
     }
 
