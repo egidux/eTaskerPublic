@@ -485,7 +485,7 @@ $(document).ready(function() {
                 $('#calendar').fullCalendar('addEventSource', events);
                 $('#calendar').fullCalendar({
                     height: "auto",
-                    //events: events,
+                    events: events,
                     dayClick: function(date, jsEvent, view) {
                         $('#modal-calendar-create-task').modal()
                         $('#date-calendar-create-task-planned-start').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
@@ -860,8 +860,8 @@ $(document).ready(function() {
             }
         });
     }
-    $('#nav-left-calendar').on('click', function(e) {
-        setTimeout(initCalendar, 10);
+    $('#nav-left-calendar').on('shown.bs.tab', function(e) {
+        setTimeout(initCalendar, 100);
         doPollWorkersBoolean = false;
     });
 
