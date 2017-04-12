@@ -30,6 +30,8 @@ public class Task implements Serializable {
     private String planned_end_time;
     private Boolean fetched = false; //true if Task was fetched by worker
     private String start_time;
+    private Long total_time;
+    private Long total_time_start;
     private String end_time;
     private Boolean start_on_time;
     private Long duration; //total in minutes
@@ -45,10 +47,22 @@ public class Task implements Serializable {
     private String updated;
     private Boolean agreed;
     private String signed_by;
-    private String objectAddress;
+    private String ObjectAddress;
 
-    public String getObjectAddress() {return objectAddress;}
-    public void setObjectAddress(String s) {objectAddress = s;}
+    public String getObjectAddress() {
+        return ObjectAddress;
+    }
+
+    public void setObjectAddress(String objectAddress) {
+        ObjectAddress = objectAddress;
+    }
+
+    public Long getTotal_time_start() {
+        return total_time_start;
+    }
+    public void setTotal_time_start(Long total_time_start) {
+        this.total_time_start = total_time_start;
+    }
     public Boolean getAgreed() {
         return agreed;
     }
@@ -174,6 +188,12 @@ public class Task implements Serializable {
     }
     public void setStart_time(String start_time) {
         this.start_time = start_time;
+    }
+    public Long getTotal_time() {
+        return total_time;
+    }
+    public void setTotal_time(Long total_time) {
+        this.total_time = total_time;
     }
     public String getEnd_time() {
         return end_time;

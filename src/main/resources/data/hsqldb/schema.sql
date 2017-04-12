@@ -67,6 +67,8 @@ CREATE TABLE Task (
   status INTEGER,
   fetched BOOLEAN,
   start_time VARCHAR(200),
+  total_time_start BIGINT,
+  total_time BIGINT,
   end_time VARCHAR(200),
   start_on_time BOOLEAN,
   duration BIGINT,

@@ -50,9 +50,6 @@ import java.util.List;
 public class TaskStartedActivity extends AppCompatActivity {
 
     private Task task;
-    static long timeTotal;
-    static long timeStarted;
-    static boolean stopped;
     private ListView listViewUsedMaterials;
     private LinearLayout linearLayoutUsedMaterials;
 
@@ -62,11 +59,12 @@ public class TaskStartedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_start_activity);
-
+        Intent intent = getIntent();
+        task = (Task)intent.getSerializableExtra(TaskListActivity.TASK);
         ImageView lineColorCode = (ImageView)findViewById(R.id.chronometerImage);
         int color = Color.parseColor("#189c21");
         lineColorCode.setColorFilter(color);
-
+        startChronometer();
         lineColorCode = (ImageView)findViewById(R.id.taskStarttBottomLeftButtonImage);
         color = Color.parseColor("#5e5e5e");
         lineColorCode.setColorFilter(color);
@@ -78,27 +76,36 @@ public class TaskStartedActivity extends AppCompatActivity {
         s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green)), 2, 3, 1);
         getSupportActionBar().setTitle(s);
 
-        Intent intent = getIntent();
-        task = (Task)intent.getSerializableExtra(TaskListActivity.TASK);
+
         listViewUsedMaterials = (ListView)findViewById(R.id.listViewUsedMaterial);
         linearLayoutUsedMaterials = (LinearLayout)findViewById(R.id.linearLayoutUsedMaterials);
         linearLayoutUsedMaterials.setVisibility(LinearLayout.GONE);
-        startChronometer();
+
         setButtonListeners();
         listUsedMaterials();
     }
 
     private void startChronometer() {
-        chronometer = (Chronometer) findViewById(R.id.chronometer);
-        chronometer.setBase(SystemClock.elapsedRealtime() - timeTotal);
-        chronometer.start();
-    }
+        AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
+                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                .addBodyParameter("status", task.getStatus().toString())
+                .build()
+                .getAsObject(Task.class, new ParsedRequestListener<Task>() {
+                    @Override
+                    public void onResponse(Task t) {
+                        task = t;
+                        chronometer = (Chronometer) findViewById(R.id.chronometer);
+                        Long timeTotal = System.currentTimeMillis() -
+                                t.getTotal_time_start() +  t.getTotal_time();
+                        chronometer.setBase(SystemClock.elapsedRealtime() - timeTotal);
+                        chronometer.start();
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        makeToast(anError.getErrorBody());
+                    }
+                });
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        startChronometer();
-        listUsedMaterials();
     }
 
     private void showStopDialog() {
@@ -120,15 +127,17 @@ public class TaskStartedActivity extends AppCompatActivity {
 
                         switch (which) {
                             case 0:
+                                Long total = task.getTotal_time() + System.currentTimeMillis() -
+                                        task.getTotal_time_start();
                                 AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
                                         .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                                         .addBodyParameter("status", "5")
+                                        .addBodyParameter("total_time", total.toString())
+                                        .addBodyParameter("total_time_start", "0")
                                         .build()
                                         .getAsObject(Task.class, new ParsedRequestListener<Task>() {
                                             @Override
                                             public void onResponse(Task t) {
-                                                timeTotal += System.currentTimeMillis() - timeStarted;
-                                                stopped = true;
                                                 task = t;
                                                 Intent intent = new Intent(getApplicationContext(), TaskListActivity.class);
                                                 intent.putExtra(TaskListActivity.TASK, t);
@@ -229,12 +238,6 @@ public class TaskStartedActivity extends AppCompatActivity {
 
     private void makeToast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        super.onBackPressed();
     }
 
     @Override

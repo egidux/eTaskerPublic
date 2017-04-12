@@ -42,6 +42,7 @@ import org.etaskerapp.model.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -156,10 +157,11 @@ public class TaskListActivity extends AppCompatActivity implements
                             @Override
                             protected List<Task> doInBackground(List<Task>... params) {
                                 List<Task> l = params[0];
+                                List<Task> taskListAssigned = new ArrayList<Task>();
                                 for (int i = 0; i < l.size(); i++) {
                                     Task t = l.get(i);
-                                    if (!t.getWorker().equals(LoginActivity.name)) {
-                                       l.remove(i);
+                                    if (t.getWorker().equals(LoginActivity.name)) {
+                                       taskListAssigned.add(t);
                                     }
                                     ANRequest request = AndroidNetworking.get(Constant.URL_OBJECTS + "/name/" + t.getObject())
                                             .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT).build();
@@ -171,7 +173,7 @@ public class TaskListActivity extends AppCompatActivity implements
                                     } else {
                                     }
                                 }
-                                return l;
+                                return taskListAssigned;
                             }
 
                             @Override

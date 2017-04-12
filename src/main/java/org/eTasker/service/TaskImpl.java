@@ -153,9 +153,23 @@ public class TaskImpl implements TaskService {
 			taskUpdate.setDescription(task.getDescription());
 			LOGGER.info("Task with id=" + id + " updated description= " + task.getDescription());
 		}
+		if (task.getTotal_time() != null && task.getTotal_time() != -1 ) {
+			taskUpdate.setTotal_time(task.getTotal_time());
+			LOGGER.info("Task with id=" + id + " updated totalTime= " + task.getTotal_time());
+		}
+		if (task.getTotal_time_start() != null) {
+			taskUpdate.setTotal_time_start(task.getTotal_time_start());
+			LOGGER.info("Task with id=" + id + " updated totalTimeStart= " + task.getTotal_time());
+		}
 		if (task.getObject() != null) {
 			taskUpdate.setObject(task.getObject());
 			LOGGER.info("Task with id=" + id + " updated object= " + task.getObject());
+		}
+		if (task.getStart_time() != null) {
+			taskUpdate.setStart_time(task.getStart_time());
+			LOGGER.info("Task with id=" + id + " updated startTime= " + task.getStart_time());
+			taskUpdate.setTotal_time_start(System.currentTimeMillis());
+			taskUpdate.setTotal_time(0L);
 		}
 		if (task.getStatus() != null) {
 			Integer status = task.getStatus();
@@ -164,7 +178,7 @@ public class TaskImpl implements TaskService {
 			String time = TimeStamp.get();
 			String[] current = time.split("\\.");
 			if (status == 2) {
-				taskUpdate.setStart_time(time);
+				//taskUpdate.setStart_time(time);
 				taskUpdate.setFetched(true);
 				String[] planned = taskUpdate.getPlanned_time().split("\\.");
 				taskUpdate.setStart_on_time(true);

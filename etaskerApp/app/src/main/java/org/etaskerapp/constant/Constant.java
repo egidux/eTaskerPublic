@@ -2,8 +2,8 @@ package org.etaskerapp.constant;
 
 public final class Constant {
 
-    //public static final String URL = "http://192.168.0.13:8080";
-    public static final String URL = "https://cpssd1-etasker.computing.dcu.ie";
+    public static final String URL = "http://192.168.0.13:8080";
+    //public static final String URL = "https://cpssd1-etasker.computing.dcu.ie";
 
     public static final String URL_LOGOUT = Constant.URL + "/user/api/workers/logout";
     public static final String URL_WORKERS = Constant.URL + "/user/api/workers";

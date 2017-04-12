@@ -29,6 +29,8 @@ import org.etaskerapp.model.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 public class TaskActivity extends AppCompatActivity {
 
     private Task task;
@@ -51,9 +53,6 @@ public class TaskActivity extends AppCompatActivity {
         SpannableString s = new SpannableString(getResources().getString(R.string.app_name));
         s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green)), 2, 3, 1);
         getSupportActionBar().setTitle(s);
-
-        setBottomRightButton();
-        fillTaskDetails();
     }
 
     private void setBottomRightButton() {
@@ -73,6 +72,7 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        fillTaskDetails();
         setBottomRightButton();
     }
 
@@ -93,39 +93,68 @@ public class TaskActivity extends AppCompatActivity {
         rightBottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
-                        .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
-                        .addBodyParameter("status", "2")
-                        .build()
-                        .getAsObject(Task.class, new ParsedRequestListener<Task>() {
-                            @Override
-                            public void onResponse(Task t) {
-                                TextView startButtonText = (TextView)findViewById(R.id.taskBottomRightButtonText);
-                                switch(startButtonText.getText().toString().trim()) {
-                                    case "Start":
-                                        TaskStartedActivity.timeStarted = System.currentTimeMillis();
-                                        TaskStartedActivity.timeTotal = 0;
-                                        break;
-                                    case "Resume":
-                                        TaskStartedActivity.timeStarted = System.currentTimeMillis();
-                                        break;
-                                    case "Next":
-                                            TaskStartedActivity.timeTotal = System.currentTimeMillis() -
-                                                    TaskStartedActivity.timeStarted +
-                                                    TaskStartedActivity.timeTotal;
-                                            TaskStartedActivity.timeStarted = System.currentTimeMillis();
+                TextView startButtonText = (TextView)findViewById(R.id.taskBottomRightButtonText);
+                switch(startButtonText.getText().toString().trim()) {
+                    case "Start":
+                        AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
+                                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                                .addBodyParameter("status", "2")
+                                .addBodyParameter("start_time", new Date().toString())
+                                .build()
+                                .getAsObject(Task.class, new ParsedRequestListener<Task>() {
+                                    @Override
+                                    public void onResponse(Task t) {
+                                        task = t;
+                                        Intent intent = new Intent(getApplicationContext(), TaskStartedActivity.class);
+                                        intent.putExtra(TaskListActivity.TASK, t);
+                                        startActivity(intent);
+                                    }
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        makeToast(anError.getErrorBody());
+                                    }
+                                });
+                        break;
+                    case "Next":
+                        AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
+                                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                                .addBodyParameter("status", "2")
+                                .build()
+                                .getAsObject(Task.class, new ParsedRequestListener<Task>() {
+                                    @Override
+                                    public void onResponse(Task t) {
+                                        task = t;
+                                        Intent intent = new Intent(getApplicationContext(), TaskStartedActivity.class);
+                                        intent.putExtra(TaskListActivity.TASK, t);
+                                        startActivity(intent);
+                                    }
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        makeToast(anError.getErrorBody());
+                                    }
+                                });
+                        break;
+                    case "Resume":
+                        AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
+                                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                                .addBodyParameter("status", "2")
+                                .addBodyParameter("total_time_start", System.currentTimeMillis() + "")
+                                .build()
+                                .getAsObject(Task.class, new ParsedRequestListener<Task>() {
+                                    @Override
+                                    public void onResponse(Task t) {
+                                        task = t;
+                                        Intent intent = new Intent(getApplicationContext(), TaskStartedActivity.class);
+                                        intent.putExtra(TaskListActivity.TASK, t);
+                                        startActivity(intent);
+                                    }
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        makeToast(anError.getErrorBody());
+                                    }
+                                });
 
-                                }
-                                task = t;
-                                Intent intent = new Intent(getApplicationContext(), TaskStartedActivity.class);
-                                intent.putExtra(TaskListActivity.TASK, t);
-                                startActivity(intent);
-                            }
-                            @Override
-                            public void onError(ANError anError) {
-                                makeToast(anError.getErrorBody());
-                            }
-                        });
+                }
             }
         });
     }
@@ -135,23 +164,37 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void fillTaskDetails() {
-        AndroidNetworking.get(Constant.URL_CLIENTS + "/name/" + task.getClient())
+        AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
                 .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                .addBodyParameter("status", task.getStatus().toString())
                 .build()
-                .getAsObject(Client.class, new ParsedRequestListener<Client>() {
+                .getAsObject(Task.class, new ParsedRequestListener<Task>() {
                     @Override
-                    public void onResponse(Client client) {
-                        ((TextView)findViewById(R.id.TaskClientName)).setText(client.getName());
-                        ((TextView)findViewById(R.id.TaskClientAddress)).setText(client.getAddress());
-                        AndroidNetworking.get(Constant.URL_OBJECTS + "/name/" + task.getObject())
+                    public void onResponse(Task t) {
+                        task = t;
+                        AndroidNetworking.get(Constant.URL_CLIENTS + "/name/" + task.getClient())
                                 .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                                 .build()
-                                .getAsObject(Object.class, new ParsedRequestListener<Object>() {
+                                .getAsObject(Client.class, new ParsedRequestListener<Client>() {
                                     @Override
-                                    public void onResponse(Object object) {
-                                        ((TextView)findViewById(R.id.TaskObjectName)).setText(object.getName());
-                                        ((TextView)findViewById(R.id.TaskObjectAddress)).setText(object.getAddress());
-                                        setClickListeners(object);
+                                    public void onResponse(Client client) {
+                                        ((TextView)findViewById(R.id.TaskClientName)).setText(client.getName());
+                                        ((TextView)findViewById(R.id.TaskClientAddress)).setText(client.getAddress());
+                                        AndroidNetworking.get(Constant.URL_OBJECTS + "/name/" + task.getObject())
+                                                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                                                .build()
+                                                .getAsObject(Object.class, new ParsedRequestListener<Object>() {
+                                                    @Override
+                                                    public void onResponse(Object object) {
+                                                        ((TextView)findViewById(R.id.TaskObjectName)).setText(object.getName());
+                                                        ((TextView)findViewById(R.id.TaskObjectAddress)).setText(object.getAddress());
+                                                        setClickListeners(object);
+                                                    }
+                                                    @Override
+                                                    public void onError(ANError anError) {
+                                                        makeToast(anError.getErrorBody());
+                                                    }
+                                                });
                                     }
                                     @Override
                                     public void onError(ANError anError) {
@@ -164,6 +207,7 @@ public class TaskActivity extends AppCompatActivity {
                         makeToast(anError.getErrorBody());
                     }
                 });
+
         ((TextView)findViewById(R.id.TaskTitle)).setText(task.getTitle());
         ((TextView)findViewById(R.id.TaskDescription)).setText(task.getDescription());
         ((TextView)findViewById(R.id.TaskWorker)).setText(task.getWorker());

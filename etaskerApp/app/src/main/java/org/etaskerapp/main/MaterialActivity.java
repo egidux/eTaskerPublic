@@ -120,10 +120,6 @@ public class MaterialActivity extends AppCompatActivity {
                                 });
                     }
                 }
-                TaskStartedActivity.timeTotal = System.currentTimeMillis() -
-                        TaskStartedActivity.timeStarted +
-                        TaskStartedActivity.timeTotal;
-                TaskStartedActivity.timeStarted = System.currentTimeMillis();
             }
         });
     }
