@@ -123,6 +123,7 @@ CREATE TABLE Material (
   location VARCHAR(200),
   time_used VARCHAR(200),
   used boolean,
+  task BIGINT,
   PRIMARY KEY(id)
 );
 

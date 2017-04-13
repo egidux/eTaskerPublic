@@ -20,16 +20,20 @@ import com.androidnetworking.interfaces.ParsedRequestListener;
 import org.etaskerapp.R;
 import org.etaskerapp.constant.Constant;
 import org.etaskerapp.model.Material;
+import org.etaskerapp.model.Task;
 
 import java.util.List;
 
 public class UsedMaterialAdapter extends ArrayAdapter<Material>  {
     private Context c;
     private TaskStartedActivity activity;
-    UsedMaterialAdapter(Context c, List<Material> list, TaskStartedActivity activity) {
+    private Task task;
+
+    UsedMaterialAdapter(Context c, List<Material> list, TaskStartedActivity activity, Task task) {
         super(c, R.layout.material_row, list);
         this.c = c;
         this.activity = activity;
+        this.task = task;
     }
 
     @NonNull
@@ -50,13 +54,14 @@ public class UsedMaterialAdapter extends ArrayAdapter<Material>  {
             remove.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View v) {
-                                              AndroidNetworking.put(Constant.URL_MATERIALS + "/" + material.getId())
+                                              AndroidNetworking.delete(Constant.URL_MATERIALS + "/used/" + task.getId())
                                                       .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
-                                                      .addBodyParameter("quantity", "0")
+                                                      .addBodyParameter("id", material.getId() + "")
                                                       .build()
                                                       .getAsObject(Material.class, new ParsedRequestListener() {
                                                           @Override
                                                           public void onResponse(Object response) {
+
                                                               activity.listUsedMaterials();
                                                           }
 

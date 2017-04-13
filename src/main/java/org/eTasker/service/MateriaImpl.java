@@ -1,6 +1,9 @@
 package org.eTasker.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eTasker.model.Material;
 import org.eTasker.repository.MaterialRepository;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class MateriaImpl implements MaterialService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MaterialService.class);
+	private static Map<Long, List<Material>> usedMaterialDB = new HashMap<>();
 	
 	@Autowired
 	private MaterialRepository materialRepository;
@@ -30,11 +34,18 @@ public class MateriaImpl implements MaterialService {
 	}
 	
 	@Override
+	public List<Material> findAllUsed() {
+		List<Material> materials = new ArrayList<>();
+		for (Long key: usedMaterialDB.keySet()) {
+			materials.addAll(usedMaterialDB.get(key));
+		}
+		LOGGER.info("Used materials: " + JsonBuilder.build(materials));
+		return materials;
+	}
+	
+	@Override
 	public Material findOne(Long id) {
 		Material material = materialRepository.findOne(id);
-		if (material == null) {
-			LOGGER.debug("Not found material with id=" + id);
-		}
 		LOGGER.info("Found material:" + JsonBuilder.build(material));
 		return material;
 	}
@@ -45,13 +56,28 @@ public class MateriaImpl implements MaterialService {
 		if (newMaterial == null) {
 			LOGGER.debug("Failed create new material: " + JsonBuilder.build(material));
 		}
-		LOGGER.debug("Created new material: " + JsonBuilder.build(newMaterial));
-		return newMaterial;
+		 LOGGER.debug("Created new material: " + JsonBuilder.build(material));
+		return materialRepository.save(material);
+	}
+	
+	@Override
+	public Material createUsed(Material material, Long taskId) {
+		List<Material> list = usedMaterialDB.get(taskId);
+		if (list == null) {
+			list = new ArrayList<>();
+			usedMaterialDB.put(taskId, list);
+		}
+		list.add(material);
+		material.setTime_used(TimeStamp.get());
+		material.setTask(taskId);
+		LOGGER.debug("Created new used material: " + JsonBuilder.build(material));
+		return material;
 	}
 
 	@Override
 	public Material update(Material material, Long id) {
 		Material materialUpdate = findOne(id);
+		
 		if (materialUpdate == null) {
 			LOGGER.info("Failed update, material with id=" + id + " not exists");
 			return null;
@@ -64,19 +90,16 @@ public class MateriaImpl implements MaterialService {
 			materialUpdate.setPrice(material.getPrice());
 			LOGGER.info("Material with id=" + id + " updated price= " + material.getPrice());
 		}
+		if (material.getTask() != null) {
+			materialUpdate.setTask(material.getTask());
+			LOGGER.info("Material with id=" + id + " updated task= " + material.getTask());
+		}
 		if (material.getUnit() != null && !material.getUnit().isEmpty()) {
 			materialUpdate.setUnit(material.getUnit());
 			LOGGER.info("Material with id=" + id + " updated unit= " + material.getUnit());
 		}
 		if (material.getQuantity() != null) {
 			materialUpdate.setQuantity(material.getQuantity());
-			if (material.getQuantity() > 0) {
-				materialUpdate.setUsed(Boolean.TRUE);
-				materialUpdate.setTime_used(TimeStamp.get());
-			} else {
-				materialUpdate.setUsed(Boolean.FALSE);
-				materialUpdate.setTime_used(null);
-			}
 			LOGGER.info("Material with id=" + id + " updated quantity= " + material.getQuantity());
 		}
 		if (material.getLocation() != null && !material.getLocation().isEmpty()) {
@@ -89,7 +112,20 @@ public class MateriaImpl implements MaterialService {
 		}
 		
 		LOGGER.info("Material with id=" + id + " updated");
+		
 		return materialRepository.save(materialUpdate);
+	}
+	
+	@Override
+	public void deleteUsed(Material material, Long taskID) {
+		List<Material> list = usedMaterialDB.get(taskID);
+		if (list != null) {
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).getId() == material.getId()) {
+					list.remove(i);
+				}
+			}
+		}	
 	}
 
 	@Override

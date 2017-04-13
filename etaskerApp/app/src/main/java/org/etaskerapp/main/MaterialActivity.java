@@ -21,6 +21,7 @@ import org.etaskerapp.constant.Constant;
 import org.etaskerapp.model.Material;
 import org.etaskerapp.model.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,14 +103,18 @@ public class MaterialActivity extends AppCompatActivity {
                 for (Long key: keys) {
                     Material material = materials.get(key);
                     if (material.getQuantity() != null && material.getQuantity() > 0) {
-                        AndroidNetworking.put(Constant.URL_MATERIALS + "/" + key)
+                        AndroidNetworking.post(Constant.URL_MATERIALS + "/used/" + task.getId())
                                 .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                                 .addBodyParameter("quantity", material.getQuantity() + "")
+                                .addBodyParameter("name", material.getName())
+                                .addBodyParameter("unit", material.getUnit())
+                                .addBodyParameter("price", material.getPrice().toString())
                                 .addBodyParameter("location", task.getObject())
                                 .build()
                                 .getAsObject(Material.class, new ParsedRequestListener() {
                                     @Override
                                     public void onResponse(Object response) {
+
                                         finish();
                                     }
 

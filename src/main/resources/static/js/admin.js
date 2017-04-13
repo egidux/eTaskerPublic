@@ -1822,11 +1822,10 @@ $(document).ready(function() {
     function drawUsedMaterialTable() {
         $.ajax({
             type : "GET",
-            url : "/user/api/materials",
+            url : "/user/api/materials/used",
             success : function(json) {
                 var dataSet = [];
                 $.each(json, function(i, obj) {
-                    if (obj.used) {
                         var temp = [];
                         temp.push(obj.name);
                         temp.push(obj.location);
@@ -1835,7 +1834,6 @@ $(document).ready(function() {
                         temp.push(obj.price);
                         temp.push(obj.time_used);
                         dataSet.push(temp);
-                    }
                 });
                 var table = $('#table-used-material').DataTable( {
                     destroy: true,

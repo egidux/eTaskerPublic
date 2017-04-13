@@ -80,8 +80,13 @@ public class TaskStartedActivity extends AppCompatActivity {
         listViewUsedMaterials = (ListView)findViewById(R.id.listViewUsedMaterial);
         linearLayoutUsedMaterials = (LinearLayout)findViewById(R.id.linearLayoutUsedMaterials);
         linearLayoutUsedMaterials.setVisibility(LinearLayout.GONE);
-
         setButtonListeners();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         listUsedMaterials();
     }
 
@@ -201,13 +206,20 @@ public class TaskStartedActivity extends AppCompatActivity {
     }
 
     void listUsedMaterials() {
-        AndroidNetworking.get(Constant.URL_MATERIALS)
+        AndroidNetworking.get(Constant.URL_MATERIALS + "/used")
                 .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                 .build()
                 .getAsObjectList(Material.class, new ParsedRequestListener<List<Material>>() {
                     @Override
                     public void onResponse(List<Material> materials) {
-                        fillUsedMaterials(materials);
+                        List<Material> thisTaskMaterials = new ArrayList<>();
+                        for (Material m: materials) {
+                            if (m.getTask().equals(task.getId())) {
+                                thisTaskMaterials.add(m);
+                            }
+                        }
+
+                        fillUsedMaterials(thisTaskMaterials);
                     }
                     @Override
                     public void onError(ANError anError) {
@@ -217,17 +229,10 @@ public class TaskStartedActivity extends AppCompatActivity {
     }
 
     void fillUsedMaterials(List<Material> list) {
-        List<Material> tempList = new ArrayList<>();
 
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getQuantity() != null && list.get(i).getQuantity() > 0) {
-                tempList.add(list.get(i));
-            }
-        }
-
-        if (tempList.size() > 0) {
+        if (list.size() > 0) {
             linearLayoutUsedMaterials.setVisibility(LinearLayout.VISIBLE);
-            UsedMaterialAdapter listAdapter = new UsedMaterialAdapter(getApplicationContext(), tempList, this);
+            UsedMaterialAdapter listAdapter = new UsedMaterialAdapter(getApplicationContext(), list, this, task);
             listViewUsedMaterials.setAdapter(listAdapter);
         } else {
             linearLayoutUsedMaterials.setVisibility(LinearLayout.GONE);

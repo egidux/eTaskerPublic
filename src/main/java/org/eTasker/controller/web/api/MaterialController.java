@@ -48,6 +48,29 @@ public class MaterialController extends AbstractController {
 		return new ResponseEntity<List<Material>>(materials, HttpStatus.OK);
     }
     
+	/**
+	 * Retrieves all used materials
+	 @return if request successful   returns 200(OK) and all materials as Json
+	 *       if request unsuccessful returns 500(Internal Server Error) and error message as Json
+	 */
+    @RequestMapping(
+            value = URL_MATERIALS + "/used",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getMaterialsUsed(HttpSession session) {
+    	logger.info("Http request GET /user/api/" + URL_MATERIALS);
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request GET /user/api/" + URL_MATERIALS + "/used not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
+    	List<Material> materials = materialService.findAllUsed();
+    	if (materials == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
+    				HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+		return new ResponseEntity<List<Material>>(materials, HttpStatus.OK);
+    }
+    
     /**
      * Retrives specific material
      * @param id
@@ -107,6 +130,34 @@ public class MaterialController extends AbstractController {
     	return new ResponseEntity<String>(JsonBuilder.build(newMaterial), HttpStatus.CREATED);
     }
     
+    /**
+     * Creates new used material
+     * @param material
+     * @param session
+     * @return if request successful returns  201(Created) and newly created material Json data
+     * 		   if unauthorized returns        401(Unauthorized) and error message as Json
+	 * 		   if missing parameters returns  400(Bad Request) and error message as Json
+	 * 		   if worker exists returns       409(Conflict) and error message as Json
+	 * 		   if any other error returns     500(Internal Server Error) and error message as Json
+     */
+    @RequestMapping(
+            value = URL_MATERIALS + "/used/{id}",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createMaterialUsed(Material material, HttpSession session, @PathVariable("id") Long taskId) {
+    	logger.info("Http request POST /user/api/" + URL_MATERIALS + " with object: " + JsonBuilder.build(material));
+		if (getSessionAuthorization(session) == null) {
+			logger.info("Http request POST /user/api/" + URL_MATERIALS + " not logged in");
+			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+		}
+    	Material newMaterial = materialService.createUsed(material, taskId);
+    	if (newMaterial == null) {
+    		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
+    				HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+    	return new ResponseEntity<String>(JsonBuilder.build(newMaterial), HttpStatus.CREATED);
+    }
+    
 	/**
 	 * Updates material
 	 * @param material
@@ -154,5 +205,27 @@ public class MaterialController extends AbstractController {
     	}
     	materialService.delete(material);
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+	/**
+	 * Deletes material used
+	 * @param material
+	 * @param session
+	 * @return if request successful returns 204(No Content)
+	 * 		   if Unauthorized returns       401(Unauthorized) and error message as Json
+	 * 		   if delete fail return         500(Internal Server Error) and error message as Json
+	 */
+    @RequestMapping(
+            value = URL_MATERIALS +"/used/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteMaterialUsed(Material material, HttpSession session, @PathVariable("id") Long id) {
+    	logger.info("Http request DELETE /user/api/" + URL_MATERIALS + "used/"+id+" with material: " + JsonBuilder.build(material));
+    	if (getSessionAuthorization(session) == null) {
+    		logger.debug("Http request PUT /user/api/" + URL_MATERIALS + " failed, not logged in");
+    		return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
+    	}
+    	materialService.deleteUsed(material, id);
+    	return new ResponseEntity<Material>(material, HttpStatus.OK);
     }
 }

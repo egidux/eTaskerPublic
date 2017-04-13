@@ -9,6 +9,15 @@ public class Material {
     private String location;
     private String time_used;
     private Boolean used;
+    private Long task;
+
+
+    public Long getTask() {
+        return task;
+    }
+    public void setTask(Long task) {
+        this.task = task;
+    }
 
     public Long getQuantity() {
         return quantity;

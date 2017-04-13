@@ -67,5 +67,4 @@ public class MaterialAdapter extends ArrayAdapter<Material>  {
         MaterialActivity.materials.put(material.getId(), material);
         return v;
     }
-
 }
