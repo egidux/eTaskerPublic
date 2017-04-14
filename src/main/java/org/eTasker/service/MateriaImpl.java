@@ -44,6 +44,18 @@ public class MateriaImpl implements MaterialService {
 	}
 	
 	@Override
+	public List<Material> findAllUsed(Long taskId) {
+		List<Material> materials = findAllUsed();
+		List<Material> list = new ArrayList<>();
+		for (Material m: materials) {
+			if (m.getTask().equals(taskId)) {
+				list.add(m);
+			}
+		}
+		return list;
+	}
+	
+	@Override
 	public Material findOne(Long id) {
 		Material material = materialRepository.findOne(id);
 		LOGGER.info("Found material:" + JsonBuilder.build(material));

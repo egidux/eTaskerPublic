@@ -8,6 +8,7 @@ public interface MaterialService {
 
 	List<Material> findAll();
 	List<Material> findAllUsed();
+	List<Material> findAllUsed(Long taskId);
 
     Material findOne(Long id);
 

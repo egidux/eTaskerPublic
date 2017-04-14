@@ -1,9 +1,12 @@
 package org.eTasker.service;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.eTasker.controller.EmailController;
+import org.eTasker.model.Client;
+import org.eTasker.model.Material;
+import org.eTasker.model.Report;
 import org.eTasker.model.Task;
 import org.eTasker.repository.TaskRepository;
 import org.eTasker.tool.JsonBuilder;
@@ -20,6 +23,16 @@ public class TaskImpl implements TaskService {
 	
 	@Autowired
 	private TaskRepository taskRepository;
+	@Autowired
+	private ClientService clientService;
+	@Autowired
+	private ReportService reportService;
+	@Autowired
+	private ObjectService objectService;
+	@Autowired
+	private MaterialService materialService;
+	@Autowired
+	private EmailController emailController;
 
 	@Override
 	public List<Task> findAll() {
@@ -190,7 +203,7 @@ public class TaskImpl implements TaskService {
 					}
 				}
 			} else if (status == 3 || status == 4) {
-				taskUpdate.setEnd_time(TimeStamp.get());
+				/*taskUpdate.setEnd_time(TimeStamp.get());
 				String[] start = taskUpdate.getStart_time().split("\\.");
 				String[] end = taskUpdate.getEnd_time().split("\\.");
 				int startDay = Integer.parseInt(start[0]);
@@ -208,7 +221,47 @@ public class TaskImpl implements TaskService {
 				Date endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMin).getTime();
 				long diff = (endDate.getTime() - startDate.getTime()) / 1000 / 60;
 				taskUpdate.setDuration(diff);
-				LOGGER.info("Task with id=" + id + " updated task duration= " + diff);
+				LOGGER.info("Task with id=" + id + " updated task duration= " + diff);*/
+			}
+			if (status == 3) {
+				String taskEndTime = new Date().toString();
+				taskUpdate.setEnd_time(new Date().toString());
+				Task taskReport = findOne(id);
+				Client client = clientService.findByName(taskReport.getClient());
+				String clientEmail = client.getEmail();
+				Report report = reportService.get();
+				String reportHeader = report.getReport_text().replaceAll("%", id.toString());
+				String companyName = report.getCompany_name();
+				String companyCode = report.getCompany_code();
+				String companyAddress = report.getCompany_address();
+				String companyPhone = report.getCompany_phone();
+				String taskTitle = taskReport.getTitle();
+				String taskStartTime = taskReport.getStart_time();
+				String taskDescription = taskReport.getDescription();
+				org.eTasker.model.Object object  = objectService.findByName(taskReport.getObject());
+				String objectAddress = object.getAddress();
+				String objectName = object.getName();
+				List<Material> materials = materialService.findAllUsed(id);
+				
+				String reportStringCompany = String.format("\n\n%s\nCompany code: %s\nAddress: %s\nPhone: %s", 
+						companyName, companyCode, companyAddress, companyPhone);
+				
+				String reportStringTask = String.format("\n\nTask address: %s\nTask title: %s"
+						+ "\nTask start time: %s\nTask end time: %s\nTask description: %s", 
+						objectAddress, taskTitle, taskStartTime, taskEndTime, taskDescription);
+				
+				StringBuilder materialsString = new StringBuilder("\n\nMaterials Used");
+				for (Material m: materials) {
+					materialsString.append("\n" + m.getName() + "\nQuantity: " + m.getQuantity() + "\nMeasurement unit: " +
+							m.getUnit() + "\nPrice per unit: " + m.getPrice() + " EUR\nTotal price: " + 
+							(m.getPrice() * m.getQuantity()) + " EUR\n");
+				}
+				new Thread(() -> {
+					emailController.sendEmail(clientEmail, "Task report", reportHeader + reportStringCompany + reportStringTask + 
+							materialsString.toString());
+				}).start();
+				
+				LOGGER.info("Report emailed to " + clientEmail);
 			}
 		}
 		if (task.getTitle() != null && !task.getTitle().isEmpty()) {

@@ -50,7 +50,7 @@ CREATE TABLE Task (
   client VARCHAR(200) NOT NULL,
   object VARCHAR(200) NOT NULL,
   worker VARCHAR(200),
-  description VARCHAR(50),
+  description VARCHAR(500),
   
   signed_by VARCHAR(200),
   agreed BOOLEAN,
