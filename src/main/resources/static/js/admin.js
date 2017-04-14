@@ -296,13 +296,23 @@ $(document).ready(function() {
             type: "GET",
             url: "/user/api/tasks",
             success: function (jsonTask) {
+                var clients = [];
+                var workers = [];
                 $.each(jsonTask, function (i, objTask) {
-                    $("#dashboardSelectClient").append('<option>' +  objTask.client + '</option>');
-                    $("#dashboardSelectClient").selectpicker('refresh');
-                    if (objTask.worker.toString().trim().length > 0) {
-                        $("#dashboardSelectWorker").append('<option>' +  objTask.worker + '</option>');
-                        $("#dashboardSelectWorker").selectpicker('refresh');
+                    if ($.inArray(objTask.client, clients) < 0) {
+                        clients.push(objTask.client);
                     }
+                    if (objTask.worker.toString().trim().length > 0 && $.inArray(objTask.worker, workers) < 0) {
+                        workers.push(objTask.worker);
+                    }
+                });
+                $.each(clients, function (i, client) {
+                    $("#dashboardSelectClient").append('<option>' +  client + '</option>');
+                    $("#dashboardSelectClient").selectpicker('refresh');
+                });
+                $.each(workers, function (i, worker) {
+                    $("#dashboardSelectWorker").append('<option>' +  worker + '</option>');
+                    $("#dashboardSelectWorker").selectpicker('refresh');
                 });
             },
             error: function (e) {
