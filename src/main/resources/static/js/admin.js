@@ -1220,17 +1220,39 @@ $(document).ready(function() {
     })
 
     var taskId;
-    $('#modal-btn-image').on('click', function(e) {
-        e.preventDefault();
-        $("#image").attr('src', "/user/api/images/" + taskId + "/download");
-        $("#modalImage").modal('show');
-    })
 
     $('#modal-btn-signature').on('click', function(e) {
         e.preventDefault();
         $("#signature").attr('src', "/user/api/signatures/" + taskId + "/download");
         $("#modalSignature").modal('show');
     })
+
+
+    function handleImages(taskID) {
+        $.ajax({
+            type : "GET",
+            url : "/user/api/images/" + taskID,
+            success : function(jsonObjects) {
+                $.each(jsonObjects, function(i, object) {
+                    var idImage = 'TaskImage' + i;
+                    $('#imagesDiv').remove(".btnImage");
+                    $('#imagesDiv').append('<button id="' + idImage + '" type="button" class="btn btn-default btnImage">'+idImage+'</button>');
+                    $('#' + idImage).on('click', function(e) {
+                        e.preventDefault();
+                        $('#image').removeAttr('src');
+                        $("#image").attr('src', "/user/api/images/" + taskId + "/download/" + object.id);
+                        $("#modalImage").modal('show');
+                    })
+                });
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    }
 
 // BTN NEW TASK SAVE LISTENER
     function setTaskTableListener(table) {
@@ -1245,6 +1267,7 @@ $(document).ready(function() {
                 success : function(jsonTask) {
                     if (jsonTask.status == 3 || jsonTask.status == 4) {
                         $('#mymodallabeltaskedit').text('Task details');
+                        handleImages(jsonTask.id);
                     } else {
                         $('#mymodallabeltaskedit').text('Edit task');
                     }
@@ -1267,7 +1290,6 @@ $(document).ready(function() {
                     $('#task-agree-edit-div').toggle((jsonTask.status == 3 || jsonTask.status == 4));
                     $('#task-agree-edit').val(jsonTask.agreed);
 
-                    $('#modal-btn-image').toggle(jsonTask.file_exists == true);
                     $('#modal-btn-signature').toggle(jsonTask.signature_exists == true);
                     $('#modal-edit-task').modal();
                     $('#task-title-edit').val(jsonTask.title);

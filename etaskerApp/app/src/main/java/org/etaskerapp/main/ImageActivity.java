@@ -60,7 +60,7 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
 
-        Button no= (Button) findViewById(R.id.buttonTakePictureNo);
+        Button no = (Button) findViewById(R.id.buttonTakePictureNo);
         no.setOnClickListener( new View.OnClickListener() {
 
             @Override
@@ -147,9 +147,9 @@ public class ImageActivity extends AppCompatActivity {
                             makeToast(error.getCause().toString());
                         }
                     });
-            Intent intent = new Intent(getApplicationContext(), RateActivity.class);
-            intent.putExtra(TaskListActivity.TASK, task);
-            startActivity(intent);
+            //Intent intent = new Intent(getApplicationContext(), RateActivity.class);
+            //intent.putExtra(TaskListActivity.TASK, task);
+            //startActivity(intent);
         }
     }
 

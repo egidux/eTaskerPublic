@@ -10,9 +10,9 @@ public interface ImageService {
 
     Image store(MultipartFile multFile, Image file);
 
-    Path load(Long id);
+    Path load(Long taskID, Long imageID);
     
-    List<Image> findAll();
+    List<Image> findAll(Long taskID);
     
     Image findOne(Long id);
 }

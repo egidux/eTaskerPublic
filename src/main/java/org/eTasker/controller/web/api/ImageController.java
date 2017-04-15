@@ -36,45 +36,21 @@ public class ImageController extends AbstractController {
 	 *       if request unsuccessful returns 500(Internal Server Error) and error message as Json
 	 */
     @RequestMapping(
-            value = URL_IMAGES,
+            value = URL_IMAGES + "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getImage(HttpSession session) {
+    public ResponseEntity<?> getImage(HttpSession session, @PathVariable("id") Long id) {
     	logger.info("Http request GET /user/api/" + URL_IMAGES);
 		if (getSessionAuthorization(session) == null) {
 			logger.info("Http request GET /user/api/" + URL_IMAGES + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-    	List<Image> images = imageService.findAll();
+    	List<Image> images = imageService.findAll(id);
     	if (images == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "INTERNAL_SERVER_ERROR"), 
     				HttpStatus.INTERNAL_SERVER_ERROR);
     	}
 		return new ResponseEntity<List<Image>>(images, HttpStatus.OK);
-    }
-    
-    /**
-     * Retrives specific image
-     * @param id
-     * @return if request successful returns   200(OK) and image as Json
-     *         if request unsuccessful returns 400(Bad Request) and error message as Json
-     */
-    @RequestMapping(
-            value = URL_IMAGES + "/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getImage(@PathVariable("id") Long id, HttpSession session) {
-    	logger.info("Http request GET /user/api/" + URL_IMAGES + "/{id} with id:" + id);
-		if (getSessionAuthorization(session) == null) {
-			logger.info("Http request GET /user/api/" + URL_IMAGES + " not logged in");
-			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
-		}
-    	Image image = imageService.findOne(id);
-    	if (image == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "No image found with id=" + id), 
-    				HttpStatus.BAD_REQUEST);
-    	}
-    	return new ResponseEntity<>(JsonBuilder.build(image), HttpStatus.OK);
     }
     
 	/**
@@ -86,17 +62,17 @@ public class ImageController extends AbstractController {
 	 *         if request unsuccessful returns 400(Bad Request) and error message as Json
 	 */
     @RequestMapping(
-            value = URL_IMAGES + "/{id}",
+            value = URL_IMAGES + "/{taskID}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile multFile, Image image, @PathVariable("id") Long id,
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile multFile, Image image, @PathVariable("taskID") Long taskID,
     		HttpSession session) {
-    	logger.info("Http request POST /user/api/" + URL_IMAGES + "with image: " + JsonBuilder.build(image) + " id=" + id);
+    	logger.info("Http request POST /user/api/" + URL_IMAGES + "with image: " + JsonBuilder.build(image) + " id=" + taskID);
 		if (getSessionAuthorization(session) == null) {
 			logger.info("Http request POST /user/api/" + URL_IMAGES + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-		image.setTask(id);
+		image.setTask(taskID);
 		Image newImage = imageService.store(multFile, image);
 		if (newImage == null) {
     		return new ResponseEntity<>(MapBuilder.build("error", "Failed upload image"), 
@@ -114,18 +90,19 @@ public class ImageController extends AbstractController {
      *         if request unsuccessful returns 400(Bad Request) and error message as Json
      */
     @RequestMapping(
-            value = URL_IMAGES + "/{id}/download",
+            value = URL_IMAGES + "/{taskID}/download/{imageID}",
             method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<?> download(@PathVariable("id") Long id, HttpSession session, HttpServletResponse response) {
-    	logger.info("Http request POST /user/api/" + URL_IMAGES + "/{id}/download");
+    public ResponseEntity<?> download(@PathVariable("taskID") Long taskID, HttpSession session, 
+    		@PathVariable("imageID") Long imageID, HttpServletResponse response) {
+    	logger.info("Http request GET /user/api/" + URL_IMAGES + "/" + taskID + "/download/" + imageID);
 		if (getSessionAuthorization(session) == null) {
 			logger.info("Http request POST /user/api/" + URL_IMAGES + " not logged in");
 			return new ResponseEntity<>(MapBuilder.build("error", "please login"), HttpStatus.UNAUTHORIZED);
 		}
-		Path path = imageService.load(id);
+		Path path = imageService.load(taskID, imageID);
     	if (path == null) {
-    		return new ResponseEntity<>(MapBuilder.build("error", "No file found with id=" + id), 
+    		return new ResponseEntity<>(MapBuilder.build("error", "No file found with taskID=" + taskID + ", imageID=" + imageID), 
     				HttpStatus.BAD_REQUEST);
     	}
 		return new ResponseEntity<FileSystemResource>(new FileSystemResource(path.toFile()), HttpStatus.OK);

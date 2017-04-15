@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eTasker.model.Image;
 import org.eTasker.model.Task;
@@ -30,11 +31,12 @@ public class ImageImpl implements ImageService {
 	private TaskRepository taskRepository;
 	
 	@Override
-	public List<Image> findAll() {
+	public List<Image> findAll(Long taskID) {
 		List<Image> images = imageRepository.findAll();
 		if (images == null) {
 			LOGGER.debug("Failed to retrieve all images");
 		}
+		images = images.stream().filter(image -> image.getTask().equals(taskID)).collect(Collectors.toList());
 		LOGGER.info("Images: " + images);
 		return images;
 	}
@@ -61,7 +63,7 @@ public class ImageImpl implements ImageService {
         	image.setCreated(TimeStamp.get());
         	image.setName(multFile.getOriginalFilename());
         	image.setPath(filePath.toString());
-        	imageRepository.save(image);
+        	Image savedImage = imageRepository.save(image);
         	LOGGER.info("File:" + multFile.getOriginalFilename() + " stored");
         	Task task = taskRepository.findOne(image.getTask());
         	if (task == null) {
@@ -71,23 +73,25 @@ public class ImageImpl implements ImageService {
         		taskRepository.save(task);
         		LOGGER.debug("Updated task=" + image.getTask() + " has file true");
         	}
-        	return image;
+        	LOGGER.info("Saved image: " + JsonBuilder.build(savedImage));
+        	findAll(savedImage.getTask());
+        	return savedImage;
         } catch (IOException e) {
         	return null;
         }
     }
 
 	@Override
-	public Path load(Long id) {
-		List<Image> list = imageRepository.findAll();
+	public Path load(Long taskID, Long imageID) {
+		List<Image> list = findAll(taskID);
 		for (Image image: list) {
-			if (image.getTask() == id) {
+			if (image.getId().equals(imageID)) {
 				LOGGER.info("Found file:" + JsonBuilder.build(image));
 				return Paths.get(image.getPath());
 			}
 		}
 
-		LOGGER.info("Not found file task id=" + id);
+		LOGGER.info("Not found file task id=" + taskID + ", imageID=" + imageID);
 		return null;
 	}
 }
