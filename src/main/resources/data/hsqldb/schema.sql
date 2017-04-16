@@ -158,3 +158,9 @@ CREATE TABLE Signature (
   created VARCHAR(200),
   PRIMARY KEY(id)
 );
+
+CREATE TABLE Token (
+  token VARCHAR(200),
+  worker VARCHAR(200),
+  PRIMARY KEY(worker)
+);

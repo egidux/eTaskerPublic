@@ -1,5 +1,9 @@
 package org.eTasker.service;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +15,7 @@ import org.eTasker.model.Task;
 import org.eTasker.repository.TaskRepository;
 import org.eTasker.tool.JsonBuilder;
 import org.eTasker.tool.TimeStamp;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,10 @@ import org.springframework.stereotype.Service;
 public class TaskImpl implements TaskService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
+	private static final String FCM_SERVER_URL = "https://fcm.googleapis.com/fcm/send";
+	private static final String FCM_SERVER_KEY = "AAAAa2D4uBM:APA91bFmzURcDQEK8pu1WB"
+			+ "vw8lDUimMAkQZ0PYNVCjrTDU7m97E5A4sgZhg81tqIZnVGjZkveYMocqnyFQJ2QhV3S_Jq9tFDswWajkfiwiUDkb-yMc0_u_disk"
+			+ "_7JQbxv2E1MK3CtJXw";
 	
 	@Autowired
 	private TaskRepository taskRepository;
@@ -33,6 +42,10 @@ public class TaskImpl implements TaskService {
 	private MaterialService materialService;
 	@Autowired
 	private EmailController emailController;
+	@Autowired
+	private TokenService tokenService;
+	@Autowired
+	private WorkerService workerService;
 
 	@Override
 	public List<Task> findAll() {
@@ -66,6 +79,9 @@ public class TaskImpl implements TaskService {
 		Task newTask = taskRepository.save(task);
 		if (newTask == null) {
 			LOGGER.debug("Failed create new task: " + JsonBuilder.build(task));
+		}
+		if (task.getWorker() != null) {
+			sendPushNotification(newTask);
 		}
 		LOGGER.debug("Created new task: " + JsonBuilder.build(newTask));
 		return newTask;
@@ -240,7 +256,6 @@ public class TaskImpl implements TaskService {
 				String taskDescription = taskReport.getDescription();
 				org.eTasker.model.Object object  = objectService.findByName(taskReport.getObject());
 				String objectAddress = object.getAddress();
-				String objectName = object.getName();
 				List<Material> materials = materialService.findAllUsed(id);
 				
 				String reportStringCompany = String.format("\n\n%s\nCompany code: %s\nAddress: %s\nPhone: %s", 
@@ -283,13 +298,44 @@ public class TaskImpl implements TaskService {
 		}
 		taskUpdate.setUpdated(TimeStamp.get());
 		LOGGER.info("Task with id=" + id + " updated");
-		return taskRepository.save(taskUpdate);
+		Task updatedTask = taskRepository.save(taskUpdate);
+		if (task.getWorker() != null) {
+			sendPushNotification(updatedTask);
+		}
+		return updatedTask;
 	}
 
 	@Override
 	public void delete(Task task) {
 		taskRepository.delete(task);
 		LOGGER.info("Deleted task with id=" + task.getId());
+	}
+	
+	private void sendPushNotification(Task task) {
+		try {
+			URL url = new URL(FCM_SERVER_URL);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Authorization", "key=" + FCM_SERVER_KEY);
+			con.setRequestProperty("Content-Type", "application/json");
+			String token = tokenService.findOne(workerService.findByName(task.getWorker()).getEmail()).getToken();
+			JSONObject jsonTo =  new JSONObject();
+			jsonTo.put("to", token);
+			JSONObject jsonNotification = new JSONObject();
+			jsonNotification.put("title", "Received new task");
+			jsonNotification.put("body", task.getTitle());
+			jsonNotification.put("sound", "default");
+			jsonTo.put("notification", jsonNotification);
+			con.setDoOutput(true);
+		    OutputStream os = con.getOutputStream();
+	            os.write(jsonTo.toString().getBytes("UTF-8"));
+	            os.close();
+	        int responseCode = con.getResponseCode();
+	        LOGGER.info("FCM respond code: " + responseCode);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 	}
 }
 

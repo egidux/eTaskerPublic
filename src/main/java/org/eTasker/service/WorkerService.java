@@ -17,4 +17,6 @@ public interface WorkerService {
     void delete(Worker worker);
     
     Worker findByEmail(String email);
+    
+    Worker findByName(String name);
 }

@@ -91,6 +91,16 @@ public class WorkerImpl implements WorkerService {
 		workerRepository.delete(worker);
 		LOGGER.info("Deleted worker with id=" + worker.getId());
 	}
+	
+	@Override
+	public Worker findByName(String name) {
+		Worker worker = workerRepository.findByName(name);
+		if (worker == null) {
+			LOGGER.debug("Not found worker=" + name);
+		}
+		LOGGER.debug("Found worker=" + name);
+		return worker;
+	}
 
 	@Override
 	public Worker findByEmail(String email) {

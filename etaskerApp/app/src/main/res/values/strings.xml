@@ -12,4 +12,6 @@
     <string name="map">Map</string>
     <string name="start">Start</string>
     <string name="stopDialogTitle">Select</string>
+    <string name="FCM_PREF">org.etaskerapp.fcm_pref</string>
+    <string name="FCM_TOKEN">org.etaskerapp.fcm_token</string>
 </resources>

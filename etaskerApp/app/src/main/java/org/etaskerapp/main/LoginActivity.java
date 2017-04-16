@@ -1,7 +1,9 @@
 package org.etaskerapp.main;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.*;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -16,9 +18,11 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 
 import org.etaskerapp.R;
 import org.etaskerapp.constant.Constant;
+import org.etaskerapp.model.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +53,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }).build();
 
+    private void makeToast(String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +77,8 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
         progressDialog.show();
 
-        String email = ((EditText)findViewById(R.id.email_login)).getText().toString();
-        String password = ((EditText)findViewById(R.id.password_login)).getText().toString();
+        final String email = ((EditText)findViewById(R.id.email_login)).getText().toString();
+        final String password = ((EditText)findViewById(R.id.password_login)).getText().toString();
 
         AndroidNetworking.post(URL_LOGIN)
                 .setOkHttpClient(OK_HTTP_CLIENT)
@@ -85,6 +93,25 @@ public class LoginActivity extends AppCompatActivity {
                             name = response.getString("name");
                         } catch (JSONException e) {}
 
+                        SharedPreferences sharedPreference = getApplicationContext().getSharedPreferences(
+                                getString(R.string.FCM_PREF), Context.MODE_PRIVATE);
+                        String token = sharedPreference.getString(getString(R.string.FCM_TOKEN), "");
+                        AndroidNetworking.post(Constant.URL_TOKEN)
+                                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
+                                .addBodyParameter("worker", email)
+                                .addBodyParameter("token", token)
+                                .build()
+                                .getAsJSONObject(new JSONObjectRequestListener() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+
+                                    }
+                                });
                         Intent intent = new Intent(getApplicationContext(), TaskListActivity.class);
                         startActivity(intent);
                     }
@@ -105,16 +132,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AndroidNetworking.post(Constant.URL_LOGOUT)
-                .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                    }
-                    @Override
-                    public void onError(ANError error) {
-                    }
-                });
+
     }
 }
