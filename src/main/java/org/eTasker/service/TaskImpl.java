@@ -333,7 +333,7 @@ public class TaskImpl implements TaskService {
 	        int responseCode = con.getResponseCode();
 	        LOGGER.info("FCM respond code: " + responseCode);
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}	
 	}
