@@ -53,6 +53,7 @@ public class ImageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     dispatchTakePictureIntent();
+
                 } catch (IOException e) {
 
                 }
@@ -71,6 +72,13 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
     }
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    void test(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -88,10 +96,11 @@ public class ImageActivity extends AppCompatActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
+                ex.printStackTrace();
                 return;
             }
             // Continue only if the File was successfully created
+
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",
@@ -106,8 +115,7 @@ public class ImageActivity extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM), "Camera");
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -115,7 +123,7 @@ public class ImageActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 

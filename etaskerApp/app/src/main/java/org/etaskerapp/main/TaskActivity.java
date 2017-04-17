@@ -139,6 +139,10 @@ public class TaskActivity extends AppCompatActivity {
                                 });
                         break;
                     case "Resume":
+                        if (TaskListActivity.isTaskStarted) {
+                            makeToast("You have already started task");
+                            break;
+                        }
                         AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
                                 .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                                 .addBodyParameter("status", "2")

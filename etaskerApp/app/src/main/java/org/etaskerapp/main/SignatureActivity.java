@@ -76,8 +76,7 @@ public class SignatureActivity extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM), "Camera");
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -85,8 +84,9 @@ public class SignatureActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        String mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        String mCurrentPhotoPath = image.getAbsolutePath();
         return image;
+
     }
 
     private void makeToast(String text) {
