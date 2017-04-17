@@ -20,10 +20,87 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <ListView
-            android:id="@+id/task_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/sample1"
+            android:layout_width="match_parent" android:layout_height="80dp">
+            <!-- Bottom View Start-->
+            <LinearLayout
+                android:background="#66ddff00"
+                android:id="@+id/bottom_wrapper"
+                android:layout_width="250dp"
+                android:weightSum="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:backgroundTint="@color/blue">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/filterAll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="All"
+                        android:textSize="25dp"
+                        android:background="@color/green"
+                        android:textColor="@color/white"
+                        android:padding="20dp"/>
+                    <TextView
+                        android:id="@+id/filterAssigned"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Assigned"
+                        android:textSize="25dp"
+                        android:padding="20dp" />
+                    <TextView
+                        android:id="@+id/filterInProggress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="In proggress"
+                        android:textSize="25dp"
+                        android:padding="20dp"/>
+                    <TextView
+                        android:id="@+id/filterDone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Done"
+                        android:textSize="25dp"
+                        android:padding="20dp"/>
+                    <TextView
+                        android:id="@+id/filterAborted"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Aborted"
+                        android:textSize="25dp"
+                        android:padding="20dp"/>
+                    <TextView
+                        android:id="@+id/filterStopped"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Stopped"
+                        android:textSize="25dp"
+                        android:padding="20dp"/>
+
+                </LinearLayout>
+
+                <!--What you want to show-->
+            </LinearLayout>
+            <!-- Bottom View End-->
+
+            <!-- Surface View Start -->
+            <LinearLayout
+                android:background="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!--What you want to show in SurfaceView-->
+                <ListView
+                    android:id="@+id/task_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <!-- Surface View End -->
+        </com.daimajia.swipe.SwipeLayout>
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

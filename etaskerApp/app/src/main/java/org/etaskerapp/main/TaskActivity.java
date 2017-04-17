@@ -96,6 +96,10 @@ public class TaskActivity extends AppCompatActivity {
                 TextView startButtonText = (TextView)findViewById(R.id.taskBottomRightButtonText);
                 switch(startButtonText.getText().toString().trim()) {
                     case "Start":
+                        if (TaskListActivity.isTaskStarted) {
+                            makeToast("You have already started task");
+                            break;
+                        }
                         AndroidNetworking.put(Constant.URL_TASKS + "/" + task.getId())
                                 .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                                 .addBodyParameter("status", "2")

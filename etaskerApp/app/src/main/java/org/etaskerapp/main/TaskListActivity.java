@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,9 +18,11 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -28,6 +31,8 @@ import com.androidnetworking.common.ANResponse;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -58,6 +63,10 @@ public class TaskListActivity extends AppCompatActivity implements
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private ListView listViewTasks;
     private ProgressDialog progressDialog;
+    private static int filterStatus = 0;
+    private TextView currentFilter;
+    private boolean isOpenSwipeLayout;
+    public static boolean isTaskStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +111,81 @@ public class TaskListActivity extends AppCompatActivity implements
         );
 
         listTasks();
+        initFilter();
+    }
+
+    private void initFilter() {
+       final SwipeLayout swipeLayout =  (SwipeLayout)findViewById(R.id.sample1);
+
+//set show mode.
+        swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+
+//add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Right, findViewById(R.id.bottom_wrapper));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+                    @Override
+                    public void onStartOpen(SwipeLayout layout) {
+                        isOpenSwipeLayout = true;
+                    }
+
+                    @Override
+                    public void onStartClose(SwipeLayout layout) {
+                        isOpenSwipeLayout = false;
+                    }
+                });
+
+                swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(
+                        new ViewTreeObserver.OnGlobalLayoutListener() {
+                            @Override
+                            public void onGlobalLayout() {
+                                try {
+                                    Thread.sleep(50);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                if (isOpenSwipeLayout) {
+                                    // Opens the layout without animation
+                                    swipeLayout.open(false);
+                                }
+                            }
+                        });
+
+            }
+        }).start();
+
+
+        TextView[] filters = new TextView[] {(TextView) findViewById(R.id.filterAll),
+                (TextView) findViewById(R.id.filterAssigned), (TextView) findViewById(R.id.filterInProggress),
+                (TextView) findViewById(R.id.filterDone), (TextView) findViewById(R.id.filterAborted),
+                (TextView) findViewById(R.id.filterStopped)};
+
+        currentFilter = (TextView) findViewById(R.id.filterAll);
+        for (TextView tv: filters) {
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    currentFilter.setBackgroundColor(0x00000000);
+                    currentFilter.setTextColor(Color.parseColor("#808080"));
+                    v.setBackgroundColor(getResources().getColor(R.color.green));
+                    ((TextView) v).setTextColor(getResources().getColor(R.color.white));
+                    currentFilter = (TextView) v;
+                    switch (((TextView)v).getText().toString()) {
+                        case "All": filterStatus = 0; break;
+                        case "Assigned": filterStatus = 1; break;
+                        case "In proggress": filterStatus = 2; break;
+                        case "Done": filterStatus = 3; break;
+                        case "Aborted": filterStatus = 4; break;
+                        case "Stopped": filterStatus = 5; break;
+                    }
+                    listTasks();
+                    isOpenSwipeLayout = false;
+                }
+            });
+        }
     }
 
     private void makeToast(String text) {
@@ -145,6 +229,7 @@ public class TaskListActivity extends AppCompatActivity implements
     }
 
     private void listTasks() {
+        isTaskStarted = false;
         AndroidNetworking.get(Constant.URL_TASKS)
                 .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT)
                 .build()
@@ -161,7 +246,16 @@ public class TaskListActivity extends AppCompatActivity implements
                                 for (int i = 0; i < l.size(); i++) {
                                     Task t = l.get(i);
                                     if (t.getWorker().equals(LoginActivity.name)) {
-                                       taskListAssigned.add(t);
+                                        if (filterStatus != 0) {
+                                            if (t.getStatus().equals(filterStatus)) {
+                                                taskListAssigned.add(t);
+                                            }
+                                        } else {
+                                            taskListAssigned.add(t);
+                                        }
+                                        if (t.getStatus().equals(2)) {
+                                            isTaskStarted = true;
+                                        }
                                     }
                                     ANRequest request = AndroidNetworking.get(Constant.URL_OBJECTS + "/name/" + t.getObject())
                                             .setOkHttpClient(LoginActivity.OK_HTTP_CLIENT).build();
