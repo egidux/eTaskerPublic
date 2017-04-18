@@ -476,6 +476,7 @@ $(document).ready(function() {
      *
      */
 
+    var taskIdCalendar;
     function initCalendar(){
         $.ajax({
             url : "/user/api/tasks",
@@ -740,6 +741,31 @@ $(document).ready(function() {
                             type : "GET",
                             url : "/user/api/tasks/" + event.id,
                             success : function(jsonTask) {
+                                if (jsonTask.status == 3 || jsonTask.status == 4) {
+                                    handleImagesCalendar(jsonTask.id)
+                                }
+                                taskIdCalendar = jsonTask.id;
+                                $('#calendar-task-title').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                                $('#date-calendar-task-planned-start').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                                $('#date-calendar-task-planned-end').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                                $('#calendar-task-client').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                                $('#calendar-task-object').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                                $('#calendar-task-description').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                                $('#calendar-task-worker').prop('disabled', jsonTask.status == 3 || jsonTask.status == 4);
+                                $('#modal-btn-delete-calendar-task').toggle(!(jsonTask.status == 3 || jsonTask.status == 4));
+                                $('#modal-btn-edit-calendar-task').toggle(!(jsonTask.status == 3 || jsonTask.status == 4));
+
+                                $('#task-end-time-edit-div-calendar').toggle((jsonTask.status == 3 || jsonTask.status == 4));
+                                $('#task-end-time-edit-calendar').val(jsonTask.end_time);
+                                $('#task-signed-by-edit-div-calendar').toggle((jsonTask.status == 3 || jsonTask.status == 4));
+                                $('#task-signed-by-edit-calendar').val(jsonTask.signed_by);
+                                $('#task-rating-edit-div-calendar').toggle((jsonTask.status == 3 || jsonTask.status == 4));
+                                $('#task-rating-edit-calendar').val(jsonTask.rating);
+                                $('#task-agree-edit-div-calendar').toggle((jsonTask.status == 3 || jsonTask.status == 4));
+                                $('#task-agree-edit-calendar').val(jsonTask.agreed);
+
+                                $('#modal-btn-signature-calendar').toggle(jsonTask.signature_exists == true);
+
                                 $('#modal-calendar-task').modal();
                                 $('#calendar-task-title').val(jsonTask.title);
                                 $('#calendar-task-description').val(jsonTask.description);
@@ -874,6 +900,38 @@ $(document).ready(function() {
         setTimeout(initCalendar, 100);
         doPollWorkersBoolean = false;
     });
+
+    $('#modal-btn-signature-calendar').on('click', function(e) {
+        e.preventDefault();
+        $("#signatureCalendar").attr('src', "/user/api/signatures/" + taskIdCalendar + "/download");
+        $("#modalSignatureCalendar").modal('show');
+    })
+
+    function handleImagesCalendar(taskID) {
+        $(".btnImage").remove();
+        $.ajax({
+            type : "GET",
+            url : "/user/api/images/" + taskID,
+            success : function(jsonObjects) {
+                $.each(jsonObjects, function(i, object) {
+                    var idImage = 'TaskImage' + i;
+                    $('#calendarImagesDiv').append('<button id="' + idImage + '" type="button" class="btn btn-default btnImage">'+idImage+'</button>');
+                    $('#' + idImage).on('click', function(e) {
+                        e.preventDefault();
+                        $('#imageCalendar').removeAttr('src');
+                        $("#imageCalendar").attr('src', "/user/api/images/" + taskId + "/download/" + object.id);
+                        $("#modalImageCalendar").modal('show');
+                    })
+                });
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    }
 
     /**
      * NAV TASKS
@@ -1229,13 +1287,13 @@ $(document).ready(function() {
 
 
     function handleImages(taskID) {
+        $(".btnImage").remove();
         $.ajax({
             type : "GET",
             url : "/user/api/images/" + taskID,
             success : function(jsonObjects) {
                 $.each(jsonObjects, function(i, object) {
                     var idImage = 'TaskImage' + i;
-                    $('#imagesDiv').remove(".btnImage");
                     $('#imagesDiv').append('<button id="' + idImage + '" type="button" class="btn btn-default btnImage">'+idImage+'</button>');
                     $('#' + idImage).on('click', function(e) {
                         e.preventDefault();

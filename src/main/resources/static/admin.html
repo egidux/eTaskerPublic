@@ -386,6 +386,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!--MODAL CALENDAR TASK EDIT-->
                         <div class="modal fade" id="modal-calendar-task" tabindex="-1" role="dialog" aria-labelledby="mm">
                             <div class="modal-dialog" role="document">
@@ -445,11 +446,48 @@
                                                 <label>Task description</label>
                                                 <textarea rows="2" name="description" class="form-control" id="calendar-task-description"></textarea>
                                             </div>
+                                            <div class="form-group" id="task-end-time-edit-div-calendar">
+                                                <label>Task end time</label>
+                                                <input disabled required="true" class="form-control" id="task-end-time-edit-calendar" name="title">
+                                            </div>
+                                            <div class="form-group" id="task-signed-by-edit-div-calendar">
+                                                <label >Task signed by</label>
+                                                <input disabled required="true" class="form-control" id="task-signed-by-edit-calendar" name="title">
+                                            </div>
+                                            <div class="form-group" id="task-rating-edit-div-calendar">
+                                                <label>Task service rating</label>
+                                                <input disabled required="true" class="form-control" id="task-rating-edit-calendar" name="title">
+                                            </div>
+                                            <div class="form-group" id="task-agree-edit-div-calendar">
+                                                <label >Agreement done</label>
+                                                <input disabled required="true" class="form-control" id="task-agree-edit-calendar" name="title">
+                                            </div>
                                         </form>
                                     </div>
-                                    <div class="modal-footer">
+                                    <div class="modal-footer" id="calendarImagesDiv">
                                         <button id="modal-btn-delete-calendar-task" type="button" class="btn btn-danger">Delete</button>
                                         <button id="modal-btn-edit-calendar-task" type="button" class="btn btn-success">Save</button>
+                                        <button id="modal-btn-signature-calendar" type="button" class="btn btn-default">Signature</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--MODAL IMAGE-->
+                        <div id="modalImageCalendar" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <img id="imageCalendar" class="img-responsive" alt="Responsive image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--MODAL IMAGE-->
+                        <div id="modalSignatureCalendar" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <img id="signatureCalendar" class="img-responsive" alt="Responsive image">
                                     </div>
                                 </div>
                             </div>
