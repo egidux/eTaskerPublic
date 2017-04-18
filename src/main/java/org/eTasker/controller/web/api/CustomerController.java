@@ -17,7 +17,8 @@ public class CustomerController extends AbstractController {
 	private static final String URL_CUSTOMER = "customer";
 	private static final String EMAIL_SUBJECT = "eTasker confirmation";
 	//private static final String EMAIL_TEXT = "http://localhost:8085/user/api/customer/";
-	private static final String EMAIL_TEXT = "https://cpssd1-etasker.computing.dcu.ie/user/api/customer/";
+	private static final String EMAIL_TEXT = "Hi,\n\nto finish registration, please click on the link below. Thanks.\n\n";
+	private static final String EMAIL_TEXT_LINK = "https://cpssd1-etasker.computing.dcu.ie/user/api/customer/";
 	private static final String VERIFIED_MESSAGE = "Thank You";
 	
 	/**
@@ -52,7 +53,7 @@ public class CustomerController extends AbstractController {
     	}
     	new Thread(() -> {
     		if (!emailController.sendEmail(newUser.getEmail(), EMAIL_SUBJECT,
-        				 EMAIL_TEXT + newUser.getId())) {
+        				 EMAIL_TEXT + EMAIL_TEXT_LINK + newUser.getId())) {
     			userService.delete(newUser);
     		}
         }).start();
