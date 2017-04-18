@@ -1,6 +1,5 @@
 package org.eTasker.service;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -334,7 +333,7 @@ public class TaskImpl implements TaskService {
 	        LOGGER.info("FCM respond code: " + responseCode);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.debug("Notification not sent");
 		}	
 	}
 }
