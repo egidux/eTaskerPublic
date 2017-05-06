@@ -2,6 +2,7 @@ package org.eTasker.controller.web.api;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.eTasker.model.User;
@@ -82,7 +83,8 @@ public class UserController extends AbstractController {
     		method = RequestMethod.POST,
     		produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> login(@RequestParam(value="email") String email, 
-    		@RequestParam(value="password") String password, HttpSession session) {
+    		@RequestParam(value="password") String password, HttpSession session, HttpServletRequest request) {
+		logger.info("IP " + request.getRemoteAddr());
 		logger.info("Http request POST /user/api/" + URL_LOGIN);
     	User user = userService.findByEmail(email);
     	if (user == null) {

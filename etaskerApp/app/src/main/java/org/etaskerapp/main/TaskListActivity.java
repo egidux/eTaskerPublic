@@ -225,6 +225,7 @@ public class TaskListActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        filterStatus = 0;
         listTasks();
     }
 
