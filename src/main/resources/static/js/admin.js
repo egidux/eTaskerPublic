@@ -172,6 +172,7 @@ $(document).ready(function() {
     //RESET MODALS
     $('.modal').on('hidden.bs.modal', function () {
         $(this).find("input").val('');
+        $(this).off('click');
      });
 
     initAutocomplete()
@@ -579,6 +580,7 @@ $(document).ready(function() {
                             });
                         });
                         // BTN CALENDAR TASK MODAL NEW CLIENT SAVE LISTENER
+                        $('#modal-btn-save-calendar-task-client').off('click');
                         $('#modal-btn-save-calendar-task-client').on('click', function(e) {
                             var clientName = $('#calendar-task-client-name').val();
                             e.preventDefault();
@@ -623,6 +625,7 @@ $(document).ready(function() {
                         })
 
                         // BTN CALENDAR TASK MODAL NEW OBJECT SAVE LISTENER
+                        $('#modal-btn-calendar-task-save-object').off('click');
                         $('#modal-btn-calendar-task-save-object').on('click', function(e) {
                             var objectName = $('#calendar-task-object-name').val();
                             e.preventDefault();
@@ -667,6 +670,7 @@ $(document).ready(function() {
                         })
 
                         // BTN CALENDAR TASK MODAL OBJECT CLIENT SAVE LISTENER
+                        $('#modal-btn-save-calendar-task-object-client').off('click');
                         $('#modal-btn-save-calendar-task-object-client').on('click', function(e) {
                             var clientName = $('#calendar-task-object-client-name').val();
                             e.preventDefault();
@@ -759,6 +763,7 @@ $(document).ready(function() {
 
                     },
                     eventClick: function(event, jsEvent, view) {
+                        $(this).find("input").val('');
                         $.ajax({
                             type : "GET",
                             url : "/user/api/tasks/" + event.id,
