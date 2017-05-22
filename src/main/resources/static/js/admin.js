@@ -556,6 +556,28 @@ $(document).ready(function() {
                                 console.log("DONE");
                             }
                         });
+                        $('#calendar-create-task-client').change(function() {
+                            var selectedClient = $( "#calendar-create-task-client option:selected" ).text();
+                            $.ajax({
+                                type : "GET",
+                                url : "/user/api/objects",
+                                success : function(json) {
+                                    $('#calendar-create-task-object').empty();
+                                    $('#calendar-create-task-object').append('<option selected></option>');
+                                    $.each(json, function(i, obj) {
+                                        if (obj.client == selectedClient){
+                                            $('#calendar-create-task-object').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                                        }
+                                    });
+                                },
+                                error : function(e) {
+                                    console.log("ERROR: ", e);
+                                },
+                                done : function(e) {
+                                    console.log("DONE");
+                                }
+                            });
+                        });
                         // BTN CALENDAR TASK MODAL NEW CLIENT SAVE LISTENER
                         $('#modal-btn-save-calendar-task-client').on('click', function(e) {
                             var clientName = $('#calendar-task-client-name').val();
@@ -1032,6 +1054,29 @@ $(document).ready(function() {
             }
         });
     }
+
+    $('#task-client').change(function() {
+        var selectedClient = $( "#task-client option:selected" ).text();
+        $.ajax({
+            type : "GET",
+            url : "/user/api/objects",
+            success : function(json) {
+                $('#task-object').empty();
+                $('#task-object').append('<option selected></option>');
+                $.each(json, function(i, obj) {
+                    if (obj.client == selectedClient){
+                        $('#task-object').append('<option value="' + obj.name + '">' + obj.name + '</option>');
+                    }
+                });
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    });
 
     // BTN TASK MODAL NEW CLIENT SAVE LISTENER
     $('#modal-btn-save-task-client').on('click', function(e) {
